@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – Auto Cars</title>
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar__logo">Auto<span>Cars</span> Admin</div>
+  <nav class="sidebar__menu">
+    <div class="sidebar__section">Tổng quan</div>
+    <div class="sidebar__item active" onclick="gotoPage('dashboard')"><span class="icon">📊</span>Dashboard</div>
+    <div class="sidebar__section">Quản lý</div>
+    <div class="sidebar__item" onclick="gotoPage('brands')"><span class="icon">🏷️</span>Hãng xe</div>
+    <div class="sidebar__item" onclick="gotoPage('cars')"><span class="icon">🚗</span>Loại xe</div>
+    <div class="sidebar__item" onclick="gotoPage('drivers')"><span class="icon">👨‍✈️</span>Tài xế</div>
+    <div class="sidebar__item" onclick="gotoPage('bookings')"><span class="icon">📋</span>Đặt xe</div>
+    <div class="sidebar__item" onclick="gotoPage('feedback')"><span class="icon">⭐</span>Phản hồi</div>
+    <div class="sidebar__section">Cấu hình</div>
+    <div class="sidebar__item" onclick="gotoPage('pricing')"><span class="icon">💰</span>Giá cước</div>
+    <div class="sidebar__section">Tài khoản</div>
+    <div class="sidebar__item" onclick="location.href='index.html'"><span class="icon">🏠</span>Về trang chủ</div>
+  </nav>
+</aside>
+
+<div class="admin-main">
+  <div class="admin-topbar">
+    <div class="admin-topbar__title" id="topbarTitle">Dashboard</div>
+    <div class="admin-topbar__actions">
+      <a href="index.html" class="btn btn-outline btn-sm">← Trang chủ</a>
+    </div>
+  </div>
+  <div class="admin-content">
+    <section id="page-dashboard" class="page-section active">
+      <div class="dash-grid" id="dashGrid"></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Mã đặt</th><th>Tuyến đường</th><th>Xe</th><th>Ngày đi</th><th>Tổng tiền</th><th>Trạng thái</th></tr></thead>
+          <tbody id="dashBookingTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="page-brands" class="page-section">
+      <div class="section-hdr">
+        <h2>Quản lý hãng xe</h2>
+        <button class="btn btn-gold" onclick="openModal('mBrand')">+ Thêm hãng</button>
+      </div>
+      <div class="mgrid" id="brandsGrid"></div>
+    </section>
+
+
+    <section id="page-cars" class="page-section">
+      <div class="section-hdr">
+        <h2>Quản lý loại xe</h2>
+        <button class="btn btn-gold" onclick="openModal('mCar')">+ Thêm xe</button>
+      </div>
+      <div style="margin-bottom:16px;display:flex;gap:10px;align-items:center;">
+        <label style="font-weight:600;font-size:.88rem;">Lọc hãng:</label>
+        <select id="carBrandFilter" class="form-control" style="max-width:200px;" onchange="renderCars()">
+          <option value="">Tất cả</option>
+        </select>
+      </div>
+      <div class="mgrid" id="carsGrid"></div>
+    </section>
+
+    <section id="page-drivers" class="page-section">
+      <div class="section-hdr">
+        <h2>Quản lý tài xế</h2>
+        <button class="btn btn-gold" onclick="openModal('mDriver')">+ Thêm tài xế</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Tên</th><th>SĐT</th><th>Đánh giá</th><th>Chuyến</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+          <tbody id="driversTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="page-bookings" class="page-section">
+      <div class="section-hdr">
+        <h2>Quản lý đặt xe</h2>
+        <select id="bkStatusFilter" class="form-control" style="max-width:180px;" onchange="renderBookings()">
+          <option value="">Tất cả</option>
+          <option value="pending">Đang chờ</option>
+          <option value="done">Hoàn thành</option>
+          <option value="cancel">Đã huỷ</option>
+        </select>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Mã</th><th>Tuyến đường</th><th>Xe</th><th>Tài xế</th><th>Ngày</th><th>Tiền</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+          <tbody id="bookingsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="page-feedback" class="page-section">
+      <div class="section-hdr"><h2>Phản hồi khách hàng</h2></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Người dùng</th><th>Sao</th><th>Nội dung</th><th>Ngày</th></tr></thead>
+          <tbody id="feedbackTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="page-pricing" class="page-section">
+      <div class="section-hdr"><h2>Giá cước</h2></div>
+      <div class="pricing-grid" id="pricingGrid"></div>
+
+      <div class="calc-section">
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:20px;">🧮 Công cụ tính phí</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Khoảng cách (km)</label>
+            <input id="calcKm" class="form-control" type="number" placeholder="VD: 300">
+          </div>
+          <div class="form-group">
+            <label>Số ngày</label>
+            <input id="calcDays" class="form-control" type="number" value="1" min="1">
+          </div>
+          <div class="form-group">
+            <label>Có tài xế?</label>
+            <select id="calcDriver" class="form-control">
+              <option value="0">Không</option>
+              <option value="1">Có</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Xe (tuỳ chọn)</label>
+            <select id="calcCar" class="form-control"><option value="">-- Mặc định --</option></select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="runCalc()">Tính phí</button>
+        <div id="calcResult" style="margin-top:16px;font-size:1.2rem;font-weight:700;color:var(--blue);"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</div>
+
+<div class="modal-overlay" id="mBrand">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="mBrandTitle">Thêm hãng xe</h3>
+      <button class="modal-close" onclick="closeModal('mBrand')">✕</button>
+    </div>
+    <input type="hidden" id="mBrandId">
+    <div class="form-group"><label>Tên hãng</label><input id="mBrandName" class="form-control" placeholder="VD: Toyota"></div>
+    <div class="form-group"><label>Logo (emoji)</label><input id="mBrandLogo" class="form-control" placeholder="VD: 🚗" maxlength="4"></div>
+    <div class="form-group"><label>Mô tả</label><input id="mBrandDesc" class="form-control" placeholder="Mô tả ngắn"></div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-gold" style="flex:1" onclick="saveBrand()">Lưu</button>
+      <button class="btn btn-outline" onclick="closeModal('mBrand')">Huỷ</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="mCar">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="mCarTitle">Thêm loại xe</h3>
+      <button class="modal-close" onclick="closeModal('mCar')">✕</button>
+    </div>
+    <input type="hidden" id="mCarId">
+    <div class="form-group"><label>Hãng xe</label>
+      <select id="mCarBrand" class="form-control"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Tên xe</label><input id="mCarName" class="form-control" placeholder="VD: Innova Cross"></div>
+      <div class="form-group"><label>Loại</label>
+        <select id="mCarType" class="form-control">
+          <option>Sedan</option><option>SUV</option><option>MPV</option><option>Pickup</option><option>Hatchback</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Số chỗ</label><input id="mCarSeats" class="form-control" type="number" value="5" min="2" max="50"></div>
+      <div class="form-group"><label>Giá/km (VND)</label><input id="mCarPrice" class="form-control" type="number" placeholder="VD: 4500"></div>
+    </div>
+    <div class="form-group"><label>URL ảnh</label><input id="mCarImg" class="form-control" placeholder="https://..."></div>
+    <div class="form-group"><label>Mô tả</label><input id="mCarDesc" class="form-control" placeholder="Mô tả ngắn"></div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-gold" style="flex:1" onclick="saveCar()">Lưu</button>
+      <button class="btn btn-outline" onclick="closeModal('mCar')">Huỷ</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="mDriver">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="mDriverTitle">Thêm tài xế</h3>
+      <button class="modal-close" onclick="closeModal('mDriver')">✕</button>
+    </div>
+    <input type="hidden" id="mDriverId">
+    <div class="form-row">
+      <div class="form-group"><label>Họ tên</label><input id="mDriverName" class="form-control" placeholder="Nguyễn Văn A"></div>
+      <div class="form-group"><label>Số điện thoại</label><input id="mDriverPhone" class="form-control" placeholder="09xxxxxxxx"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Đánh giá (1-5)</label><input id="mDriverRating" class="form-control" type="number" step=".1" min="1" max="5" value="5"></div>
+      <div class="form-group"><label>Trạng thái</label>
+        <select id="mDriverAvail" class="form-control"><option value="1">Sẵn sàng</option><option value="0">Bận</option></select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-gold" style="flex:1" onclick="saveDriver()">Lưu</button>
+      <button class="btn btn-outline" onclick="closeModal('mDriver')">Huỷ</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="../js/store.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>
