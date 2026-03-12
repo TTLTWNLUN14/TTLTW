@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đặt lịch xe – Auto Cars</title>
+  <link rel="stylesheet" href="../css/booking.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="index.html" class="navbar__logo">Auto<span>Cars</span></a>
+    <div class="nav-links">
+      <a href="index.html">Trang chủ</a>
+      <a href="car.html">Hãng xe</a>
+      <a href="booking.html" class="active">Đặt lịch xe</a>
+      <a href="feedback.html">Đánh giá</a>
+      <a href="admin.html">Admin</a>
+      <a href="login.html" class="nav-btn">Đăng nhập</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Đặt lịch xe & Lịch sử</h1>
+  <p>Đặt chuyến đi mới hoặc xem lại lịch sử đặt xe</p>
+  <div class="tabs-bar">
+    <button class="tab-btn active" id="tabBook" onclick="switchTab('book')">🚗 Đặt xe mới</button>
+    <button class="tab-btn" id="tabHistory" onclick="switchTab('history')">📋 Lịch sử đặt xe</button>
+  </div>
+</div>
+
+<div class="main-content">
+
+  <div id="panelBook">
+    <div class="booking-card">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:24px;">Thông tin chuyến đi</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Họ và tên</label>
+          <input id="bName" class="form-control" placeholder="Nguyễn Văn A" required>
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại</label>
+          <input id="bPhone" class="form-control" type="tel" placeholder="09xxxxxxxx" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Điểm đi</label>
+          <input id="bFrom" class="form-control" placeholder="VD: Hồ Chí Minh" required>
+        </div>
+        <div class="form-group">
+          <label>Điểm đến</label>
+          <input id="bTo" class="form-control" placeholder="VD: Đà Lạt" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Ngày đi</label>
+          <input id="bDateFrom" class="form-control" type="date" required onchange="calcPrice()">
+        </div>
+        <div class="form-group">
+          <label>Ngày về</label>
+          <input id="bDateTo" class="form-control" type="date" onchange="calcPrice()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Khoảng cách ước tính (km)</label>
+          <input id="bKm" class="form-control" type="number" min="1" placeholder="VD: 300" oninput="calcPrice()">
+        </div>
+        <div class="form-group">
+          <label>Chọn xe</label>
+          <select id="bCar" class="form-control" onchange="calcPrice()">
+            <option value="">-- Chọn xe --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Có cần tài xế không?</label>
+        <div class="driver-toggle">
+          <div class="driver-option selected" id="dOpt0" onclick="selectDriver(false)">
+            <div class="driver-option__icon">🙋</div>
+            <div class="driver-option__label">Tự lái</div>
+          </div>
+          <div class="driver-option" id="dOpt1" onclick="selectDriver(true)">
+            <div class="driver-option__icon">👨‍✈️</div>
+            <div class="driver-option__label">Thuê tài xế</div>
+          </div>
+        </div>
+      </div>
+      <div id="driverPanel" style="display:none;" class="form-group">
+        <label>Chọn tài xế</label>
+        <select id="bDriver" class="form-control">
+          <option value="">-- Chọn tài xế --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Phương thức thanh toán</label>
+        <select id="bPayment" class="form-control">
+          <option value="cash">💵 Tiền mặt</option>
+          <option value="vnpay">🏦 VNPay</option>
+          <option value="momo">💜 Momo</option>
+        </select>
+      </div>
+      <div class="price-preview">
+        <div>
+          <div class="price-preview__label">Dự tính chi phí</div>
+          <div class="price-preview__amount" id="priceDisplay">—</div>
+        </div>
+        <button class="btn btn-gold btn-lg" onclick="submitBooking()">✓ Xác nhận đặt xe</button>
+      </div>
+    </div>
+  </div>
+  <div id="panelHistory" style="display:none;">
+    <div class="history-filters">
+      <select id="hStatus" class="form-control" style="max-width:180px;" onchange="renderHistory()">
+        <option value="">Tất cả trạng thái</option>
+        <option value="pending">Đang chờ</option>
+        <option value="done">Hoàn thành</option>
+        <option value="cancel">Đã huỷ</option>
+      </select>
+      <button class="btn btn-outline btn-sm" onclick="document.getElementById('hStatus').value='';renderHistory()">Xoá lọc</button>
+    </div>
+    <div id="historyList"></div>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Đánh giá chuyến đi</h3>
+      <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
+    </div>
+    <p id="reviewBookingInfo" style="color:var(--gray);font-size:.88rem;margin-bottom:8px;"></p>
+    <label style="font-weight:600;">Xếp hạng của bạn</label>
+    <div class="stars-input" id="reviewStars">
+      <span class="star" data-v="1">★</span>
+      <span class="star" data-v="2">★</span>
+      <span class="star" data-v="3">★</span>
+      <span class="star" data-v="4">★</span>
+      <span class="star" data-v="5">★</span>
+    </div>
+    <div class="form-group">
+      <label>Nhận xét</label>
+      <textarea id="reviewText" class="form-control" rows="4" placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+    </div>
+    <button class="btn btn-gold" style="width:100%;margin-top:8px;" onclick="submitReview()">Gửi đánh giá</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer__inner">
+    <div><div class="footer__brand">AutoCars</div><div style="font-size:.82rem;margin-top:6px;">© 2025 Auto Cars.</div></div>
+    <div class="footer__links"><a href="#">Chính sách</a><a href="#">Điều khoản</a></div>
+  </div>
+</footer>
+</div>
+<div id="toast"></div>
+<script src="../js/store.js"></script>
+<script src="../js/booking.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Cars – Đặt xe du lịch dễ dàng</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="index.html" class="navbar__logo">Auto<span>Cars</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Trang chủ</a>
+      <a href="car.html">Hãng xe</a>
+      <a href="booking.html">Đặt lịch xe</a>
+      <a href="feedback.html">Đánh giá</a>
+      <a href="admin.html">Admin</a>
+      <a href="login.html" class="nav-btn">Đăng nhập</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero__content">
+    <div class="hero__tag">🚗 Nền tảng đặt xe du lịch #1 Việt Nam</div>
+    <h1>Du lịch thoải mái —<br><em>Đặt xe trong 60 giây</em></h1>
+    <p>Hàng chục thương hiệu xe, tài xế chuyên nghiệp, giá minh bạch. Chọn điểm đến, chúng tôi lo phần còn lại.</p>
+    <div class="hero__cta">
+      <a href="booking.html" class="btn btn-gold btn-lg">Đặt xe ngay</a>
+      <a href="car.html" class="btn btn-outline btn-lg" style="border-color:#fff;color:#fff;">Xem hãng xe</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stats__grid">
+    <div><div class="stat__num">5,000+</div><div class="stat__lbl">Chuyến thành công</div></div>
+    <div><div class="stat__num">20+</div><div class="stat__lbl">Dòng xe</div></div>
+    <div><div class="stat__num">50+</div><div class="stat__lbl">Tài xế chuyên nghiệp</div></div>
+    <div><div class="stat__num">4.9⭐</div><div class="stat__lbl">Đánh giá trung bình</div></div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="section-title">
+    <h2>Tại sao chọn Auto Cars?</h2>
+    <p>Chúng tôi cam kết trải nghiệm tốt nhất cho mọi chuyến đi của bạn.</p>
+  </div>
+  <div class="why__grid">
+    <div class="why-card">
+      <div class="why-card__icon">🛡️</div>
+      <h4>An toàn tuyệt đối</h4>
+      <p>Xe được kiểm định định kỳ, tài xế qua đào tạo bài bản, bảo hiểm đầy đủ.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card__icon">💰</div>
+      <h4>Giá minh bạch</h4>
+      <p>Không phát sinh phí ẩn. Báo giá rõ ràng trước khi xác nhận đặt xe.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card__icon">⚡</div>
+      <h4>Đặt xe siêu nhanh</h4>
+      <p>Chỉ cần chọn điểm đến, loại xe và nhấn đặt — hoàn tất trong 60 giây.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card__icon">🚗</div>
+      <h4>Đa dạng dòng xe</h4>
+      <p>Từ xe 4 chỗ tiết kiệm đến xe sang hạng sang, phù hợp mọi nhu cầu.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card__icon">👨‍✈️</div>
+      <h4>Tài xế chuyên nghiệp</h4>
+      <p>Tài xế thân thiện, am hiểu địa hình, sẵn sàng phục vụ 24/7.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-card__icon">📱</div>
+      <h4>Theo dõi chuyến đi</h4>
+      <p>Xem lịch sử đặt xe, trạng thái chuyến đi và đánh giá ngay trên web.</p>
+    </div>
+  </div>
+</section>
+
+<section class="routes">
+  <div class="section-title">
+    <h2>Tuyến đường phổ biến</h2>
+    <p>Những lộ trình được khách hàng yêu thích nhất</p>
+  </div>
+  <div class="routes__grid">
+    <div class="route-card" onclick="goBook('HCM','Đà Lạt')">
+      <img src="https://samtenhills.vn/wp-content/uploads/2024/11/kinh-nghiem-du-lich-da-lat-1-minh.jpg" alt="Đà Lạt" loading="lazy">
+      <div class="route-card__overlay">
+        <div class="route-card__name">HCM → Đà Lạt</div>
+        <div class="route-card__price">Từ 800.000 ₫</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="goBook('HCM','Nha Trang')">
+      <img src="https://letsflytravel.vn/wp-content/uploads/2024/08/nha-trang-2.webp" alt="Nha Trang" loading="lazy">
+      <div class="route-card__overlay">
+        <div class="route-card__name">HCM → Nha Trang</div>
+        <div class="route-card__price">Từ 1.200.000 ₫</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="goBook('HCM','Vũng Tàu')">
+      <img src="https://bcp.cdnchinhphu.vn/334894974524682240/2023/12/20/tong-quan-du-lich-vung-tau-ivivu-17030443479121842547903.jpg" alt="Vũng Tàu" loading="lazy">
+      <div class="route-card__overlay">
+        <div class="route-card__name">HCM → Vũng Tàu</div>
+        <div class="route-card__price">Từ 400.000 ₫</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="goBook('Hà Nội','Hải Phòng')">
+      <img src="https://bhd.1cdn.vn/2025/07/07/cau-hoang-van-thu-1-6ca5b1e8b315a843ba4a8484b77c83e9.jpg" alt="Hải Phòng" loading="lazy">
+      <div class="route-card__overlay">
+        <div class="route-card__name">Hà Nội → Hải Phòng</div>
+        <div class="route-card__price">Từ 500.000 ₫</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="goBook('Hà Nội','Quảng Ninh')">
+      <img src="https://www.tapchicongsan.org.vn/documents/20182/15194140/hinh-anh-vinh-ha-long-6.jpg" alt="Quảng Ninh" loading="lazy">
+      <div class="route-card__overlay">
+        <div class="route-card__name">Hà Nội → Quảng Ninh</div>
+        <div class="route-card__price">Từ 600.000 ₫</div>
+      </div>
+    </div>
+    <div class="route-card" onclick="goBook('HCM','Đà Nẵng')">
+      <img src="https://cdn-media.sforum.vn/storage/app/media/ctvseo_MH/%E1%BA%A3nh%20%C4%91%E1%BA%B9p%20%C4%91%C3%A0%20n%E1%BA%B5ng/anh-dep-da-nang-thumb.jpg" alt="Đà Nẵng" loading="lazy">
+      <div class="route-card__overlay">
+        <div class="route-card__name">HCM → Đà Nẵng</div>
+        <div class="route-card__price">Từ 2.200.000 ₫</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="testimonials">
+  <div class="section-title">
+    <h2>Khách hàng nói gì?</h2>
+    <p>Hàng nghìn khách hàng hài lòng với dịch vụ của chúng tôi</p>
+  </div>
+  <div class="testi__grid">
+    <div class="testi-card">
+      <div class="testi-card__stars">★★★★★</div>
+      <div class="testi-card__text">"Dịch vụ tuyệt vời! Tài xế đến đúng giờ, xe sạch sẽ và thoải mái. Sẽ tiếp tục sử dụng cho các chuyến tiếp theo."</div>
+      <div class="testi-card__author">— Nguyễn Minh Tuấn</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-card__stars">★★★★★</div>
+      <div class="testi-card__text">"Đặt xe HCM - Đà Lạt rất tiện lợi. Báo giá rõ ràng, không phát sinh thêm chi phí. Tài xế thân thiện, biết nhiều điểm tham quan."</div>
+      <div class="testi-card__author">— Trần Thị Lan</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-card__stars">★★★★☆</div>
+      <div class="testi-card__text">"Giá cả hợp lý, đặt xe dễ dàng. Tôi đã dùng dịch vụ 3 lần và đều rất hài lòng. Khuyến khích mọi người thử!"</div>
+      <div class="testi-card__author">— Lê Văn Hùng</div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer__inner">
+    <div>
+      <div class="footer__brand">AutoCars</div>
+      <div style="font-size:.82rem;margin-top:6px;">© 2025 Auto Cars. Mọi quyền được bảo lưu.</div>
+    </div>
+    <div class="footer__links">
+      <a href="#">Chính sách</a>
+      <a href="#">Điều khoản</a>
+      <a href="feedback.html">Liên hệ</a>
+    </div>
+  </div>
+</footer>
+
+</div>
+<div id="toast"></div>
+<script src="../js/store.js"></script>
+<script src="../js/index.js"></script>
+</body>
+</html>
