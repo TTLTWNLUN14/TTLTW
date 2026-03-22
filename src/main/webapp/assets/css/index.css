@@ -525,6 +525,287 @@ ul { list-style: none; }
 }
 
 /* ============================================================
+   MEMBER PROMO SECTION
+   ============================================================ */
+.section-member {
+    background: linear-gradient(135deg, #0b1e3d 0%, #1a4fa8 100%);
+    padding: 80px 0;
+}
+
+.member-promo {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+}
+
+/* LEFT */
+.mp-left { max-width: 580px; }
+
+.mp-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #facc15;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.mp-left h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 14px;
+    line-height: 1.25;
+}
+
+.mp-left p {
+    font-size: 0.95rem;
+    color: #93c5fd;
+    margin-bottom: 28px;
+    line-height: 1.65;
+    max-width: 480px;
+}
+
+/* Tier grid */
+.mp-tiers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.mpt {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 11px 16px;
+    font-size: 0.88rem;
+    color: #e2e8f0;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.mpt:hover {
+    background: rgba(255,255,255,0.14);
+}
+
+/* btn-gold override for this context */
+.section-member .btn-gold {
+    padding: 13px 28px;
+    font-size: 1rem;
+    border-radius: 12px;
+}
+
+/* RIGHT — membership card */
+.mp-right { flex-shrink: 0; }
+
+.mp-card {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border-radius: 20px;
+    padding: 28px 32px;
+    width: 280px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative circle */
+.mp-card::before {
+    content: "";
+    position: absolute;
+    width: 180px; height: 180px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    top: -60px; right: -50px;
+}
+.mp-card::after {
+    content: "";
+    position: absolute;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50%;
+    bottom: -30px; left: -30px;
+}
+
+.mpc-tier {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.mpc-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+.mpc-id {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+}
+
+.mpc-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 20px;
+}
+
+.mpc-stats > div { text-align: center; flex: 1; }
+
+.mpc-sv {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.mpc-sl {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.7);
+}
+
+/* ============================================================
+   HOW IT WORKS SECTION
+   ============================================================ */
+.section-how {
+    background: #071429;
+    padding: 90px 0;
+}
+
+.how-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 70px;
+}
+
+.how-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+}
+
+.how-step {
+    flex: 1;
+    max-width: 220px;
+    text-align: center;
+    padding: 0 12px;
+}
+
+.how-num {
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(245, 158, 11, 0.25);
+    line-height: 1;
+    margin-bottom: 20px;
+    font-family: 'Georgia', serif;
+    letter-spacing: -2px;
+}
+
+.how-icon {
+    font-size: 2.2rem;
+    margin-bottom: 18px;
+    display: block;
+}
+
+.how-step h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.how-step p {
+    font-size: 0.83rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.how-arrow {
+    color: #334155;
+    font-size: 1.4rem;
+    padding-top: 80px;
+    flex-shrink: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+    background: #071429;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 60px 0 0;
+}
+
+.footer-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 48px;
+}
+
+/* Logo col */
+.footer-grid > div:first-child .nav-logo {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #f59e0b;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Column title */
+.footer-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #f59e0b;
+    margin-bottom: 18px;
+}
+
+/* Links */
+.footer-link {
+    display: block;
+    font-size: 0.88rem;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+}
+.footer-link:hover { color: #fff; }
+
+/* Bottom bar */
+.footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 20px 40px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    text-align: center;
+    font-size: 0.82rem;
+    color: #475569;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
@@ -535,6 +816,17 @@ ul { list-style: none; }
 @media (max-width: 900px) {
     .cars-grid { grid-template-columns: repeat(2, 1fr); }
     .services-grid { grid-template-columns: 1fr; }
+    .member-promo { grid-template-columns: 1fr; gap: 40px; }
+    .mp-card { width: 100%; max-width: 320px; }
+    .how-steps { flex-wrap: wrap; gap: 32px; justify-content: center; }
+    .how-arrow { display: none; }
+    .how-step { max-width: 180px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+
+@media (max-width: 580px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-grid, .footer-bottom { padding-left: 20px; padding-right: 20px; }
 }
 
 @media (max-width: 700px) {
