@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>AUTO CARS – Đặt xe du lịch cao cấp</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<div id="toastC" class="toast-container"></div>
+
+<nav class="global-nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="index.html">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/100px-Toyota_carlogo.svg.png" alt="AUTO CARS">
+            AUTO CARS
+        </a>
+        <div class="nav-links">
+            <a class="nav-link active" href="index.html">Trang chủ</a>
+            <a class="nav-link" href="cars.html">Xe</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+            <a class="nav-link" href="member.html">Member</a>
+        </div>
+        <div class="nav-actions" id="navActions">
+            <a href="auth.html" class="btn btn-outline btn-sm">Đăng nhập</a>
+            <a href="auth.html?tab=register" class="btn btn-primary btn-sm">Đăng ký</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"><div class="hero-grid"></div><div class="hero-glow"></div></div>
+    <div class="hero-content">
+        <div class="hero-badge">🏆 Nền tảng đặt xe du lịch hàng đầu Việt Nam</div>
+        <h1 class="hero-title">Khám phá Việt Nam<br><span class="gold-text">Đẳng cấp &amp; Thoải mái</span></h1>
+        <p class="hero-sub">100+ mẫu xe cao cấp · Tài xế xác thực · Giá ưu đãi cho thành viên · 24/7</p>
+        <div class="hero-search-box">
+            <div class="search-row">
+                <div class="search-field"><span class="sf-icon">📍</span><input class="sf-input" placeholder="Điểm đón (VD: Q1, HCM)" id="inPickup"></div>
+                <div class="search-field"><span class="sf-icon">🏁</span><input class="sf-input" placeholder="Điểm đến (VD: Đà Lạt)" id="inDropoff"></div>
+                <div class="search-field"><span class="sf-icon">📅</span><input class="sf-input" type="date" id="inDate"></div>
+                <button class="btn btn-primary btn-lg" onclick="goBook()">🔍 Tìm xe</button>
+            </div>
+            <div class="search-tags">
+                <span class="stag" onclick="quickBook('HCM','Đà Lạt')">🌿 HCM → Đà Lạt</span>
+                <span class="stag" onclick="quickBook('HCM','Vũng Tàu')">🏖️ HCM → Vũng Tàu</span>
+                <span class="stag" onclick="quickBook('HCM','Đà Nẵng')">⛵ HCM → Đà Nẵng</span>
+                <span class="stag" onclick="quickBook('HN','Hạ Long')">🏔️ HN → Hạ Long</span>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="hstat"><div class="hstat-num">1,200+</div><div class="hstat-lbl">Chuyến thành công</div></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><div class="hstat-num">100+</div><div class="hstat-lbl">Đối tác xe</div></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><div class="hstat-num">4.9★</div><div class="hstat-lbl">Đánh giá TB</div></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><div class="hstat-num">24/7</div><div class="hstat-lbl">Hỗ trợ</div></div>
+        </div>
+    </div>
+</section>
