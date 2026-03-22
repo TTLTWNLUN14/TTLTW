@@ -2,9 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Danh sách xe - Auto Cars</title>
+    <link rel="stylesheet" href="../css/cars.css">
 </head>
 <body>
+
+<nav class="global-nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="index.html">AUTO CARS</a>
+        <div class="nav-links">
+            <a class="nav-link" href="index.html">Trang chủ</a>
+            <a class="nav-link active" href="cars.html">Xe</a>
+            <a class="nav-link " href="cars-brand.html">Hãng xe</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+        </div>
+        <div class="nav-actions" id="navActions">
+            <a href="#" class="btn-login">Đăng nhập</a>
+        </div>
+    </div>
+</nav>
+<div class="page-main">
+    <div class="page-wrap-lg">
+
+        <div class="cars-hero">
+            <h1>Chọn xe phù hợp với bạn</h1>
+            <p>Hơn 100+ mẫu xe cao cấp từ các thương hiệu uy tín – Giao/nhận tận nơi</p>
+
+        </div>
+
+        <div class="brands-filter-bar" id="brandFilterBar">
+            <button class="brand-pill active">Tất cả</button>
+            <button class="brand-pill">Toyota</button>
+            <button class="brand-pill">Honda</button>
+        </div>
+
+        <div class="cars-layout">
+
+            <div class="cars-sidebar">
+                <div class="filter-section">
+                    <div class="filter-title">Loại xe</div>
+                    <div class="filter-chips">
+                        <span class="chip active" onclick="setFilter('cat','',this)">Tất cả</span>
+                        <span class="chip" onclick="setFilter('cat','Sedan',this)">Sedan</span>
+                        <span class="chip" onclick="setFilter('cat','SUV',this)">SUV</span>
+                        <span class="chip" onclick="setFilter('cat','MPV',this)">MPV</span>
+                        <span class="chip" onclick="setFilter('cat','Pickup',this)">Pickup</span>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-title">Số chỗ ngồi</div>
+                    <div class="filter-chips">
+                        <span class="chip active" onclick="setFilter('seats','',this)">Tất cả</span>
+                        <span class="chip" onclick="setFilter('seats','4',this)">4 chỗ</span>
+                        <span class="chip" onclick="setFilter('seats','5',this)">5 chỗ</span>
+                        <span class="chip" onclick="setFilter('seats','7',this)">7 chỗ</span>
+                        <span class="chip" onclick="setFilter('seats','8',this)">8+ chỗ</span>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-title">Nhiên liệu</div>
+                    <div class="filter-chips">
+                        <span class="chip active" onclick="setFilter('fuel','',this)">Tất cả</span>
+                        <span class="chip" onclick="setFilter('fuel','Xăng',this)">⛽ Xăng</span>
+                        <span class="chip" onclick="setFilter('fuel','Điện',this)">⚡ Điện</span>
+                        <span class="chip" onclick="setFilter('fuel','Hybrid',this)">🌿 Hybrid</span>
+                        <span class="chip" onclick="setFilter('fuel','Diesel',this)">🛢️ Diesel</span>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-title">Hình thức thuê</div>
+                    <div class="filter-chips">
+                        <span class="chip active" onclick="setFilter('rent','',this)">Tất cả</span>
+                        <span class="chip" onclick="setFilter('rent','driver',this)">🚘 Có tài xế</span>
+                        <span class="chip" onclick="setFilter('rent','self',this)">🔑 Tự lái</span>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-title">Giá/km tối đa</div>
+                    <div class="price-range">
+                        <input class="price-slider" type="range" id="maxPrice" min="3000" max="15000" step="500" value="15000" oninput="updatePriceLabel();render()">
+                        <div class="price-labels"><span>3.000đ</span><span id="priceLabel">15.000đ</span></div>
+                    </div>
+                </div>
+                <button class="btn btn-ghost btn-full" style="margin-top:4px" onclick="resetFilters()">↺ Xóa bộ lọc</button>
+            </div>
+
+            <div class="cars-main">
+                <div class="cars-toolbar">
+                    <div class="ct-count" id="carCount">Đang tải...</div>
+
+                </div>
+                <div id="carGrid" class="cars-grid">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
