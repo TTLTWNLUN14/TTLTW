@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>AUTO CARS – Đặt xe du lịch cao cấp</title>
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+<div id="toastC" class="toast-container"></div>
+
+<!-- NAVBAR -->
+<nav class="global-nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="index.html">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/100px-Toyota_carlogo.svg.png" alt="AUTO CARS">
+            AUTO CARS
+        </a>
+        <div class="nav-links">
+            <a class="nav-link active" href="index.html">Trang chủ</a>
+            <a class="nav-link" href="cars.html">Xe</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+            <a class="nav-link" href="member.html">Member</a>
+        </div>
+        <div class="nav-actions" id="navActions">
+            <a href="auth.html" class="btn btn-outline btn-sm">Đăng nhập</a>
+            <a href="auth.html?tab=register" class="btn btn-primary btn-sm">Đăng ký</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg">
+        <div class="hero-grid"></div>
+        <div class="hero-glow"></div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-badge">🏆 Nền tảng đặt xe du lịch hàng đầu Việt Nam</div>
+        <h1 class="hero-title">Khám phá Việt Nam<br><span class="gold-text">Đẳng cấp &amp; Thoải mái</span></h1>
+        <p class="hero-sub">100+ mẫu xe cao cấp · Tài xế xác thực · Giá ưu đãi cho thành viên · 24/7</p>
+        <div class="hero-search-box">
+            <div class="search-row">
+                <div class="search-field">
+                    <span class="sf-icon">📍</span>
+                    <input class="sf-input" placeholder="Điểm đón (VD: Q1, HCM)" id="inPickup">
+                </div>
+                <div class="search-field">
+                    <span class="sf-icon">🏁</span>
+                    <input class="sf-input" placeholder="Điểm đến (VD: Đà Lạt)" id="inDropoff">
+                </div>
+                <div class="search-field">
+                    <span class="sf-icon">📅</span>
+                    <input class="sf-input" type="date" id="inDate">
+                </div>
+                <button class="btn btn-primary btn-lg" onclick="goBook()">🔍 Tìm xe</button>
+            </div>
+            <div class="search-tags">
+                <span class="stag" onclick="quickBook('HCM','Đà Lạt')">🌿 HCM → Đà Lạt</span>
+                <span class="stag" onclick="quickBook('HCM','Vũng Tàu')">🏖️ HCM → Vũng Tàu</span>
+                <span class="stag" onclick="quickBook('HCM','Đà Nẵng')">⛵ HCM → Đà Nẵng</span>
+                <span class="stag" onclick="quickBook('HN','Hạ Long')">🏔️ HN → Hạ Long</span>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="hstat"><div class="hstat-num">1,200+</div><div class="hstat-lbl">Chuyến thành công</div></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><div class="hstat-num">100+</div><div class="hstat-lbl">Đối tác xe</div></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><div class="hstat-num">4.9★</div><div class="hstat-lbl">Đánh giá TB</div></div>
+            <div class="hstat-div"></div>
+            <div class="hstat"><div class="hstat-num">24/7</div><div class="hstat-lbl">Hỗ trợ</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- BRANDS -->
+<section class="section-brands">
+    <div class="container">
+        <h3>Đối tác thương hiệu xe uy tín</h3>
+        <div id="brandsRow">
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Toyota_carlogo.svg" alt="Toyota">
+                <span>Toyota</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Honda-logo.svg" alt="Honda">
+                <span>Honda</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/VinFast_logo.svg" alt="VinFast">
+                <span>VinFast</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Hyundai_Motor_Company_logo.svg" alt="Hyundai">
+                <span>Hyundai</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg" alt="Mercedes">
+                <span>Mercedes</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Ford_logo_flat.svg" alt="Ford">
+                <span>Ford</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Kia_logo.svg" alt="Kia">
+                <span>Kia</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Mazda_logo_with_symbol.svg" alt="Mazda">
+                <span>Mazda</span>
+            </div>
+            <div class="brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Mitsubishi_logo.svg" alt="Mitsubishi">
+                <span>Mitsubishi</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section-dark">
+    <div class="container">
+        <div class="sec-header">
+            <h2>Dịch vụ của chúng tôi</h2>
+            <p class="sec-sub">Hai hình thức thuê linh hoạt</p>
+        </div>
+        <div class="services-grid">
+            <div class="svc-card" onclick="location.href='booking.html?type=with_driver'">
+                <div class="svc-icon">🚘</div>
+                <h3>Thuê xe có tài xế</h3>
+                <p>Tài xế chuyên nghiệp, đúng giờ. Bạn chỉ cần ngồi thư giãn tận hưởng chuyến đi.</p>
+                <ul class="svc-list">
+                    <li>✓ Tài xế được xác thực CCCD & GPLX</li>
+                    <li>✓ Theo dõi hành trình realtime</li>
+                    <li>✓ Nhận/trả khách theo yêu cầu</li>
+                    <li>✓ Bảo hiểm đầy đủ</li>
+                </ul>
+                <div class="svc-price">Từ <strong>3.000đ/km</strong></div>
+                <button class="btn btn-gold btn-full" style="margin-top:16px">Đặt ngay</button>
+            </div>
+            <div class="svc-card" onclick="location.href='booking.html?type=self_drive'">
+                <div class="svc-icon">🔑</div>
+                <h3>Thuê xe tự lái</h3>
+                <p>Tự do khám phá theo lịch trình riêng. Xe giao tận nơi, đủ tiện nghi.</p>
+                <ul class="svc-list">
+                    <li>✓ Giao xe tận địa điểm</li>
+                    <li>✓ Định vị xe GPS 24/7</li>
+                    <li>✓ Trả xe linh hoạt</li>
+                    <li>✓ Hỗ trợ cứu hộ 24/7</li>
+                </ul>
+                <div class="svc-price">Từ <strong>900.000đ/ngày</strong></div>
+                <button class="btn btn-outline btn-full" style="margin-top:16px; color:#fff; border-color:rgba(255,255,255,.5)">Đặt ngay</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED CARS -->
+<section class="section-cars">
+    <div class="container">
+        <div class="sec-header">
+            <h2>Xe nổi bật</h2>
+            <a href="cars.html" class="sec-link">Xem tất cả →</a>
+        </div>
+        <div class="cars-grid" id="featuredCars">
+
+            <!-- Card 1 -->
+            <div class="car-card">
+                <div class="car-card__image-wrap">
+                    <img class="car-card__image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/2023_Toyota_Innova_Cross_%28Thailand%29%2C_front_8.22.23.jpg/1280px-2023_Toyota_Innova_Cross_%28Thailand%29%2C_front_8.22.23.jpg" alt="Toyota Innova Cross">
+                </div>
+                <div class="car-card__body">
+                    <p class="car-card__brand">Toyota</p>
+                    <h3 class="car-card__name">Toyota Innova Cross</h3>
+                    <div class="car-card__tags">
+                        <span class="car-tag"><span class="car-tag__icon">👥</span> 7 chỗ</span>
+                        <span class="car-tag"><span class="car-tag__icon">⛽</span> Hybrid</span>
+                        <span class="car-tag"><span class="car-tag__icon">🏷️</span> MPV</span>
+                    </div>
+                    <div class="car-card__divider"></div>
+                    <p class="car-card__price">1.800.000đ<span class="unit">/ngày</span></p>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="car-card">
+                <div class="car-card__image-wrap">
+                    <img class="car-card__image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/cinquième/2023_Honda_CR-V_e%3AHEV_Sport_Line_%28facelift%2C_Europe%29%2C_front_8.12.23.jpg/1280px-2023_Honda_CR-V_e%3AHEV_Sport_Line_%28facelift%2C_Europe%29%2C_front_8.12.23.jpg" alt="Honda CR-V">
+                </div>
+                <div class="car-card__body">
+                    <p class="car-card__brand">Honda</p>
+                    <h3 class="car-card__name">Honda CR-V</h3>
+                    <div class="car-card__tags">
+                        <span class="car-tag"><span class="car-tag__icon">👥</span> 5 chỗ</span>
+                        <span class="car-tag"><span class="car-tag__icon">⛽</span> Xăng</span>
+                        <span class="car-tag"><span class="car-tag__icon">🏷️</span> SUV</span>
+                    </div>
+                    <div class="car-card__divider"></div>
+                    <p class="car-card__price">1.600.000đ<span class="unit">/ngày</span></p>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="car-card">
+                <div class="car-card__image-wrap">
+                    <img class="car-card__image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/VinFast_VF_8_Eco_2023_%28cropped%29.jpg/1280px-VinFast_VF_8_Eco_2023_%28cropped%29.jpg" alt="VinFast VF 8">
+                </div>
+                <div class="car-card__body">
+                    <p class="car-card__brand">VinFast</p>
+                    <h3 class="car-card__name">VinFast VF 8</h3>
+                    <div class="car-card__tags">
+                        <span class="car-tag"><span class="car-tag__icon">👥</span> 5 chỗ</span>
+                        <span class="car-tag"><span class="car-tag__icon">⚡</span> Điện</span>
+                        <span class="car-tag"><span class="car-tag__icon">🏷️</span> SUV</span>
+                    </div>
+                    <div class="car-card__divider"></div>
+                    <p class="car-card__price">1.500.000đ<span class="unit">/ngày</span></p>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="car-card">
+                <div class="car-card__image-wrap">
+                    <img class="car-card__image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/2024_Toyota_Camry_%28XV70%3B_facelift%2C_Australia%29%2C_front_8.19.23.jpg/1280px-2024_Toyota_Camry_%28XV70%3B_facelift%2C_Australia%29%2C_front_8.19.23.jpg" alt="Toyota Camry">
+                </div>
+                <div class="car-card__body">
+                    <p class="car-card__brand">Toyota</p>
+                    <h3 class="car-card__name">Toyota Camry</h3>
+                    <div class="car-card__tags">
+                        <span class="car-tag"><span class="car-tag__icon">👥</span> 5 chỗ</span>
+                        <span class="car-tag"><span class="car-tag__icon">⛽</span> Hybrid</span>
+                        <span class="car-tag"><span class="car-tag__icon">🏷️</span> Sedan</span>
+                    </div>
+                    <div class="car-card__divider"></div>
+                    <p class="car-card__price">2.200.000đ<span class="unit">/ngày</span></p>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="car-card">
+                <div class="car-card__image-wrap">
+                    <img class="car-card__image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/2022_Kia_Carnival_SX_Prestige%2C_front_10.14.21.jpg/1280px-2022_Kia_Carnival_SX_Prestige%2C_front_10.14.21.jpg" alt="Kia Carnival">
+                </div>
+                <div class="car-card__body">
+                    <p class="car-card__brand">Kia</p>
+                    <h3 class="car-card__name">Kia Carnival</h3>
+                    <div class="car-card__tags">
+                        <span class="car-tag"><span class="car-tag__icon">👥</span> 8 chỗ</span>
+                        <span class="car-tag"><span class="car-tag__icon">⛽</span> Xăng</span>
+                        <span class="car-tag"><span class="car-tag__icon">🏷️</span> MPV</span>
+                    </div>
+                    <div class="car-card__divider"></div>
+                    <p class="car-card__price">2.200.000đ<span class="unit">/ngày</span></p>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="car-card">
+                <div class="car-card__image-wrap">
+                    <img class="car-card__image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/2022_Mazda_CX-5_Carbon_Edition_%28US%29%2C_front_9.26.21.jpg/1280px-2022_Mazda_CX-5_Carbon_Edition_%28US%29%2C_front_9.26.21.jpg" alt="Mazda CX-5">
+                </div>
+                <div class="car-card__body">
+                    <p class="car-card__brand">Mazda</p>
+                    <h3 class="car-card__name">Mazda CX-5</h3>
+                    <div class="car-card__tags">
+                        <span class="car-tag"><span class="car-tag__icon">👥</span> 5 chỗ</span>
+                        <span class="car-tag"><span class="car-tag__icon">⛽</span> Xăng</span>
+                        <span class="car-tag"><span class="car-tag__icon">🏷️</span> SUV</span>
+                    </div>
+                    <div class="car-card__divider"></div>
+                    <p class="car-card__price">1.500.000đ<span class="unit">/ngày</span></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- MEMBER PROMO -->
+<section class="section-member">
+    <div class="container">
+        <div class="member-promo">
+            <div class="mp-left">
+                <div class="mp-badge">👑 MEMBER PROGRAM</div>
+                <h2>Tiết kiệm hơn với thành viên</h2>
+                <p>Đăng ký thành viên để nhận ưu đãi độc quyền, mã giảm giá cao hơn và nhiều đặc quyền hấp dẫn.</p>
+                <div class="mp-tiers">
+                    <div class="mpt">🥈 Silver – Giảm 5%</div>
+                    <div class="mpt">🥇 Gold – Giảm 10%</div>
+                    <div class="mpt">💎 Platinum – Giảm 15%</div>
+                    <div class="mpt">💠 Diamond – Giảm 20%</div>
+                </div>
+                <a href="member.html" class="btn btn-gold btn-lg">Khám phá Member</a>
+            </div>
+            <div class="mp-right">
+                <div class="mp-card">
+                    <div class="mpc-tier">GOLD MEMBER</div>
+                    <div class="mpc-name">Nguyễn Trần Minh Tú</div>
+                    <div class="mpc-id">AC · GOLD · 000001</div>
+                    <div class="mpc-stats">
+                        <div><div class="mpc-sv">28</div><div class="mpc-sl">Chuyến đi</div></div>
+                        <div><div class="mpc-sv">2800</div><div class="mpc-sl">Điểm</div></div>
+                        <div><div class="mpc-sv">10%</div><div class="mpc-sl">Ưu đãi</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section-how">
+    <div class="container">
+        <h2 class="how-title">Cách thức hoạt động</h2>
+        <div class="how-steps">
+            <div class="how-step">
+                <div class="how-num">01</div>
+                <div class="how-icon">📋</div>
+                <h3>Chọn xe &amp; tuyến</h3>
+                <p>Chọn loại xe, nhập điểm đón trả và ngày đi. Xem giá ngay.</p>
+            </div>
+            <div class="how-arrow">→</div>
+            <div class="how-step">
+                <div class="how-num">02</div>
+                <div class="how-icon">💳</div>
+                <h3>Thanh toán an toàn</h3>
+                <p>MoMo, VNPay, ZaloPay, Chuyển khoản hoặc tiền mặt khi nhận xe.</p>
+            </div>
+            <div class="how-arrow">→</div>
+            <div class="how-step">
+                <div class="how-num">03</div>
+                <div class="how-icon">📱</div>
+                <h3>Theo dõi hành trình</h3>
+                <p>Nhận thông báo realtime. Theo dõi tài xế trên bản đồ.</p>
+            </div>
+            <div class="how-arrow">→</div>
+            <div class="how-step">
+                <div class="how-num">04</div>
+                <div class="how-icon">⭐</div>
+                <h3>Đánh giá &amp; Tích điểm</h3>
+                <p>Đánh giá tài xế và nhận điểm thưởng đổi ưu đãi.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <div class="nav-logo" style="margin-bottom:14px">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/100px-Toyota_carlogo.svg.png" alt="" style="height:24px;filter:brightness(0) saturate(100%) invert(78%) sepia(42%) saturate(1000%) hue-rotate(5deg)">
+                AUTO CARS
+            </div>
+            <p style="font-size:.82rem;line-height:1.7;color:#94a3b8;max-width:280px">Nền tảng đặt xe du lịch cao cấp hàng đầu Việt Nam. Kết nối hành khách với tài xế chuyên nghiệp.</p>
+        </div>
+        <div>
+            <div class="footer-title">Dịch vụ</div>
+            <a class="footer-link" href="booking.html?type=with_driver">Thuê xe có tài xế</a>
+            <a class="footer-link" href="booking.html?type=self_drive">Thuê xe tự lái</a>
+            <a class="footer-link" href="member.html">Chương trình Member</a>
+            <a class="footer-link" href="cars.html">Danh sách xe</a>
+            <a class="footer-link" href="cars-brand.html">Hãng xe</a>
+        </div>
+        <div>
+            <div class="footer-title">Tài khoản</div>
+            <a class="footer-link" href="auth.html">Đăng nhập</a>
+            <a class="footer-link" href="auth.html?tab=register">Đăng ký</a>
+            <a class="footer-link" href="auth.html?tab=driver">Đăng ký tài xế</a>
+            <a class="footer-link" href="profile.html">Hồ sơ cá nhân</a>
+            <a class="footer-link" href="orders.html">Đơn đặt xe</a>
+        </div>
+        <div>
+            <div class="footer-title">Liên hệ</div>
+            <p style="font-size:.83rem;color:#94a3b8;line-height:2.1">
+                📞 1800-AUTO-CAR<br>
+                ✉️ support@autocars.vn<br>
+                🏢 123 Nguyễn Huệ, Q1, HCM<br>
+                ⏰ 24/7 hỗ trợ
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2025 AUTO CARS. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
