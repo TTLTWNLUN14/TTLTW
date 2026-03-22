@@ -86,3 +86,69 @@ body {
 .btn-login:hover {
     background-color: #1e40af;
 }
+
+.brands-hero {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(to right, #0e1b31, #1e458c);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+
+.brands-hero h1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 34px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.brands-hero p {
+    font-size: 15px;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+}
+
+.brand-filter-tabs {
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    display: flex;
+    gap: 30px;
+}
+
+.bft-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    padding: 10px 0 16px 0;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.bft-btn:hover {
+    color: #ffffff;
+}
+
+.bft-btn.active {
+    color: #f9a01b;
+}
+
+.bft-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #f9a01b;
+    border-radius: 3px 3px 0 0;
+}
