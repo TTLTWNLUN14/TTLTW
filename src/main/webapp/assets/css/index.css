@@ -251,3 +251,204 @@
     width: 1px;
     background: rgba(255,255,255,0.2);
 }
+/* ===== SECTION ===== */
+.section {
+    background: #f8fafc;
+    padding: 48px 0;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 100%;
+    padding: 0 40px;
+    margin: auto;
+}
+
+/* ===== TITLE ===== */
+.section h3 {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #94a3b8;
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+}
+
+/* ===== BRAND ROW (NẰM NGANG 100%) ===== */
+#brandsRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;       /* ❗ không xuống dòng */
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+
+    overflow: hidden;        /* ❗ tránh vỡ layout */
+}
+
+/* ===== BRAND ITEM ===== */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    flex: 0 0 auto;          /* ❗ giữ kích thước */
+    opacity: 0.6;
+
+    transition: 0.3s;
+}
+
+/* ===== LOGO ===== */
+.brand img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    filter: grayscale(100%);
+}
+
+/* ===== TEXT ===== */
+.brand span {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* ===== HOVER NHẸ ===== */
+.brand:hover {
+    opacity: 1;
+}
+
+.brand:hover img {
+    filter: grayscale(0%);
+}
+
+.brand:hover span {
+    color: #64748b;
+}
+/* ===== SECTION DARK ===== */
+.section-dark {
+    background: #0b1e3c;
+    padding: 80px 0;
+}
+
+/* HEADER */
+.sec-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.sec-header h2 {
+    font-size: 32px;
+    color: #fff;
+}
+
+.sec-sub {
+    font-size: 14px;
+}
+
+/* GRID */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+/* CARD */
+.svc-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 30px;
+    color: #e2e8f0;
+
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* HOVER CARD */
+.svc-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+/* ICON */
+.svc-icon {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+/* TITLE */
+.svc-card h3 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+/* DESC */
+.svc-card p {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin-bottom: 15px;
+}
+
+/* LIST */
+.svc-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+.svc-list li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+/* PRICE */
+.svc-price {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.svc-price strong {
+    color: #f59e0b;
+    font-size: 18px;
+}
+
+/* BUTTON */
+.btn-full {
+    width: 100%;
+}
+
+/* GOLD BUTTON */
+.btn-gold {
+    background: linear-gradient(135deg, #f59e0b, #facc15);
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(245,158,11,0.4);
+}
+
+/* OUTLINE BUTTON */
+.btn-outline {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    transition: 0.25s;
+}
+
+.btn-outline:hover {
+    background: rgba(255,255,255,0.1);
+}
