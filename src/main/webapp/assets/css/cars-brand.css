@@ -152,3 +152,115 @@ body {
     background-color: #f9a01b;
     border-radius: 3px 3px 0 0;
 }
+body {
+    background-color: #f4f7fb;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.brands-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.brands-header {
+    margin-bottom: 20px;
+    color: #64748b;
+    font-size: 15px;
+}
+
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.brand-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    border: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.brand-card:hover,
+.brand-card.active {
+    border-color: #f7b731;
+    box-shadow: 0 6px 15px rgba(247, 183, 49, 0.15);
+}
+
+.card-top {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.brand-name {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 22px;
+    color: #0b1a30;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.brand-country {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.card-middle {
+    padding: 20px 0;
+}
+
+.brand-desc {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.card-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.stat-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-item:not(:last-child) {
+    border-right: 1px solid #e2e8f0;
+}
+
+.stat-value {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #0b1a30;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: capitalize;
+}
+
+@media (max-width: 992px) {
+    .brands-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .brands-grid {
+        grid-template-columns: 1fr;
+    }
+}
