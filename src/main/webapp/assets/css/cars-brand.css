@@ -264,27 +264,24 @@ body {
         grid-template-columns: 1fr;
     }
 }
-/* --- Lớp phủ ngoài cùng (Overlay) --- */
 .modal-overlay {
-    display: none; /* Ẩn đi mặc định, JS sẽ đổi thành 'flex' để hiện */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(11, 26, 48, 0.6); /* Nền tối mờ */
+    background-color: rgba(11, 26, 48, 0.6);
     z-index: 1000;
     align-items: center;
     justify-content: center;
     padding: 20px;
 }
 
-/* Thêm class này bằng JS để hiển thị modal */
 .modal-overlay.show {
     display: flex;
 }
 
-/* --- Hộp Modal --- */
 .modal-content {
     background: #ffffff;
     width: 100%;
@@ -292,11 +289,10 @@ body {
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    max-height: 90vh; /* Không vượt quá 90% chiều cao màn hình */
-    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-/* --- Header Modal --- */
 .modal-header {
     display: flex;
     justify-content: space-between;
