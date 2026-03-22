@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - Auto Cars</title>
+    <link rel="stylesheet" href="../css/payment.css">
+</head>
+<body>
+
+<nav class="global-nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="index.html">AUTO CARS</a>
+        <div class="nav-links">
+            <a class="nav-link" href="index.html">Trang chủ</a>
+            <a class="nav-link" href="cars.html">Xe</a>
+            <a class="nav-link" href="cars-brand.html">Hãng xe</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+        </div>
+        <div class="nav-actions" id="navActions">
+            <a href="#" class="btn-login">Đăng nhập</a>
+        </div>
+    </div>
+</nav>
+
+<main class="payment-page">
+    <div class="checkout-container">
+
+        <div class="checkout-header">
+            <span class="icon-minus"></span>
+            <h2>Thanh toán</h2>
+        </div>
+
+        <div class="checkout-spacer">
+        </div>
+
+        <div class="payment-methods-section">
+            <h3 class="section-title">PHƯƠNG THỨC THANH TOÁN</h3>
+
+            <div class="payment-grid">
+                <label class="payment-card active">
+                    <input type="radio" name="payment_method" value="momo" checked>
+                    <div class="payment-icon momo-icon"></div>
+                    <span class="payment-name">MoMo</span>
+                </label>
+
+                <label class="payment-card">
+                    <input type="radio" name="payment_method" value="vnpay">
+                    <div class="payment-icon vnpay-icon"></div>
+                    <span class="payment-name">VNPay</span>
+                </label>
+
+                <label class="payment-card">
+                    <input type="radio" name="payment_method" value="zalopay">
+                    <div class="payment-icon zalopay-icon"></div>
+                    <span class="payment-name">ZaloPay</span>
+                </label>
+
+                <label class="payment-card">
+                    <input type="radio" name="payment_method" value="bank">
+                    <div class="payment-icon bank-icon">🏦</div>
+                    <span class="payment-name">Ngân hàng</span>
+                </label>
+
+                <label class="payment-card">
+                    <input type="radio" name="payment_method" value="cash">
+                    <div class="payment-icon cash-icon">💵</div>
+                    <span class="payment-name">Tiền mặt</span>
+                </label>
+            </div>
+
+            <div class="terms-group">
+                <input type="checkbox" id="agree-terms">
+                <label for="agree-terms">Tôi đồng ý với <a href="#">điều khoản dịch vụ</a> và <a href="#">chính sách thuê xe</a></label>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-back">&#8592; Quay lại</button>
+                <button class="btn-submit">Đặt xe ngay &#8594;</button>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script src="payment.js"></script>
+</body>
+</html>
