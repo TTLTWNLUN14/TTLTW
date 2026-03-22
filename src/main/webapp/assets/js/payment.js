@@ -17,4 +17,19 @@ document.addEventListener("DOMContentLoaded", function() {
             if(discountInput) discountInput.value = codeName;
         });
     });
+    const btnApply = document.querySelector('.btn-apply');
+    const summaryDiscount = document.getElementById('summary-discount');
+    const finalPrice = document.getElementById('final-price');
+
+    if(btnApply) {
+        btnApply.addEventListener('click', function() {
+            if(discountInput.value.trim() !== "") {
+                summaryDiscount.style.display = "flex";
+                finalPrice.innerText = "844.800đ";
+                alert("Đã áp dụng mã giảm giá thành công!");
+            } else {
+                alert("Vui lòng chọn một mã giảm giá trước.");
+            }
+        });
+    }
 });
