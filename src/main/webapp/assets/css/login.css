@@ -1,4 +1,4 @@
-/* ===== RESET & BASE ===== */
+
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -13,7 +13,7 @@ body {
     flex-direction: column;
 }
 
-/* ===== NAVBAR ===== */
+
 .navbar {
     background-color: #0d1b2e;
     width: 100%;
@@ -61,7 +61,7 @@ body {
     color: #ffffff;
 }
 
-/* ===== LOGIN WRAP ===== */
+
 .login-wrap {
     flex: 1;
     display: flex;
@@ -70,7 +70,7 @@ body {
     padding: 40px 16px;
 }
 
-/* ===== LOGIN BOX ===== */
+
 .login-box {
     background: #ffffff;
     border-radius: 20px;
@@ -105,7 +105,7 @@ body {
     font-weight: 400;
 }
 
-/* ===== TABS ===== */
+
 .tabs {
     display: flex;
     border-bottom: 1.5px solid #e2e8f0;
@@ -149,7 +149,7 @@ body {
     color: #2563c4;
 }
 
-/* ===== FORM PANEL – chuyển tab có animation ===== */
+
 .form-panel {
     display: block;
     opacity: 0;
@@ -167,7 +167,7 @@ body {
     max-height: 600px;
 }
 
-/* ===== FORM GROUPS ===== */
+
 .form-group {
     margin-bottom: 18px;
 }
@@ -203,7 +203,7 @@ body {
     box-shadow: 0 0 0 3px rgba(37, 99, 196, 0.12);
 }
 
-/* ===== BUTTON ===== */
+
 .btn {
     display: inline-block;
     padding: 13px 20px;
@@ -231,7 +231,7 @@ body {
     transform: scale(0.98);
 }
 
-/* ===== FORM ROW (2 columns) ===== */
+
 .form-row {
     display: flex;
     gap: 14px;
@@ -241,7 +241,7 @@ body {
     flex: 1;
 }
 
-/* ===== GOLD BUTTON (Tạo tài khoản) ===== */
+
 .btn-gold {
     background: #f5a623;
     color: #ffffff;
@@ -256,8 +256,7 @@ body {
     transform: scale(0.98);
 }
 
-/* ===== REGISTER TAB ACTIVE STATE ===== */
-/* When register tab is active, use bordered pill style instead of underline */
+
 #tRegister.active {
     color: #1a3a6b;
     border: 2px solid #1a3a6b;
@@ -269,7 +268,7 @@ body {
     display: none;
 }
 
-/* ===== FORGOT LINK ===== */
+
 .forgot-link {
     text-align: center;
     margin-top: 18px;
