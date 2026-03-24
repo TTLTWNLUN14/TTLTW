@@ -90,6 +90,7 @@ body {
 
 .hero {
     display: flex;
+    gap: 36px;
     align-items: center;
     justify-content: center;
     background: #ffffff;
@@ -132,13 +133,12 @@ body {
     margin-bottom: 32px;
 }
 
-.search-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 14px;
+.nav-links a:hover {
+    color: #ffffff;
 }
 
-.search-field {
+/* ===== LOGIN WRAP ===== */
+.login-wrap {
     flex: 1;
     display: flex;
     align-items: center;
@@ -187,8 +187,7 @@ body {
 .hero-stats {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    align-items: center;
+    padding: 40px 16px;
 }
 
 .hstat {
@@ -398,7 +397,8 @@ body {
     padding: 64px 0;
 }
 
-.sec-header {
+/* ===== TABS ===== */
+.tabs {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -455,7 +455,11 @@ body {
     justify-content: center;
 }
 
-.car-card__image {
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1.5px;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -519,10 +523,8 @@ body {
     letter-spacing: -0.3px;
 }
 
-.car-card__price .unit {
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: #94a3b8;
+.tab-btn:hover:not(.active) {
+    color: #2563c4;
 }
 
 .section-member {
@@ -530,11 +532,8 @@ body {
     padding: 80px 0;
 }
 
-.member-promo {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 60px;
-    align-items: center;
+.form-panel.show {
+    display: block;
 }
 
 .mp-left {
@@ -704,14 +703,13 @@ body {
     margin-bottom: 70px;
 }
 
-.how-steps {
+/* ===== FORM ROW (2 columns) ===== */
+.form-row {
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
+    gap: 14px;
 }
 
-.how-step {
+.form-row .form-group {
     flex: 1;
     max-width: 220px;
     text-align: center;
@@ -756,13 +754,13 @@ body {
     padding: 60px 0 0;
 }
 
-.footer-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-    display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr 1fr;
-    gap: 48px;
+/* ===== REGISTER TAB ACTIVE STATE ===== */
+/* When register tab is active, use bordered pill style instead of underline */
+#tRegister.active {
+    color: #1a3a6b;
+    border: 2px solid #1a3a6b;
+    border-radius: 8px;
+    padding: 8px 16px 10px;
 }
 
 .footer-grid > div:first-child .nav-logo {
@@ -803,8 +801,9 @@ body {
     padding: 20px 40px;
     border-top: 1px solid rgba(255,255,255,0.07);
     text-align: center;
-    font-size: 0.82rem;
-    color: #475569;
+    margin-top: 18px;
+    font-size: 0.87rem;
+    color: #6b7a99;
 }
 
 @media (max-width: 1024px) {
