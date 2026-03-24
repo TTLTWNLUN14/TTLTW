@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đặt xe</title>
+  <link rel="stylesheet" href="../css/shopping-cart.css">
+</head>
+<body>
+<nav class="global-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">AUTO CARS</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Trang chủ</a>
+      <a class="nav-link" href="cars.html">Xe</a>
+      <a class="nav-link" href="cars-brand.html">Hãng xe</a>
+      <a class="nav-link" href="booking.html">Đặt xe</a>
+      <a class="nav-link active" href="shopping-cart.html">Giỏ hàng</a>
+    </div>
+    <div class="nav-actions" id="navActions">
+      <a href="#" class="btn-login">Đăng nhập</a>
+      <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="left-panel">
+    <div class="tabs">
+      <div class="tab active">Lịch sử đơn</div>
+      <div class="tab">Chờ thanh toán</div>
+      <div class="tab">Đang xử lý</div>
+    </div>
+
+    <div class="order-list">
+      <div class="order-card">
+        <input type="checkbox" class="order-checkbox" checked>
+        <div class="order-info">
+          <h4>Toyota Vios - Hãng: Toyota</h4>
+          <p>Thời gian đi: 08:00 - 25/03/2026</p>
+          <p>Thời gian về: 08:00 - 27/03/2026</p>
+          <p><span class="highlight-text">Giá 1 đơn:</span> 800.000 VNĐ</p>
+          <p><span class="highlight-text">Số lượng:</span> 2 xe</p>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <input type="checkbox" class="order-checkbox" checked>
+        <div class="order-info">
+          <h4>Honda CR-V - Hãng: Honda</h4>
+          <p>Thời gian đi: 10:00 - 28/03/2026</p>
+          <p>Thời gian về: 20:00 - 29/03/2026</p>
+          <p><span class="highlight-text">Giá 1 đơn:</span> 1.200.000 VNĐ</p>
+          <p><span class="highlight-text">Số lượng:</span> 1 xe</p>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <input type="checkbox" class="order-checkbox">
+        <div class="order-info">
+          <h4>Ford Ranger - Hãng: Ford</h4>
+          <p>Thời gian đi: 07:00 - 01/04/2026</p>
+          <p>Thời gian về: 18:00 - 02/04/2026</p>
+          <p><span class="highlight-text">Giá 1 đơn:</span> 1.000.000 VNĐ</p>
+          <p><span class="highlight-text">Số lượng:</span> 3 xe</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <h3>Thanh toán</h3>
+
+    <div class="summary-list">
+      <div class="summary-item">
+        • Toyota Vios (800.000đ x 2)
+      </div>
+      <div class="summary-item">
+        • Honda CR-V (1.200.000đ x 1)
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="total-price">
+      <span>Tổng tiền:</span>
+      <span>2.800.000 VNĐ</span>
+    </div>
+
+    <a class="btn-payment" href="info-booking.html">
+      Thanh toán
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

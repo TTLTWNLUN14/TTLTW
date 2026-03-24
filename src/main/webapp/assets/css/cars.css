@@ -413,3 +413,6 @@ body {
     .cars-grid { grid-template-columns: 1fr; }
     .car-actions { flex-direction: column; }
 }
+a {
+    text-decoration: none;
+}
