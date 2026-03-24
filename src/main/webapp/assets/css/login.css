@@ -149,13 +149,22 @@ body {
     color: #2563c4;
 }
 
-/* ===== FORM PANEL ===== */
+/* ===== FORM PANEL – chuyển tab có animation ===== */
 .form-panel {
-    display: none;
+    display: block;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.35s ease;
 }
 
 .form-panel.show {
-    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    max-height: 600px;
 }
 
 /* ===== FORM GROUPS ===== */
