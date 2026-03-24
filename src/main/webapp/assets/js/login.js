@@ -29,14 +29,18 @@ function doRegister() {
 }
 
 function doForgot() {
-  if (!document.getElementById('fEmail').value.trim()) { toast('Nhập email!', 'err'); return; }
+  const email = document.getElementById('fEmail');
+  if (!email || !email.value.trim()) {
+    toast('Nhập email!', 'err');
+    return;
+  }
   toast('Mã khôi phục đã gửi vào email của bạn.');
-  setTab('reset');
+  setTimeout(() => setTab('reset'), 800);
 }
 
 function doReset() {
   toast('Mật khẩu đã được cập nhật!');
-  setTimeout(() => setTab('login'), 1200);
+  setTimeout(() => setTab('login'), 1000);
 }
 
 function toast(msg,type='ok'){
