@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý đặt xe - Auto Cars Admin</title>
+  <link rel="stylesheet" href="../css/booking-admin.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">Auto Cars Admin</div>
+
+  <div class="menu-title">TỔNG QUAN</div>
+  <a href="dashboard-admin.html" class="menu-item">Dashboard</a>
+
+  <div class="menu-title">VẬN HÀNH</div>
+  <a href="#" class="menu-item active">Quản lý đặt xe</a>
+  <a href="#" class="menu-item">Quản lý thanh toán</a>
+
+  <div class="menu-title">DANH MỤC</div>
+  <a href="cars-brand-admin.html" class="menu-item">Hãng xe</a>
+  <a href="cars-admin.html" class="menu-item">Loại xe</a>
+  <a href="#" class="menu-item">Mã giảm giá</a>
+
+  <div class="menu-title">KHÁCH HÀNG</div>
+  <a href="#" class="menu-item">Khách hàng</a>
+  <a href="#" class="menu-item">Đánh giá</a>
+  <a href="#" class="menu-item">Member</a>
+
+  <div class="menu-title">CÀI ĐẶT</div>
+  <a href="#" class="menu-item">Quản lý giá cước</a>
+  <a href="#" class="menu-item">Cài đặt hệ thống</a>
+</div>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1 class="page-title">Quản lý đặt xe</h1>
+  </div>
+
+  <div class="table-container">
+    <table class="custom-table">
+      <thead>
+      <tr>
+        <th>Mã đơn</th>
+        <th>Khách hàng</th>
+        <th>Tài xế</th>
+        <th>Xe</th>
+        <th>Tuyến đường</th>
+        <th>Ngày đi</th>
+        <th>Loại</th>
+        <th>Trạng thái</th>
+        <th>Tổng tiền</th>
+        <th>Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="text-orange">#AC-0001</td>
+        <td>Trần Minh Tú</td>
+        <td>Nguyễn Văn An</td>
+        <td>Toyota Innova Cross</td>
+        <td>Q1, HCM &rarr; Đà Lạt</td>
+        <td>10/03/2025</td>
+        <td>Có tài</td>
+        <td><span class="status-badge bg-completed">Hoàn thành</span></td>
+        <td class="text-orange">1.395.000đ</td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-orange">#AC-0002</td>
+        <td>Lê Thị Mai</td>
+        <td>Trần Văn Bình</td>
+        <td>Toyota Raize</td>
+        <td>Q7, HCM &rarr; Vũng Tàu</td>
+        <td>18/03/2025</td>
+        <td>Có tài</td>
+        <td><span class="status-badge bg-completed">Hoàn thành</span></td>
+        <td class="text-orange">456.000đ</td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-orange">#AC-0003</td>
+        <td>Trần Minh Tú</td>
+        <td>&mdash;</td>
+        <td>VinFast VF 8</td>
+        <td>Q3, HCM &rarr; Q3, HCM</td>
+        <td>20/03/2025</td>
+        <td>Tự lái</td>
+        <td><span class="status-badge bg-completed">Hoàn thành</span></td>
+        <td class="text-orange">4.500.000đ</td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-orange">#AC-0004</td>
+        <td>Phạm Minh Khoa</td>
+        <td>&mdash;</td>
+        <td>Hyundai Grand i10</td>
+        <td>Hoàn Kiếm, HN &rarr; Hoàn Kiếm...</td>
+        <td>22/03/2025</td>
+        <td>Tự lái</td>
+        <td><span class="status-badge bg-confirmed">Đã xác nhận</span></td>
+        <td class="text-orange">1.800.000đ</td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-approve" title="Xác nhận">&#10003;</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-orange">#AC-0005</td>
+        <td>Trần Minh Tú</td>
+        <td>Nguyễn Văn An</td>
+        <td>Toyota Camry</td>
+        <td>Q1, HCM &rarr; Đà Nẵng</td>
+        <td>25/03/2025</td>
+        <td>Có tài</td>
+        <td><span class="status-badge bg-ongoing">Đang đi</span></td>
+        <td class="text-orange">5.828.000đ</td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-reject" title="Hủy">&#10005;</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-orange">#AC-0006</td>
+        <td>Nguyễn Tuấn Kiệt</td>
+        <td>Trần Văn Bình</td>
+        <td>Mercedes S500</td>
+        <td>Bình Thạnh, HCM &rarr; Vũng T...</td>
+        <td>26/03/2025</td>
+        <td>Có tài</td>
+        <td><span class="status-badge bg-driver-acc">Tài xế nhận</span></td>
+        <td class="text-orange">1.500.000đ</td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-reject" title="Hủy">&#10005;</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-orange">#AC-0007</td>
+        <td>Lê Thị Mai</td>
+        <td>&mdash;</td>
+        <td>Honda CR-V</td>
+        <td>Thủ Đức, HCM &rarr; Thủ Đức,...</td>
+        <td>27/03/2025</td>
+        <td>Tự lái</td>
+        <td><span class="status-badge bg-pending">Chờ xác nhận</span></td>
+        <td class="text-orange">1.600.000đ</td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-approve" title="Xác nhận">&#10003;</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
