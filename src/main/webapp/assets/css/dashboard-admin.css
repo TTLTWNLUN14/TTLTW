@@ -171,3 +171,6 @@ body {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .bottom-grid { grid-template-columns: 1fr; }
 }
+a {
+    text-decoration: none;
+}
