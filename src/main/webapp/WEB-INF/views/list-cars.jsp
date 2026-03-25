@@ -116,7 +116,7 @@
                                         <div>VNĐ/KM</div>
                                     </div>
                                     <div class="price-col right-align">
-                                        <div class="main-price">${p.priceDriver}</div>
+                                        <div class="main-price">${p.priceDay}</div>
                                         <div>VNĐ/Ngày</div>
                                     </div>
                                 </div>

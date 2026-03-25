@@ -6,17 +6,17 @@ public class Product implements Serializable {
     private int id ;
     private String name ;
     private int priceKm ;
-    private int priceDriver ;
+    private int priceDay ;
     private String image;
 
     public Product() {
     }
 
-    public Product(int id, String name, int priceKm, int priceDriver, String image) {
+    public Product(int id, String name, int priceKm, int priceDay, String image) {
         this.id = id;
         this.name = name;
         this.priceKm = priceKm;
-        this.priceDriver = priceDriver;
+        this.priceDay = priceDay;
         this.image = image;
     }
 
@@ -36,7 +36,7 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public double getPriceKm() {
+    public int getPriceKm() {
         return priceKm;
     }
 
@@ -44,12 +44,12 @@ public class Product implements Serializable {
         this.priceKm = priceKm;
     }
 
-    public double getPriceDriver() {
-        return priceDriver;
+    public int getPriceDay() {
+        return priceDay;
     }
 
-    public void setPriceDriver(int priceDriver) {
-        this.priceDriver = priceDriver;
+    public void setPriceDay(int priceDay) {
+        this.priceDay = priceDay;
     }
 
 

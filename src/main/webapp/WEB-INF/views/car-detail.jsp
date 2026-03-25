@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Chi tiết xe - Auto Cars</title>
-    <link rel="stylesheet" href="../../assets/css/list-cars.css">
-    <link rel="stylesheet" href="../../assets/css/car-detail.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/list-cars.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/car-detail.css">
 </head>
 <body>
 <nav class="global-nav">
@@ -12,7 +12,7 @@
         <a class="nav-logo" href="../../assets/html/index.html">AUTO CARS</a>
         <div class="nav-links">
             <a class="nav-link" href="../../assets/html/index.html">Trang chủ</a>
-            <a class="nav-link active" href="../../assets/html/list-cars.html">Xe</a>
+            <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
             <a class="nav-link" href="../../assets/html/cars-brand.html">Hãng xe</a>
             <a class="nav-link" href="../../assets/html/booking.html">Đặt xe</a>
             <a class="nav-link" href="../../assets/html/shopping-cart.html">Giỏ hàng</a>
@@ -29,7 +29,7 @@
 
         <ul class="breadcrumb">
             <li><a href="../../assets/html/index.html">Trang chủ</a></li>
-            <li><a href="../../assets/html/list-cars.html">Xe</a></li>
+            <li><a href="${pageContext.request.contextPath}/list-product">Xe</a></li>
             <li>Ford Ranger</li>
         </ul>
 
@@ -38,6 +38,7 @@
                 <div class="cd-gallery">
                     <div class="cd-main-img">
                         <span class="badge-stock">3 xe có sẵn</span>
+                        <img height="400px" src="${product.image}" alt="">
                     </div>
                     <div class="cd-thumb-list">
                         <div class="cd-thumb active"></div>
@@ -89,16 +90,16 @@
             <div class="cd-right">
                 <div class="cd-booking-card">
                     <div class="car-brand">FORD</div>
-                    <h1 class="cd-car-name">Ford Ranger</h1>
+                    <h1 class="cd-car-name">${product.name}</h1>
 
                     <div class="cd-price-wrap">
                         <div class="cd-price-item">
-                            <span class="cd-price-val">1.600.000đ</span>
-                            <span class="cd-price-unit">/ngày</span>
+                            <span class="cd-price-val">${product.priceDay}</span>
+                            <span class="cd-price-unit">đ/ngày</span>
                         </div>
                         <div class="cd-price-item">
-                            <span class="cd-price-val">4.200đ</span>
-                            <span class="cd-price-unit">/km</span>
+                            <span class="cd-price-val">${product.priceKm}</span>
+                            <span class="cd-price-unit">đ/km</span>
                         </div>
                     </div>
 

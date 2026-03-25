@@ -12,7 +12,11 @@ import java.io.IOException;
 public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        int id = Integer.parseInt(request.getParameter("id"));
+        ProductService service = new ProductService();
+        Product p = service.getProduct(id);
+        request.setAttribute("product", p);
+        request.getRequestDispatcher("/WEB-INF/views/car-detail.jsp").forward(request, response);
     }
 
     @Override
