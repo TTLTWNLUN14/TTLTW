@@ -15,7 +15,7 @@
             <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/cars-brand.html">Hãng xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/booking.html">Đặt xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/shopping-cart.html">Giỏ hàng</a>
+            <a class="nav-link" href="my-shopping-cart">Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})</a>
         </div>
         <div class="nav-actions" id="navActions">
             <a href="#" class="btn-login">Đăng nhập</a>
@@ -119,6 +119,13 @@
                                         <div class="main-price">${p.priceDay}</div>
                                         <div>VNĐ/Ngày</div>
                                     </div>
+                                </div>
+
+                                <div class="car-action" style="margin-top: 15px; text-align: center;">
+                                    <a href="add-cart?productId=${p.id}&quantity=1&isDriver=true"
+                                       style="display: block; padding: 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                        Thêm vào giỏ hàng
+                                    </a>
                                 </div>
                             </div>
                         </div>

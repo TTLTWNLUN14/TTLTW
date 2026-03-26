@@ -15,7 +15,7 @@
             <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
             <a class="nav-link" href="../../assets/html/cars-brand.html">Hãng xe</a>
             <a class="nav-link" href="../../assets/html/booking.html">Đặt xe</a>
-            <a class="nav-link" href="../../assets/html/shopping-cart.html">Giỏ hàng</a>
+            <a class="nav-link" href="shopping-cart.jsp">Giỏ hàng</a>
         </div>
         <div class="nav-actions" id="navActions">
             <a href="#" class="btn-login">Đăng nhập</a>
@@ -106,11 +106,25 @@
                     <div class="cd-form">
                         <div class="form-group">
                             <label>Hình thức thuê</label>
-                            <select class="form-control">
-                                <option>Tự lái</option>
-                                <option>Có tài xế</option>
-                            </select>
+                            <div style="display: flex; gap: 20px; margin-top: 8px;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="rentalType" value="self_drive" checked> Tự lái (Chỉ thuê xe)
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="rentalType" value="with_driver"> Có tài xế
+                                </label>
+                            </div>
                         </div>
+
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Số lượng xe</label>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
+                                <button type="button" onclick="this.nextElementSibling.stepDown()" style="width: 35px; height: 35px; border: 1px solid #ccc; background: #fff; cursor: pointer;">-</button>
+                                <input type="number" name="quantity" min="1" value="1" style="width: 60px; height: 35px; text-align: center; border: 1px solid #ccc; border-radius: 4px;">
+                                <button type="button" onclick="this.previousElementSibling.stepUp()" style="width: 35px; height: 35px; border: 1px solid #ccc; background: #fff; cursor: pointer;">+</button>
+                            </div>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Ngày nhận xe</label>
@@ -132,7 +146,7 @@
                         <span class="total-price">1.600.000đ</span>
                     </div>
 
-                    <button class="btn-primary w-100"><a href="../../assets/html/booking.html">Đặt xe ngay</a>   </button>
+                    <button class="btn-primary w-100"><a href="../../assets/html/booking.html">Đặt xe ngay</a></button>
                     <button class="btn-outline w-100 mt-10">Liên hệ tư vấn</button>
                 </div>
             </div>
