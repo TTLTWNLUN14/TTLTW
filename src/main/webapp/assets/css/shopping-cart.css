@@ -220,3 +220,84 @@ hr {
 .btn-payment:hover {
     background-color: #153e7f;
 }
+ .qty-btn {
+     width: 28px; height: 28px;
+     border: 1px solid #ccc;
+     background: #f5f5f5;
+     cursor: pointer;
+     font-size: 16px;
+     border-radius: 4px;
+     line-height: 1;
+ }
+.qty-btn:hover { background: #ddd; }
+.qty-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.qty-display { min-width: 28px; text-align: center; font-weight: bold; }
+
+.card-actions { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+
+.btn-delete {
+    padding: 5px 14px;
+    background: #e74c3c; color: white;
+    border: none; border-radius: 4px; cursor: pointer; font-size: 13px;
+}
+.btn-delete:hover { background: #c0392b; }
+
+.btn-pay-item {
+    padding: 5px 14px;
+    background: #1a4fa0; color: white;
+    border: none; border-radius: 4px; cursor: pointer; font-size: 13px;
+}
+.btn-pay-item:hover { background: #163d80; }
+
+.btn-detail {
+    padding: 5px 14px;
+    background: #fff; color: #1a4fa0;
+    border: 1px solid #1a4fa0; border-radius: 4px;
+    cursor: pointer; font-size: 13px;
+}
+.btn-detail:hover { background: #eef3fc; }
+
+.detail-panel {
+    display: none;
+    margin-top: 14px;
+    padding: 16px;
+    background: #f8f9fc;
+    border: 1px solid #dce3f0;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.detail-panel.open { display: block; }
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 30px;
+}
+.detail-section-title {
+    grid-column: 1 / -1;
+    font-weight: 700;
+    color: #1a4fa0;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #dce3f0;
+    padding-bottom: 4px;
+}
+.detail-section-title:first-child { margin-top: 0; }
+
+.detail-field label {
+    font-size: 12px;
+    color: #888;
+    display: block;
+    margin-bottom: 2px;
+}
+.detail-field input[type="text"],
+.detail-field input[type="email"],
+.detail-field input[type="tel"],
+.detail-field input[type="datetime-local"] {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    box-sizing: border-box;
+}
