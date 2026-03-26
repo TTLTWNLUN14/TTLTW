@@ -8,6 +8,7 @@ public class Product implements Serializable {
     private int priceKm ;
     private int priceDay ;
     private String image;
+    private boolean status;
 
     public Product() {
     }
