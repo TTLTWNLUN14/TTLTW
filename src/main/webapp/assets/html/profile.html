@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Hồ sơ cá nhân – AUTO CARS</title>
+    <link rel="stylesheet" href="../css/profile.css">
+
+</head>
+<body>
+<div id="toastC" class="toast-container"></div>
+<nav class="global-nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="../index.html">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/100px-Toyota_carlogo.svg.png" alt="">
+            AUTO CARS
+        </a>
+        <div class="nav-links">
+            <a class="nav-link" href="../index.html">Trang chủ</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+            <a class="nav-link" href="orders.html">Đơn của tôi</a>
+            <a class="nav-link active" href="profile.html">Hồ sơ</a>
+        </div>
+        <div class="nav-actions">
+            <button class="btn btn-danger btn-sm" onclick="logout()">Đăng xuất</button>
+        </div>
+    </div>
+</nav>
+
+<div class="page-main"><div class="page-wrap">
+    <div class="profile-layout">
+
+        <div class="profile-sidebar">
+            <div class="ps-avatar-card">
+                <div class="ps-avatar" id="psAvatar" onclick="document.getElementById('avatarUpload').click()">
+                    <span id="psAvatarText">MT</span>
+                    <img id="psAvatarImg" src="" alt="" style="display:none">
+                    <div class="ps-avatar-edit">  Đổi ảnh</div>
+                </div>
+                <input type="file" id="avatarUpload" accept="image/*" class="avatar-upload" onchange="uploadAvatar(this)">
+
+                <button class="btn btn-outline btn-full btn-sm" onclick="switchTab('edit')">  Chỉnh sửa</button>
+            </div>
+            <div class="card" style="padding:8px">
+                <div class="ps-nav-item active" onclick="switchTab('info')" id="nav-info">  Thông tin cá nhân</div>
+                <div class="ps-nav-item" onclick="switchTab('history')" id="nav-history">  Lịch sử đặt xe</div>
+                <div class="ps-nav-item" onclick="switchTab('notif')" id="nav-notif">
+                      Thông báo <span id="unreadBadge" style="display:none;background:var(--red);border-radius:10px;padding:1px 7px;font-size:.68rem;color:#fff;margin-left:auto"></span>
+                </div>
+                <div class="ps-nav-item" onclick="switchTab('reviews')" id="nav-reviews">  Lịch sử đánh giá</div>
+                <div class="ps-nav-item" onclick="switchTab('face')" id="nav-face">  Xác thực khuôn mặt</div>
+                <div class="ps-nav-item" onclick="switchTab('security')" id="nav-security">  Bảo mật</div>
+                <div class="ps-nav-item" onclick="switchTab('settings')" id="nav-settings">  Cài đặt</div>
+                <div class="ps-nav-item" onclick="switchTab('driver-register')" id="nav-driver-register" style="color:var(--gold)">  Đăng ký tài xế</div>
+                <div class="ps-nav-item" onclick="logout()" style="color:var(--danger)" href="login.html"> Đăng xuất</div>
+            </div>
+        </div>
+
+        
+        <div class="profile-content">
+
+            
+            <div class="tab-pane active card" id="tab-info">
+                <div class="card-header"><div class="card-title">  Thông tin cá nhân</div></div>
+                <div class="card-body">
+                    <div class="stats-mini" id="statsMini"></div>
+                    <div id="infoRows"></div>
+                    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+                        <a href="member.html" class="btn btn-outline btn-sm">  Member</a>
+                        <a href="orders.html" class="btn btn-ghost btn-sm">  Đơn của tôi</a>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="tab-pane card" id="tab-edit">
+                <div class="card-header"><div class="card-title">  Chỉnh sửa thông tin</div></div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Họ và tên</label><input class="form-control" id="editName"></div>
+                        <div class="form-group"><label class="form-label">Số điện thoại</label><input class="form-control" id="editPhone"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Email</label><input class="form-control" id="editEmail" type="email"></div>
+                        <div class="form-group"><label class="form-label">Ngày sinh</label><input class="form-control" id="editDob" type="date"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Giới tính</label>
+                            <select class="form-control" id="editGender">
+                                <option value="male">Nam</option><option value="female">Nữ</option><option value="other">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label class="form-label">Địa chỉ</label><input class="form-control" id="editAddress"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Số CCCD/CMND</label>
+                        <input class="form-control" id="editCccd" placeholder="12 chữ số">
+                    </div>
+                    <div style="display:flex;gap:10px">
+                        <button class="btn btn-primary" onclick="saveProfile()">  Lưu thay đổi</button>
+                        <button class="btn btn-ghost" onclick="switchTab('info')">Hủy</button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="tab-pane card" id="tab-history">
+                <div class="card-header"><div class="card-title">  Lịch sử đặt xe</div></div>
+                <div class="card-body" id="historyBody">Đang tải...</div>
+            </div>
+
+           
+            <div class="tab-pane card" id="tab-notif">
+                <div class="card-header">
+                    <div class="card-title">  Thông báo</div>
+                    <button class="btn btn-ghost btn-sm" onclick="markAllRead()">Đọc tất cả</button>
+                </div>
+                <div class="card-body" id="notifList"></div>
+            </div>
+
+           
+            <div class="tab-pane card" id="tab-reviews">
+                <div class="card-header"><div class="card-title">  Lịch sử đánh giá</div></div>
+                <div class="card-body" id="reviewsBody">Đang tải...</div>
+            </div>
+
+            
+            <div class="tab-pane card" id="tab-face">
+                <div class="card-header"><div class="card-title">  Xác thực khuôn mặt</div></div>
+                <div class="card-body">
+                    <div class="face-verify">
+                        <div id="facePreviewWrap">
+                            <div style="font-size:4rem;margin-bottom:12px"> </div>
+                            <p style="color:var(--text2);font-size:.9rem;margin-bottom:20px">Chụp hoặc tải ảnh khuôn mặt để xác thực tài khoản</p>
+                        </div>
+                        <img id="facePreviewImg" class="face-preview" src="" alt="" style="display:none">
+                        <input type="file" id="faceUpload" accept="image/*" style="display:none" onchange="uploadFace(this)">
+                        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                            <button class="btn btn-primary" onclick="document.getElementById('faceUpload').click()">  Tải ảnh lên</button>
+                            <button class="btn btn-outline" onclick="showToast('Camera','Tính năng camera sắp ra mắt','info')">  Chụp ảnh</button>
+                        </div>
+                        <div id="faceStatus" style="margin-top:16px;font-size:.82rem;color:var(--text3)"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane card" id="tab-security">
+                <div class="card-header"><div class="card-title">  Bảo mật tài khoản</div></div>
+                <div class="card-body">
+                    <h4 style="font-size:.92rem;margin-bottom:16px">Đổi mật khẩu</h4>
+                    <div class="form-group"><label class="form-label">Mật khẩu hiện tại</label><input class="form-control" type="password" id="curPass" placeholder="••••••••"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Mật khẩu mới</label><input class="form-control" type="password" id="newPassS" placeholder="Tối thiểu 6 ký tự"></div>
+                        <div class="form-group"><label class="form-label">Xác nhận</label><input class="form-control" type="password" id="confirmPass" placeholder="Nhập lại"></div>
+                    </div>
+                    <div id="pwOtpSection" style="display:none">
+                        <div class="otp-sent-msg">  Mã OTP đã gửi (Demo: 123456)</div>
+                        <div class="form-group"><label class="form-label">Nhập mã OTP</label><input class="form-control" id="pwOtp" placeholder="000000" maxlength="6" style="text-align:center;font-size:1.4rem;letter-spacing:.3em"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="changePassword()">  Tiếp theo</button>
+                    <div class="divider"></div>
+                    <h4 style="font-size:.92rem;margin-bottom:12px">Xác thực 2 lớp (2FA)</h4>
+                    <p style="font-size:.82rem;color:var(--text2);margin-bottom:12px">Bảo vệ tài khoản với xác thực SMS hoặc app.</p>
+                    <button class="btn btn-outline btn-sm" onclick="showToast('2FA','Tính năng xác thực 2 lớp sắp ra mắt','info')">Kích hoạt 2FA</button>
+                    <div class="divider"></div>
+                    <h4 style="font-size:.92rem;color:var(--red);margin-bottom:12px">  Vùng nguy hiểm</h4>
+                    <p style="font-size:.82rem;color:var(--text2);margin-bottom:12px">Ẩn tài khoản sẽ không thể đặt xe cho đến khi liên hệ hỗ trợ.</p>
+                    <button class="btn btn-danger btn-sm" onclick="confirmHideAccount()">  Ẩn tài khoản</button>
+                </div>
+            </div>
+
+
+            <div class="tab-pane card" id="tab-driver-register">
+                <div class="card-header"><div class="card-title">  Đăng ký trở thành Tài xế</div></div>
+                <div class="card-body" id="driverRegBody">
+                   
+                </div>
+            </div>
+
+
+            <div class="tab-pane card" id="tab-settings">
+                <div class="card-header"><div class="card-title">  Cài đặt</div></div>
+                <div class="card-body" id="settingsList"></div>
+            </div>
+        </div>
+    </div>
+</div></div>
+
+<script src="../js/profile.js"></script>
+
+</body>
+</html>
