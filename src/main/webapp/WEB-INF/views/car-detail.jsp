@@ -155,7 +155,7 @@
     </div>
 </div>
 
-<script src="../../assets/js/car-detail.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/car-detail.js"></script>
 
 </body>
 </html>

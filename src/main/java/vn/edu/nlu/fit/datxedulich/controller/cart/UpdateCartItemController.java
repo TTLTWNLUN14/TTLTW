@@ -7,8 +7,8 @@ import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
 
 import java.io.IOException;
 
-@WebServlet(name = "RemoveItemController", value = "/del-item")
-public class RemoveItemController extends HttpServlet {
+@WebServlet(name = "UpdateCartItemController", value = "/update-cart")
+public class UpdateCartItemController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -17,14 +17,16 @@ public class RemoveItemController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
-        Cart cart = (Cart) request.getSession().getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            request.getSession().setAttribute("cart", cart);
-            return;
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart!=null) {
+            if(quantity>=1){
+                cart.updateItem(productId, quantity);
+                session.setAttribute("cart", cart);
+            }
         }
-        cart.removeItem(productId);
-        request.getSession().setAttribute("cart", cart);
         response.sendRedirect("my-shopping-cart");
     }
+
 }
