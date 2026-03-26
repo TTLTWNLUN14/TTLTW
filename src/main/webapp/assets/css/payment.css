@@ -115,15 +115,6 @@ body {
     border-bottom: 1px solid #f3f4f6;
 }
 
-.icon-minus {
-    display: inline-block;
-    width: 16px;
-    height: 4px;
-    background-color: #38bdf8;
-    border-radius: 2px;
-    margin-right: 12px;
-}
-
 .checkout-header h2 {
     font-size: 16px;
     color: #1e3a8a;
@@ -181,12 +172,6 @@ body {
 .coupon-item.active {
     border-color: #f59e0b;
     background-color: #fffbeb;
-}
-
-.coupon-icon {
-    font-size: 24px;
-    color: #f59e0b;
-    margin-right: 15px;
 }
 
 .coupon-info {
@@ -267,29 +252,6 @@ body {
     display: none;
 }
 
-.payment-icon {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    margin-right: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-}
-
-.momo-icon {
-    background-color: #a50064;
-}
-
-.vnpay-icon {
-    background: linear-gradient(135deg, #ed1c24 50%, #005baa 50%);
-}
-
-.zalopay-icon {
-    background-color: #0088ff;
-}
-
 .payment-name {
     font-size: 14px;
     color: #1f2937;
@@ -344,7 +306,7 @@ body {
     background: #f3f4f6;
 }
 
-.btn-submit {
+.btn-next {
     background-color: #1e3a8a;
     color: #fff;
     border: none;
@@ -356,7 +318,7 @@ body {
     transition: 0.2s;
 }
 
-.btn-submit:hover {
+.btn-next:hover {
     background-color: #172554;
 }
 
@@ -380,10 +342,6 @@ body {
     font-size: 16px;
     color: #1e3a8a;
     font-weight: bold;
-}
-
-.icon-clipboard {
-    font-size: 18px;
 }
 
 .summary-details {

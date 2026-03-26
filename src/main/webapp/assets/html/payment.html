@@ -30,7 +30,6 @@
 
         <div class="checkout-container">
             <div class="checkout-header">
-                <span class="icon-minus"></span>
                 <h2>Thanh toán</h2>
             </div>
 
@@ -40,7 +39,6 @@
 
                 <div class="coupon-list">
                     <div class="coupon-item">
-                        <div class="coupon-icon">🎫</div>
                         <div class="coupon-info">
                             <strong>WELCOME10</strong>
                             <span>Chào mừng thành viên mới - Giảm 10% (tối đa 200.000đ)</span>
@@ -49,7 +47,6 @@
                     </div>
 
                     <div class="coupon-item">
-                        <div class="coupon-icon">🎫</div>
                         <div class="coupon-info">
                             <strong>DALAT2025</strong>
                             <span>Tuyến HCM - Đà Lạt - Giảm 12% (tối đa 300.000đ)</span>
@@ -70,31 +67,11 @@
                 <div class="payment-grid">
                     <label class="payment-card active">
                         <input type="radio" name="payment_method" value="momo" checked>
-                        <div class="payment-icon momo-icon"></div>
                         <span class="payment-name">MoMo</span>
                     </label>
 
                     <label class="payment-card">
-                        <input type="radio" name="payment_method" value="vnpay">
-                        <div class="payment-icon vnpay-icon"></div>
-                        <span class="payment-name">VNPay</span>
-                    </label>
-
-                    <label class="payment-card">
-                        <input type="radio" name="payment_method" value="zalopay">
-                        <div class="payment-icon zalopay-icon"></div>
-                        <span class="payment-name">ZaloPay</span>
-                    </label>
-
-                    <label class="payment-card">
-                        <input type="radio" name="payment_method" value="bank">
-                        <div class="payment-icon bank-icon">🏦</div>
-                        <span class="payment-name">Ngân hàng</span>
-                    </label>
-
-                    <label class="payment-card">
                         <input type="radio" name="payment_method" value="cash">
-                        <div class="payment-icon cash-icon">💵</div>
                         <span class="payment-name">Tiền mặt</span>
                     </label>
                 </div>
@@ -105,15 +82,14 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-back">&#8592; Quay lại</button>
-                    <button class="btn-submit">Đặt xe ngay &#8594;</button>
+                    <button class="btn-back"><a href="booking-userDriver.html">← Quay lại</a> </button>
+                    <button class="btn-next"><a href="payment_confirmation.html">Đặt xe ngay →</a></button>
                 </div>
             </div>
         </div>
 
         <div class="cd-summary-card">
             <div class="summary-header">
-                <span class="icon-clipboard">📋</span>
                 <h3>Tóm tắt đơn</h3>
             </div>
 
@@ -155,10 +131,9 @@
                 <span class="total-label summary-label">Tổng cộng</span>
             </div>
         </div>
-
     </div>
 </main>
 
-<script src="payment.js"></script>
+<script src="../js/payment.js"></script>
 </body>
 </html>
