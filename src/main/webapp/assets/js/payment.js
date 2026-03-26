@@ -1,35 +1,54 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const paymentCards = document.querySelectorAll('.payment-card');
+document.addEventListener("DOMContentLoaded", function () {
+    const coupons = document.querySelectorAll(".coupon-item");
+    const discountInput = document.getElementById("discount-code");
+
+    coupons.forEach(coupon => {
+        coupon.addEventListener("click", function () {
+
+            coupons.forEach(c => c.classList.remove("active"));
+            this.classList.add("active");
+
+            const code = this.querySelector("strong").innerText;
+            discountInput.value = code;
+        });
+    });
+    const applyBtn = document.querySelector(".btn-apply");
+
+    applyBtn.addEventListener("click", function () {
+        if (discountInput.value === "") {
+            alert("Vui lòng chọn mã giảm giá!");
+        } else {
+            alert("Áp dụng mã: " + discountInput.value);
+        }
+    });
+    const paymentCards = document.querySelectorAll(".payment-card");
+
     paymentCards.forEach(card => {
-        card.addEventListener('click', function() {
-            paymentCards.forEach(m => m.classList.remove('active'));
-            this.classList.add('active');
+        card.addEventListener("click", function () {
+
+            paymentCards.forEach(c => c.classList.remove("active"));
+            this.classList.add("active");
+
+            const radio = this.querySelector("input[type='radio']");
+            radio.checked = true;
         });
     });
-    const couponItems = document.querySelectorAll('.coupon-item');
-    const discountInput = document.getElementById('discount-code');
+    const btnNextLink = document.querySelector(".btn-next a"); // bắt vào <a>
+    const agreeTerms = document.getElementById("agree-terms");
 
-    couponItems.forEach(item => {
-        item.addEventListener('click', function() {
-            couponItems.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
-            const codeName = this.querySelector('strong').innerText;
-            if(discountInput) discountInput.value = codeName;
-        });
+    btnNextLink.addEventListener("click", function (e) {
+
+        const selectedPayment = document.querySelector("input[name='payment_method']:checked");
+        if (!selectedPayment) {
+            e.preventDefault();
+            alert("Vui lòng chọn phương thức thanh toán!");
+            return;
+        }
+        if (!agreeTerms.checked) {
+            e.preventDefault();
+            alert("Bạn phải đồng ý với điều khoản!");
+            return;
+        }
     });
-    const btnApply = document.querySelector('.btn-apply');
-    const summaryDiscount = document.getElementById('summary-discount');
-    const finalPrice = document.getElementById('final-price');
 
-    if(btnApply) {
-        btnApply.addEventListener('click', function() {
-            if(discountInput.value.trim() !== "") {
-                summaryDiscount.style.display = "flex";
-                finalPrice.innerText = "844.800đ";
-                alert("Đã áp dụng mã giảm giá thành công!");
-            } else {
-                alert("Vui lòng chọn một mã giảm giá trước.");
-            }
-        });
-    }
 });
