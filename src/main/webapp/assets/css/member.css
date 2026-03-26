@@ -1,0 +1,256 @@
+/* =========================================
+   THIẾT LẬP CƠ BẢN
+========================================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6fb;
+    color: #333;
+    --gold: #f5b82e;
+    --text2: #6b7280;
+}
+
+/* =========================================
+   1. NAVBAR
+========================================= */
+.global-nav {
+    background-color: #0b1736;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-inner {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.nav-logo {
+    color: #f5b82e;
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link.active {
+    color: #f5b82e;
+    border-bottom-color: #f5b82e;
+}
+
+/* =========================================
+   2. HERO SECTION (Banner & Thẻ thành viên)
+========================================= */
+.page-main {
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.page-wrap {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.member-hero {
+    background: linear-gradient(135deg, #11295e, #1c5be0);
+    border-radius: 16px;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    margin-bottom: 50px;
+}
+
+.mh-left {
+    max-width: 500px;
+}
+
+.mh-badge {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(245, 184, 46, 0.3);
+    color: #f5b82e;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.mh-left h1 {
+    font-family: Georgia, serif;
+    font-size: 44px;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+}
+
+.mh-left p {
+    font-size: 15px;
+    color: #d1d8ec;
+    margin: 0 0 30px 0;
+    line-height: 1.6;
+}
+
+/* Banner hạng hiện tại */
+#currentTierBanner {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-sizing: border-box;
+}
+
+.banner-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.banner-tier { color: var(--gold); letter-spacing: 1px; }
+.banner-stats { display: flex; gap: 20px; font-size: 14px; margin-bottom: 15px; color: #e2e8f0; }
+.stat-item { display: flex; align-items: center; gap: 6px; }
+.banner-upgrade { font-size: 14px; color: #cbd5e1; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 15px; }
+.upgrade-price { color: var(--gold); font-weight: bold; cursor: pointer; }
+
+/* Thẻ thành viên */
+.mh-right { display: flex; justify-content: flex-end; }
+
+#memberCardPreview {
+    background: linear-gradient(135deg, #d38c1a, #9e5900);
+    width: 360px;
+    height: 220px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    padding: 25px;
+    box-sizing: border-box;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+#memberCardPreview::after {
+    content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%);
+    pointer-events: none;
+}
+
+.mc-top { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; letter-spacing: 1px; opacity: 0.9; }
+.mc-middle { margin-top: 10px; }
+.mc-name { font-family: Georgia, serif; font-size: 22px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+.mc-id { font-size: 12px; font-family: monospace; opacity: 0.8; letter-spacing: 1.5px; }
+.mc-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+.mc-stat { display: flex; flex-direction: column; }
+.mc-stat:nth-child(2) { align-items: center; }
+.mc-stat:last-child { align-items: flex-end; }
+.mc-val { font-family: Georgia, serif; font-size: 22px; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+.mc-label { font-size: 11px; opacity: 0.8; margin-top: 4px; }
+
+/* =========================================
+   3. TIER GRID (Bảng xếp hạng)
+========================================= */
+.tier-grid {
+    display: flex; gap: 20px; justify-content: center; margin-bottom: 50px; align-items: stretch;
+}
+
+.tier-card {
+    background: #ffffff; border-radius: 16px; padding: 30px 20px; width: 180px; text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; position: relative; border: 2px solid transparent;
+}
+
+.tier-card.active { border-color: #f5b82e; transform: translateY(-5px); }
+.tier-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #f5b82e;
+    color: #fff; font-size: 11px; font-weight: bold; padding: 4px 12px; border-radius: 12px; white-space: nowrap;
+}
+.tier-icon { font-size: 30px; margin-bottom: 10px; }
+.tier-title { font-family: Georgia, serif; font-size: 18px; font-weight: bold; margin: 0 0 5px; color: #111; }
+.tier-discount { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+.tier-price { font-size: 12px; color: #9ca3af; margin-bottom: 20px; }
+.tier-features { text-align: left; font-size: 12px; color: #4b5563; line-height: 1.8; margin-bottom: auto; }
+.tier-features p { margin: 4px 0; }
+.tier-max-discount { background: #f8fafc; color: #6b7280; font-size: 11px; padding: 8px; border-radius: 8px; margin: 15px 0; }
+.tier-btn { padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb; background: transparent; color: #9ca3af; font-weight: bold; cursor: pointer; font-size: 13px; }
+.tier-btn.blue { background: #1c5be0; color: #fff; border: none; }
+
+/* =========================================
+   4. SECTION BLOCKS (Vùng chứa Mã giảm giá & Điểm)
+========================================= */
+.section-block { background: #ffffff; border-radius: 16px; padding: 30px; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+.section-block h3 { font-family: Georgia, serif; font-size: 20px; margin: 0 0 25px 0; color: #111; }
+
+/* =========================================
+   5. COUPONS GRID (Danh sách mã giảm giá)
+========================================= */
+.coupons-grid { display: flex; flex-direction: column; gap: 15px; }
+.coupon-item { display: flex; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; }
+.coupon-item.locked { background: #f8fafc; border-color: #f1f5f9; }
+.coupon-icon { width: 50px; height: 50px; background: #f5b82e; border-radius: 12px; margin-right: 20px; display: flex; justify-content: center; align-items: center; font-size: 24px; }
+.coupon-info { flex: 1; }
+.coupon-title { font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #111; letter-spacing: 1px; }
+.coupon-desc { font-size: 13px; color: #9ca3af; line-height: 1.5; }
+.coupon-value { font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #dc2626; }
+
+/* =========================================
+   6. POINTS PANEL (Điểm & Lịch sử)
+========================================= */
+.points-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; padding-bottom: 20px; margin-bottom: 10px; }
+.points-current { font-family: Georgia, serif; font-size: 32px; font-weight: bold; color: #f5b82e; display: flex; align-items: baseline; gap: 10px; }
+.points-current span { font-family: Arial, sans-serif; font-size: 14px; color: #6b7280; font-weight: normal; }
+.points-btn { border: 1px solid #1c5be0; color: #1c5be0; background: transparent; padding: 8px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px; }
+
+.history-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f8fafc; }
+.history-item:last-child { border-bottom: none; }
+.history-left { display: flex; align-items: center; gap: 15px; }
+.icon-up { width: 32px; height: 32px; background: #dcfce7; color: #16a34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.icon-down { width: 32px; height: 32px; background: #fee2e2; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.icon-gift { width: 32px; height: 32px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.history-title { font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #111; }
+.history-date { font-size: 12px; color: #9ca3af; }
+.val-plus { color: #16a34a; font-weight: bold; font-size: 14px; }
+.val-minus { color: #dc2626; font-weight: bold; font-size: 14px; }
+
+/* =========================================
+   7. MODAL OVERLAY (Hộp thoại)
+========================================= */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); display: none; /* Thêm "display: flex;" qua JS để hiển thị */
+    justify-content: center; align-items: center; z-index: 9999;
+}
+
+.modal {
+    background: #fff; border-radius: 16px; width: 450px; max-width: 90%;
+    padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-title { font-family: Georgia, serif; font-size: 20px; font-weight: bold; }
+.modal-close { background: transparent; border: none; font-size: 18px; cursor: pointer; color: #6b7280; }
