@@ -1,0 +1,145 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6fb;
+    --gold: #f5b82e;
+
+.global-nav {
+    background-color: #0b1736;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-inner {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.nav-logo {
+    color: #f5b82e;
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link.active {
+    color: #f5b82e;
+    border-bottom-color: #f5b82e;
+}
+
+
+.page-main {
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.page-wrap {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.member-hero {
+    background: linear-gradient(135deg, #11295e, #1c5be0);
+    border-radius: 16px;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+}
+
+.mh-left {
+    max-width: 500px;
+}
+
+.mh-badge {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(245, 184, 46, 0.3);
+    color: #f5b82e;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.mh-left h1 {
+    font-family: Georgia, serif;
+    font-size: 44px;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+}
+
+.mh-left p {
+    font-size: 15px;
+    color: #d1d8ec;
+    margin: 0 0 30px 0;
+    line-height: 1.6;
+}
+#currentTierBanner {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+
+#currentTierBanner::before {
+    content: "GOLD\A \A Trần Minh Tú\A \A 28 chuyến        2800 điểm        14.500.000đ\A \A Nâng cấp Platinum chỉ với 999.000đ";
+    white-space: pre-wrap;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.4;
+    font-family: Arial, sans-serif;
+}
+
+.mh-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#memberCardPreview {
+    background: linear-gradient(135deg, #d38c1a, #9e5900);
+    width: 360px;
+    height: 220px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+#memberCardPreview::before {
+    content: "GOLD MEMBER                             AUTO CARS\A \A \A Trần Minh Tú\A AC · GOLD · 000001\A \A \A \A 28                      2800                   10%\A Chuyến đi            Điểm                 Ưu đãi";
+    white-space: pre-wrap;
+    color: #ffffff;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
