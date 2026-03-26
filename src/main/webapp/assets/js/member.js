@@ -426,29 +426,3 @@ function renderAvatar(name,size=36,bg='var(--navy)',color='var(--gold)'){
 
 
 
-<h2 style="text-align:center;margin-bottom:8px">So sánh các hạng thành viên</h2>
-        <p style="text-align:center;color:var(--text2);margin-bottom:32px;font-size:.9rem">Nâng hạng để nhận nhiều ưu đãi hơn</p>
-        <div class="tier-grid" id="tierGrid"></div>
-
-        <div class="section-block">
-            <h3>  Mã giảm giá của tôi</h3>
-            <div class="coupons-grid" id="couponsGrid"></div>
-        </div>
-
-
-        <div class="section-block">
-            <h3>  Điểm tích lũy & Lịch sử</h3>
-            <div class="points-panel" id="pointsPanel"></div>
-        </div>
-
-    </div>
-</div>
-
-
-<div class="modal-overlay" id="upgradeModal">
-    <div class="modal">
-        <div class="modal-header">
-            <div class="modal-title" id="upgradeTitle">  Nâng cấp thành viên</div>
-            <button class="modal-close" onclick="closeModal()">✕</button>
-        </div>
-        <div id="upgradeBody"></div>
