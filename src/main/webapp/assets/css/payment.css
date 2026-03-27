@@ -104,7 +104,6 @@ body {
     flex: 1;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     overflow: hidden;
 }
 
@@ -322,97 +321,62 @@ body {
     background-color: #172554;
 }
 
-.cd-summary-card {
-    background: #fff;
-    width: 350px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+.checkout-section {
     padding: 25px;
-    flex-shrink: 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+.checkout-section:last-child {
+    border-bottom: none;
 }
 
-.summary-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.summary-header h3 {
-    font-size: 16px;
-    color: #1e3a8a;
-    font-weight: bold;
-}
-
-.summary-details {
-    display: flex;
-    flex-direction: column;
+.info-grid {
+    display: grid;
     gap: 12px;
+    background-color: #f9fafb;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
 }
 
-.summary-row {
+.info-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 13px;
-}
-
-.summary-label {
-    color: #9ca3af;
-}
-
-.summary-value {
-    color: #374151;
-    font-weight: 500;
-    text-align: right;
-}
-
-.tag-driver {
-    background-color: #fef3c7;
-    color: #b45309;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 600;
-}
-
-.summary-divider {
-    border: 0;
-    border-top: 1px dashed #e5e7eb;
-    margin: 15px 0;
-}
-
-.price-row {
-    padding: 5px 0;
-}
-
-.price-row .summary-value {
     font-size: 14px;
-    font-weight: bold;
+    color: #4b5563;
 }
 
-.discount-row .summary-value {
-    color: #10b981;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.total-row {
-    margin-top: 5px;
-    padding-top: 5px;
-}
-
-.total-label {
-    font-size: 14px;
-    font-weight: bold;
+.info-row strong {
     color: #111827;
 }
 
-.total-amount {
-    font-size: 20px;
-    font-weight: bold;
-    color: #f59e0b;
+.total-summary {
+    background-color: #f9fafb;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.summary-line.final-total {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #d1d5db;
+    align-items: center;
+}
+
+.final-total span {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.final-total strong {
+    font-size: 22px;
+    color: #ef4444;
 }
