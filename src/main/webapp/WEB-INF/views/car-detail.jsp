@@ -13,7 +13,7 @@
         <div class="nav-links">
             <a class="nav-link" href="../../assets/html/index.html">Trang chủ</a>
             <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a class="nav-link" href="../../assets/html/cars-brand.html">Hãng xe</a>
+            <a class="nav-link" href="cars-brand.jsp">Hãng xe</a>
             <a class="nav-link" href="../../assets/html/booking.html">Đặt xe</a>
             <a class="nav-link" href="shopping-cart.jsp">Giỏ hàng</a>
         </div>

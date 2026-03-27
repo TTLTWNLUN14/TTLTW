@@ -3,20 +3,22 @@ package vn.edu.nlu.fit.datxedulich.controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import vn.edu.nlu.fit.datxedulich.model.Brand;
 import vn.edu.nlu.fit.datxedulich.model.Product;
+import vn.edu.nlu.fit.datxedulich.services.BrandService;
 import vn.edu.nlu.fit.datxedulich.services.ProductService;
 
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet(name = "ProductController", value = "/list-product/product")
-public class ProductController extends HttpServlet {
+@WebServlet(name = "ListBrandProductController", value = "/brand")
+public class ListBrandController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        ProductService service = new ProductService();
-        Product p = service.getProduct(id);
-        request.setAttribute("product", p);
-        request.getRequestDispatcher("/WEB-INF/views/car-detail.jsp").forward(request, response);
+        BrandService bs = new BrandService();
+        List<Brand> listBrand = bs.getListBrand();
+        request.setAttribute("listBrand", listBrand);
+        request.getRequestDispatcher("/WEB-INF/views/cars-brand.jsp").forward(request, response);
     }
 
     @Override

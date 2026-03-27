@@ -44,7 +44,7 @@
                             </a>
                         </h4>
 
-                        <p><span class="highlight-text">Giá 1 đơn:</span> ${ci.price} VND</p>
+                        <p><span class="highlight-text">Giá 1 đơn:</span> ${ci.price} VND/KM</p>
 
                         <div style="display:flex; align-items:center; gap:8px; margin-top:5px;">
                             <span class="highlight-text">Số lượng:</span>

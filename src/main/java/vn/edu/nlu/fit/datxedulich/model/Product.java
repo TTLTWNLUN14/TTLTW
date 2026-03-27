@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Product implements Serializable {
     private int id ;
+    private int brandId;
     private String name ;
     private int priceKm ;
     private int priceDay ;
@@ -13,8 +14,9 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(int id, String name, int priceKm, int priceDay, String image) {
+    public Product(int id, int brandId,String name, int priceKm, int priceDay, String image) {
         this.id = id;
+        this.brandId = brandId;
         this.name = name;
         this.priceKm = priceKm;
         this.priceDay = priceDay;
@@ -27,6 +29,13 @@ public class Product implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getBrandId() {
+        return brandId;
+    }
+    public void setBrandId(int brandId) {
+        this.brandId = brandId;
     }
 
     public String getName() {

@@ -13,7 +13,7 @@
         <div class="nav-links">
             <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/index.html">Trang chủ</a>
             <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/cars-brand.html">Hãng xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/cars-brand.html">Hãng xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/booking.html">Đặt xe</a>
             <a class="nav-link" href="my-shopping-cart">Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})</a>
         </div>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="car-body">
                                 <div class="car-brand">FORD</div>
-                                <h3 class="car-title"><a href="product?id=${p.id}">${p.name}</a></h3>
+                                <h3 class="car-title"><a href="list-product/product?id=${p.id}">${p.name}</a></h3>
                                 <div class="car-tags">
                                     <span class="car-tag">5 chỗ</span>
                                     <span class="car-tag">Diesel</span>
