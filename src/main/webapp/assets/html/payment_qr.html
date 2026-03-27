@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xác nhận thành công - Auto Cars</title>
-    <link rel="stylesheet" href="../css/payment_confirmation.css">
+    <title>QR Thanh Toán - Auto Cars</title>
+    <link rel="stylesheet" href="../css/payment_pr.css">
 </head>
 <body>
-
 <nav class="global-nav">
     <div class="nav-inner">
         <a class="nav-logo" href="index.html">AUTO CARS</a>
@@ -25,19 +24,25 @@
     </div>
 </nav>
 
-<main class="confirm-page">
-    <div class="confirm-container">
-            <div class="success-text">
-                <h1>Cảm ơn bạn đã đặt xe!</h1>
-                <p>Đơn hàng của bạn đã xác nhận thanh toán thành công.</p>
-                <p>Tài xế sẽ nhanh chóng liên hệ với bạn trong thời gian sớm nhất.</p>
-            </div>
-        </div>
-        <div class="confirm-actions">
-            <button class="btn-back"><a href="index.html">← Quay về trang chủ</a></button>
-            <button class="btn-next"><a href="cars-brand.html">Tiếp tục mua hàng →</a></button>
-        </div>
-</main>
+<main class="qr-page">
+    <div class="qr-container">
+        <h2>Thanh toán qua mã QR</h2>
+        <p class="qr-desc">Vui lòng dùng ứng dụng ngân hàng hoặc MoMo để quét mã dưới đây.</p>
 
+        <div class="qr-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="Mã QR Thanh Toán">
+        </div>
+
+        <div class="qr-amount">
+            <span>Số tiền cần chuyển:</span>
+            <strong>1.000.000đ</strong>
+        </div>
+
+        <div class="qr-actions">
+            <button class="btn-back"><a href="payment.html">Hủy giao dịch</a> </button>
+            <button class="btn-next"><a href="payment_confirmation.html">Tôi đã thanh toán</a></button>
+        </div>
+    </div>
+</main>
 </body>
 </html>

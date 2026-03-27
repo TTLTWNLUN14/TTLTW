@@ -27,13 +27,34 @@
 
 <main class="payment-page">
     <div class="payment-layout">
-
         <div class="checkout-container">
             <div class="checkout-header">
                 <h2>Thanh toán</h2>
             </div>
 
-            <div class="discount-section">
+            <div class="checkout-section info-section">
+                <h3 class="section-title"><span class="red-dot"></span> THÔNG TIN CHUYẾN ĐI</h3>
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span>Khách hàng:</span>
+                        <strong>Nguyễn Văn A - 0901234567</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Số chuyến đi:</span>
+                        <strong>1 chiều</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Ngày đi:</span>
+                        <strong>15/05/2026 - 8:00</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Ngày đến:</span>
+                        <strong>15/05/2026</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-section discount-section">
                 <h3 class="section-title"><span class="red-dot"></span> MÃ GIẢM GIÁ</h3>
                 <p class="discount-subtitle">Mã ưu đãi của bạn:</p>
 
@@ -61,13 +82,13 @@
                 </div>
             </div>
 
-            <div class="payment-methods-section">
-                <h3 class="section-title">PHƯƠNG THỨC THANH TOÁN</h3>
+            <div class="checkout-section payment-methods-section">
+                <h3 class="section-title"><span class="red-dot"></span> PHƯƠNG THỨC THANH TOÁN</h3>
 
                 <div class="payment-grid">
                     <label class="payment-card active">
-                        <input type="radio" name="payment_method" value="momo" checked>
-                        <span class="payment-name">MoMo</span>
+                        <input type="radio" name="payment_method" value="momo">
+                        <span class="payment-name">Chuyển khoản / MoMo</span>
                     </label>
 
                     <label class="payment-card">
@@ -81,54 +102,25 @@
                     <label for="agree-terms">Tôi đồng ý với <a href="#">điều khoản dịch vụ</a> và <a href="#">chính sách thuê xe</a></label>
                 </div>
 
+                <div class="total-summary">
+                    <div class="summary-line">
+                        <span>Tạm tính (1 chuyến):</span>
+                        <span>1.000.000đ</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Giảm giá:</span>
+                        <span id="discount-amount">0đ</span>
+                    </div>
+                    <div class="summary-line final-total">
+                        <span>Tổng thanh toán:</span>
+                        <strong id="final-price">1.000.000đ</strong>
+                    </div>
+                </div>
+
                 <div class="action-buttons">
-                    <button class="btn-back"><a href="booking-userDriver.html">← Quay lại</a> </button>
-                    <button class="btn-next"><a href="payment_confirmation.html">Đặt xe ngay →</a></button>
+                    <button class="btn-back"><a href="info-booking.html">← Quay lại</a> </button>
+                    <button class="btn-next"><a href="payment_qr.html">Đặt xe ngay →</a></button>
                 </div>
-            </div>
-        </div>
-
-        <div class="cd-summary-card">
-            <div class="summary-header">
-                <h3>Tóm tắt đơn</h3>
-            </div>
-
-            <div class="summary-details">
-                <div class="summary-row">
-                    <span class="summary-label">Xe</span>
-                </div>
-
-                <div class="summary-row">
-                    <span class="summary-label">Hình thức</span>
-                </div>
-
-                <div class="summary-row">
-                    <span class="summary-label">Tuyến</span>
-                </div>
-
-                <div class="summary-row">
-                    <span class="summary-label">Ngày đi</span>
-                </div>
-
-                <div class="summary-row">
-                    <span class="summary-label">Tài xế</span>
-                </div>
-            </div>
-
-            <hr class="summary-divider">
-
-            <div class="summary-row price-row">
-                <span class="summary-label">Giá thuê</span>
-            </div>
-
-            <div class="summary-row discount-row" id="summary-discount" style="display: none;">
-                <span class="summary-label"><span class="red-dot"></span> Mã giảm giá</span>
-            </div>
-
-            <hr class="summary-divider">
-
-            <div class="summary-row total-row">
-                <span class="total-label summary-label">Tổng cộng</span>
             </div>
         </div>
     </div>
