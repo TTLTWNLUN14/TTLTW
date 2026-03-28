@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý thanh toán - Auto Cars Admin</title>
+  <link rel="stylesheet" href="../css/payment-admin.css">
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">Auto Cars Admin</div>
+
+  <div class="menu-title">TỔNG QUAN</div>
+  <a href="dashboard-admin.html" class="menu-item">Dashboard</a>
+
+  <div class="menu-title">VẬN HÀNH</div>
+  <a href="booking-admin.html" class="menu-item">Quản lý đặt xe</a>
+  <a href="payment-admin.html" class="menu-item active">Quản lý thanh toán</a>
+
+  <div class="menu-title">DANH MỤC</div>
+  <a href="cars-brand-admin.html" class="menu-item">Hãng xe</a>
+  <a href="cars-admin.html" class="menu-item">Loại xe</a>
+  <a href="#" class="menu-item">Mã giảm giá</a>
+
+  <div class="menu-title">KHÁCH HÀNG</div>
+  <a href="#" class="menu-item">Khách hàng</a>
+  <a href="#" class="menu-item">Đánh giá</a>
+  <a href="#" class="menu-item">Member</a>
+
+  <div class="menu-title">CÀI ĐẶT</div>
+  <a href="#" class="menu-item">Quản lý giá cước</a>
+  <a href="#" class="menu-item">Cài đặt hệ thống</a>
+</div>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1 class="page-title">Quản lý thanh toán</h1>
+  </div>
+
+  <div class="table-container">
+    <table class="custom-table">
+      <thead>
+      <tr>
+        <th>Mã giao dịch</th>
+        <th>Mã Booking</th>
+        <th>Khách hàng</th>
+        <th>Số tiền</th>
+        <th>Phương thức</th>
+        <th>Hình thức trả</th>
+        <th>Ngày giao dịch</th>
+        <th>Trạng thái</th>
+        <th>Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="text-orange">#PAY-0045</td>
+        <td><a href="#" class="text-link">#AC-0007</a></td>
+        <td>Lê Thị Mai</td>
+        <td class="text-orange fw-bold">1.600.000đ</td>
+        <td>Chuyển khoản</td>
+        <td>Đặt cọc (30%)</td>
+        <td>20/03/2026 14:30</td>
+        <td><span class="status-badge bg-pending">Chờ xác nhận</span></td>
+        <td class="action-buttons">
+          <button class="btn-approve" title="Xác nhận đã nhận tiền">&#10003;</button>
+          <button class="btn-reject" title="Từ chối/Lỗi">&#10005;</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="text-orange">#PAY-0044</td>
+        <td><a href="#" class="text-link">#AC-0004</a></td>
+        <td>Phạm Minh Khoa</td>
+        <td class="text-orange fw-bold">1.800.000đ</td>
+        <td>Tiền mặt</td>
+        <td>Toàn bộ (100%)</td>
+        <td>19/03/2026 09:15</td>
+        <td><span class="status-badge bg-success">Thành công</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Xem chi tiết">&#128065;</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="text-orange">#PAY-0043</td>
+        <td><a href="#" class="text-link">#AC-0003</a></td>
+        <td>Trần Minh Tú</td>
+        <td class="text-orange fw-bold">4.500.000đ</td>
+        <td>Ví MoMo</td>
+        <td>Toàn bộ (100%)</td>
+        <td>18/03/2026 18:45</td>
+        <td><span class="status-badge bg-success">Thành công</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Xem chi tiết">&#128065;</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="text-orange">#PAY-0042</td>
+        <td><a href="#" class="text-link">#AC-0005</a></td>
+        <td>Nguyễn Văn Bình</td>
+        <td class="text-orange fw-bold">500.000đ</td>
+        <td>VNPay</td>
+        <td>Đặt cọc (30%)</td>
+        <td>18/03/2026 10:20</td>
+        <td><span class="status-badge bg-failed">Thất bại</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Xem chi tiết">&#128065;</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
