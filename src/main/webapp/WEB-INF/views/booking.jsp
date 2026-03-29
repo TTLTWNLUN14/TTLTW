@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html lang="vi">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Đặt xe</title>
-    <link rel="stylesheet" href="../css/booking.css">
+    <title>Title</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/booking.css">
 </head>
 <body>
 <nav class="global-nav">
     <div class="nav-inner">
-        <a class="nav-logo" href="index.html">AUTO CARS</a>
+        <a class="nav-logo" href="../../assets/html/index.html">AUTO CARS</a>
         <div class="nav-links">
-            <a class="nav-link" href="index.html">Trang chủ</a>
-            <a class="nav-link" href="list-cars.html">Xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/cars-brand.jsp">Hãng xe</a>
-            <a class="nav-link active" href="booking.html">Đặt xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
+            <a class="nav-link" href="../../assets/html/index.html">Trang chủ</a>
+            <a class="nav-link" href="list-product">Xe</a>
+            <a class="nav-link" href="brand">Hãng xe</a>
+            <a class="nav-link active" href="booking">Đặt xe</a>
+            <a class="nav-link" href="my-shopping-cart">Giỏ hàng</a>
         </div>
         <div class="nav-actions" id="navActions">
             <a href="#" class="btn-login">Đăng nhập</a>
@@ -28,9 +28,18 @@
             <div id="step-1" class="booking-step active">
                 <div class="b-header">
                     <h1>Đặt xe</h1>
-                    <h2>Chọn loại xe</h2>
                 </div>
                 <div class="b-body">
+                    <h3>Chọn hãng xe</h3>
+                    <div class="list-brand">
+                        <c:forEach var="item" items="${listBrand}">
+
+                            <a href="duong-dan?id=${item.id}" class="nut-bam ${item.id == idDangChon ? 'active' : ''}">
+                                    ${item.ten}
+                            </a>
+
+                        </c:forEach>
+                    </div>
                     <div class="rental-types">
                         <div class="rt-card active">
                             <div class="rt-title">Thuê xe có tài xế</div>
@@ -90,52 +99,13 @@
                     </div>
                 </div>
                 <div class="b-footer">
-                    <button class="btn-next"><a href="info-booking.html">Tiếp theo →</a> </button>
+                    <button class="btn-next"><a href="../../assets/html/info-booking.html">Tiếp theo →</a> </button>
                 </div>
             </div>
         </div>
 
-        <div class="booking-sidebar">
-            <div class="summary-wrapper">
-                <div class="summary-inner">
-                    <h3 class="summary-title">Tóm tắt đơn</h3>
-                    <div class="summary-list">
-                        <div class="s-row">
-                            <span class="s-label">Xe</span>
-                            <span class="s-value fw-bold">Toyota Fortuner</span>
-                        </div>
-                        <div class="s-row">
-                            <span class="s-label">Hình thức</span>
-                            <span class="s-value"><span class="badge-type">Có tài xế</span></span>
-                        </div>
-                        <div class="s-row">
-                            <span class="s-label">Tuyến</span>
-                            <span class="s-value">df → fd</span>
-                        </div>
-                        <div class="s-row">
-                            <span class="s-label">Ngày đi</span>
-                            <span class="s-value">22/03/2026</span>
-                        </div>
-                        <div class="s-row">
-                            <span class="s-label">Tài xế</span>
-                            <span class="s-value">Đã bao gồm</span>
-                        </div>
-                    </div>
-                    <div class="s-divider"></div>
-                    <div class="s-row">
-                        <span class="s-label">Giá thuê</span>
-                        <span class="s-value fw-bold">2.500.000đ</span>
-                    </div>
-                    <div class="s-divider"></div>
-                    <div class="s-total">
-                        <span class="t-label">Tổng cộng</span>
-                        <span class="t-value">2.500.000đ</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
-<script src="../js/booking.js"></script>
+<script src="../../assets/js/booking.js"></script>
 </body>
 </html>

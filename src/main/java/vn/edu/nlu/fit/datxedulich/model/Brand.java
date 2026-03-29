@@ -5,19 +5,21 @@ import java.io.Serializable;
 public class Brand implements Serializable {
     private int brandId;
     private String brandName;
-    private String urlLogo;
+    private String logo;
     private String country;
-    private String description;
+    private String descriptionBrand;
     private boolean isActive;
 
-    public Brand() {}
+    public Brand() {
+    }
 
-    public Brand(int brandId, String brandName, String urlLogo, String country, String description, boolean isActive) {
+    public Brand(int brandId, String brandName, String logo,
+                 String country, String descriptionBrand, boolean isActive) {
         this.brandId = brandId;
         this.brandName = brandName;
-        this.urlLogo = urlLogo;
+        this.logo = logo;
         this.country = country;
-        this.description = description;
+        this.descriptionBrand = descriptionBrand;
         this.isActive = isActive;
     }
 
@@ -37,12 +39,12 @@ public class Brand implements Serializable {
         this.brandName = brandName;
     }
 
-    public String getUrlLogo() {
-        return urlLogo;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setUrlLogo(String urlLogo) {
-        this.urlLogo = urlLogo;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public String getCountry() {
@@ -53,19 +55,20 @@ public class Brand implements Serializable {
         this.country = country;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescriptionBrand() {
+        return descriptionBrand;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionBrand(String descriptionBrand) {
+        this.descriptionBrand = descriptionBrand;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
+
 }

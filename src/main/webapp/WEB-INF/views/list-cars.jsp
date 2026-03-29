@@ -14,7 +14,7 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/index.html">Trang chủ</a>
             <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/cars-brand.html">Hãng xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/booking.html">Đặt xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/booking.html">Đặt xe</a>
             <a class="nav-link" href="my-shopping-cart">Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})</a>
         </div>
         <div class="nav-actions" id="navActions">
@@ -98,12 +98,12 @@
                     <c:forEach var="p" items="${list}">
                         <div class="car-card">
                             <div class="car-img-box">
-                                <img style="width: 197px" src="${p.image}" alt="img-cars">
+                                <img style="width: 197px" src="${p.img}" alt="img-cars">
                                 <span class="badge-stock">3 xe có sẵn</span>
                             </div>
                             <div class="car-body">
                                 <div class="car-brand">FORD</div>
-                                <h3 class="car-title"><a href="list-product/product?id=${p.id}">${p.name}</a></h3>
+                                <h3 class="car-title"><a href="list-product/product?typeId=${p.typeId}">${p.typeName}</a></h3>
                                 <div class="car-tags">
                                     <span class="car-tag">5 chỗ</span>
                                     <span class="car-tag">Diesel</span>
@@ -122,14 +122,13 @@
                                 </div>
 
                                 <div class="car-action" style="margin-top: 15px; text-align: center;">
-                                    <a href="add-cart?productId=${p.id}&quantity=1&isDriver=true"
+                                    <a href="add-cart?productId=${p.typeId}&quantity=1&isDriver=true"
                                        style="display: block; padding: 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
                                         Thêm vào giỏ hàng
                                     </a>
                                 </div>
                             </div>
                         </div>
-
                     </c:forEach>
                 </div>
             </div>

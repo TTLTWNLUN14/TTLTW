@@ -14,7 +14,7 @@
             <a class="nav-link" href="../../assets/html/index.html">Trang chủ</a>
             <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
             <a class="nav-link" href="cars-brand.jsp">Hãng xe</a>
-            <a class="nav-link" href="../../assets/html/booking.html">Đặt xe</a>
+            <a class="nav-link" href="booking.jsp">Đặt xe</a>
             <a class="nav-link" href="shopping-cart.jsp">Giỏ hàng</a>
         </div>
         <div class="nav-actions" id="navActions">
@@ -38,7 +38,7 @@
                 <div class="cd-gallery">
                     <div class="cd-main-img">
                         <span class="badge-stock">3 xe có sẵn</span>
-                        <img height="400px" src="${product.image}" alt="">
+                        <img height="400px" src="${product.img}" alt="">
                     </div>
                     <div class="cd-thumb-list">
                         <div class="cd-thumb active"></div>
@@ -90,7 +90,7 @@
             <div class="cd-right">
                 <div class="cd-booking-card">
                     <div class="car-brand">FORD</div>
-                    <h1 class="cd-car-name">${product.name}</h1>
+                    <h1 class="cd-car-name">${product.typeName}</h1>
 
                     <div class="cd-price-wrap">
                         <div class="cd-price-item">
@@ -146,7 +146,7 @@
                         <span class="total-price">1.600.000đ</span>
                     </div>
 
-                    <button class="btn-primary w-100"><a href="../../assets/html/booking.html">Đặt xe ngay</a></button>
+                    <button class="btn-primary w-100"><a href="booking.jsp">Đặt xe ngay</a></button>
                     <button class="btn-outline w-100 mt-10">Liên hệ tư vấn</button>
                 </div>
             </div>

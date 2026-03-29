@@ -2,7 +2,7 @@ package vn.edu.nlu.fit.datxedulich.controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import vn.edu.nlu.fit.datxedulich.model.Product;
+import vn.edu.nlu.fit.datxedulich.model.CarType;
 import vn.edu.nlu.fit.datxedulich.services.ProductService;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class ListProductController extends HttpServlet {
         String brandIdStr = request.getParameter("brandId");
 
         ProductService ps = new ProductService();
-        List<Product> list = ps.getListProduct();
+        List<CarType> list = ps.getListProduct();
 
         // check co dung brandid k (bam tu trang brand)
         if (brandIdStr != null && !brandIdStr.isEmpty()) {

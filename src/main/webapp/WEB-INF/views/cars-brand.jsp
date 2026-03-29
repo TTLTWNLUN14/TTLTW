@@ -13,7 +13,7 @@
             <a class="nav-link" href="../../assets/html/index.html">Trang chủ</a>
             <a class="nav-link" href="list-product">Xe</a>
             <a class="nav-link active" href="brand">Hãng xe</a>
-            <a class="nav-link" href="../../assets/html/booking.html">Đặt xe</a>
+            <a class="nav-link" href="booking.jsp">Đặt xe</a>
             <a class="nav-link" href="my-shopping-cart">Giỏ hàng</a>
         </div>
         <div class="nav-actions" id="navActions">
@@ -49,7 +49,7 @@
                         <span class="brand-country">${b.country}</span>
                     </div>
                     <div class="card-middle">
-                        <p class="brand-desc">${b.description}</p>
+                        <p class="brand-desc">${b.descriptionBrand}</p>
                     </div>
                     <div class="card-stats">
                         <div class="stat-item">

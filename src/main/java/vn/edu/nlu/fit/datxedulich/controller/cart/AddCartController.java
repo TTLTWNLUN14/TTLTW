@@ -3,7 +3,7 @@ package vn.edu.nlu.fit.datxedulich.controller.cart;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import vn.edu.nlu.fit.datxedulich.model.Product;
+import vn.edu.nlu.fit.datxedulich.model.CarType;
 import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
 import vn.edu.nlu.fit.datxedulich.services.ProductService;
 
@@ -23,7 +23,7 @@ public class AddCartController extends HttpServlet {
             cart = new Cart();
         }
         ProductService productService = new ProductService();
-        Product product = productService.getProduct(productId);
+        CarType product = productService.getProduct(productId);
         if(product!=null) {
             cart.addItem(product, quantity, isDriver);
             session.setAttribute("cart", cart);
