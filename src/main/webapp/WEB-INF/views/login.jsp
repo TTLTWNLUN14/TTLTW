@@ -13,7 +13,7 @@
            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/index.html">Trang chủ</a>
            <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/cars-brand.html">Hãng xe</a>
-           <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/booking.html">Đặt xe</a>
+           <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/booking.html">Đặt xe</a>
            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/shopping-cart.html">Giỏ hàng</a>
         </div>
     </div>

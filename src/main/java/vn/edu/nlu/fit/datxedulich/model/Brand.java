@@ -10,6 +10,7 @@ public class Brand implements Serializable {
     private String description;
     private boolean isActive;
 
+
     public Brand() {}
 
     public Brand(int brandId, String brandName, String urlLogo, String country, String description, boolean isActive) {

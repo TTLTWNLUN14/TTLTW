@@ -20,6 +20,7 @@ public class ProductDAO extends BaseDao{
         return get().withHandle(h -> h.createQuery("select * from products where id = :id").bind("id", id).mapToBean(Product.class).first()
         );
     }
+    
     public void insertProduct(List<Product> products) {
         get().useHandle(handle -> {
             PreparedBatch batch = handle.prepareBatch("insert into products values(:id,:name,:priceKm,:priceDay,:image)");

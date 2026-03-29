@@ -14,7 +14,7 @@
             <a class="nav-link" href="../../assets/html/index.html">Trang chủ</a>
             <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
             <a class="nav-link" href="cars-brand.jsp">Hãng xe</a>
-            <a class="nav-link" href="../../assets/html/booking.html">Đặt xe</a>
+            <a class="nav-link" href="booking.jsp">Đặt xe</a>
             <a class="nav-link" href="shopping-cart.jsp">Giỏ hàng</a>
         </div>
         <div class="nav-actions" id="navActions">
@@ -146,7 +146,7 @@
                         <span class="total-price">1.600.000đ</span>
                     </div>
 
-                    <button class="btn-primary w-100"><a href="../../assets/html/booking.html">Đặt xe ngay</a></button>
+                    <button class="btn-primary w-100"><a href="booking.jsp">Đặt xe ngay</a></button>
                     <button class="btn-outline w-100 mt-10">Liên hệ tư vấn</button>
                 </div>
             </div>

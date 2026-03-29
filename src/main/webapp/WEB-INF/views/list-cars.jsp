@@ -14,7 +14,7 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/index.html">Trang chủ</a>
             <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/cars-brand.html">Hãng xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/booking.html">Đặt xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/booking.html">Đặt xe</a>
             <a class="nav-link" href="my-shopping-cart">Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})</a>
         </div>
         <div class="nav-actions" id="navActions">
@@ -129,7 +129,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </c:forEach>
                 </div>
             </div>
