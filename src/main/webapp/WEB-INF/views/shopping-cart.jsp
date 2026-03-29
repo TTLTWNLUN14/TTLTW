@@ -28,17 +28,14 @@
 
         <div class="order-list">
             <c:forEach items="${sessionScope.cart.items}" var="ci">
-                <div class="order-card"
-                     data-product-id="${ci.product.typeId}"
-                     data-price="${ci.price}"
-                     data-quantity="${ci.quantity}">
+                <div class="order-card">
                     <input type="checkbox"
                            class="order-checkbox cart-select"
                            checked
                            onchange="recalcTotal()">
                     <div class="order-info">
                         <h4>
-                            <a href="product?id=${ci.product.typeId}"
+                            <a href="list-product/product?typeId=${ci.product.typeId}"
                                style="text-decoration:none; color:inherit;">
                                     ${ci.product.typeName}
                             </a>

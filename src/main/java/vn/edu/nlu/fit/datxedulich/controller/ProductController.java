@@ -14,7 +14,7 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int typeId = Integer.parseInt(request.getParameter("typeId"));
         ProductService service = new ProductService();
-        CarType p = service.getProduct(typeId);
+        CarType p = service.getCarTypeById(typeId);
         request.setAttribute("product", p);
         request.getRequestDispatcher("/WEB-INF/views/car-detail.jsp").forward(request, response);
     }

@@ -23,7 +23,7 @@ public class AddCartController extends HttpServlet {
             cart = new Cart();
         }
         ProductService productService = new ProductService();
-        CarType product = productService.getProduct(productId);
+        CarType product = productService.getCarTypeById(productId);
         if(product!=null) {
             cart.addItem(product, quantity, isDriver);
             session.setAttribute("cart", cart);

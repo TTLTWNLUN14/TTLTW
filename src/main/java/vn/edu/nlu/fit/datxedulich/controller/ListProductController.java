@@ -16,7 +16,7 @@ public class ListProductController extends HttpServlet {
         String brandIdStr = request.getParameter("brandId");
 
         ProductService ps = new ProductService();
-        List<CarType> list = ps.getListProduct();
+        List<CarType> list = ps.getListCarType();
 
         // check co dung brandid k (bam tu trang brand)
         if (brandIdStr != null && !brandIdStr.isEmpty()) {
@@ -26,11 +26,11 @@ public class ListProductController extends HttpServlet {
                 list = ps.getProductsByBrandId(brandId);
             } catch (NumberFormatException e) {
                 // nhap tren url sai -> all xe
-                list = ps.getListProduct();
+                list = ps.getListCarType();
             }
         } else {
             // 0 co -> all xe
-            list = ps.getListProduct();
+            list = ps.getListCarType();
         }
         request.setAttribute("list", list);
         request.getRequestDispatcher("/WEB-INF/views/list-cars.jsp").forward(request, response);
