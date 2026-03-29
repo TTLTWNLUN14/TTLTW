@@ -15,24 +15,57 @@ public class AdminPaymentController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PaymentsDAO paymentsDAO = new PaymentsDAO();
-        List<Payments> list = paymentsDAO.getAllPayments();
+        List<Payments> paymentsList = paymentsDAO.getAllPayments();
 
-        request.setAttribute("listPayments", list);
+        request.setAttribute("listPayments", paymentsList);
         request.getRequestDispatcher("/admin/admin-payments.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int paymentId = Integer.parseInt(request.getParameter("paymentId"));
         String action = request.getParameter("action");
-
         PaymentsDAO paymentsDAO = new PaymentsDAO();
-        if (action.equals("approve")) {
-            paymentsDAO.updatePaymentStatus(paymentId, "Success");
-        } else {
-            paymentsDAO.updatePaymentStatus(paymentId, "Failure");
-        }
 
+        try {
+            if ("approve".equals(action)) {
+                int paymentId = Integer.parseInt(request.getParameter("paymentId"));
+                paymentsDAO.updatePaymentStatus(paymentId, "SUCCESS");
+
+            } else if ("reject".equals(action)) {
+                int paymentId = Integer.parseInt(request.getParameter("paymentId"));
+                paymentsDAO.updatePaymentStatus(paymentId, "FAILED");
+
+            } else if ("delete".equals(action)) {
+                int paymentId = Integer.parseInt(request.getParameter("paymentId"));
+                paymentsDAO.deletePayment(paymentId);
+
+            } else if ("create".equals(action)) {
+                Payments payments = new Payments();
+                payments.setBookingId(Integer.parseInt(request.getParameter("bookingId")));
+                payments.setAccountId(Integer.parseInt(request.getParameter("accountId")));
+                payments.setPrice(Integer.parseInt(request.getParameter("price")));
+                payments.setMethod(request.getParameter("method"));
+                payments.setPayType(request.getParameter("payType"));
+                payments.setStatus(request.getParameter("status"));
+                payments.setCreatedBy(1);
+                paymentsDAO.createPayment(payments);
+
+            } else if ("update".equals(action)) {
+                Payments payments = new Payments();
+                payments.setPaymentId(Integer.parseInt(request.getParameter("paymentId")));
+                payments.setBookingId(Integer.parseInt(request.getParameter("bookingId")));
+                payments.setAccountId(Integer.parseInt(request.getParameter("accountId")));
+                payments.setPrice(Integer.parseInt(request.getParameter("price")));
+                payments.setMethod(request.getParameter("method"));
+                payments.setPayType(request.getParameter("payType"));
+                payments.setStatus(request.getParameter("status"));
+                paymentsDAO.updatePayment(payments);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/admin/payments?error=true");
+            return;
+        }
         response.sendRedirect(request.getContextPath() + "/admin/payments");
     }
 }

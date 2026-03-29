@@ -32,25 +32,14 @@
         <div class="checkout-container">
             <h2>Chọn phương thức thanh toán</h2>
 
-            <form action="${pageContext.request.contextPath}/payment" method="POST">
+            <form action="${pageContext.request.contextPath}/payments" method="POST">
 
                 <input type="hidden" name="bookingId" value="${param.bookingId}">
                 <input type="hidden" name="price" value="${param.price}">
+                <input type="hidden" name="km" value="${param.km}">
+                <input type="hidden" name="payType" value="100%">
 
-                <div class="payment-methods" style="margin-top: 20px;">
-                    <h3 style="margin-bottom: 10px;">Hình thức trả phí</h3>
-                    <label class="payment-option">
-                        <input type="radio" name="payType" value="DEPOSIT" required checked>
-                        <span class="payment-name">Đặt cọc trước (30%)</span>
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="payType" value="FULL" required>
-                        <span class="payment-name">Thanh toán toàn bộ (100%)</span>
-                    </label>
-                </div>
-
-                <div class="payment-methods" style="margin-top: 20px;">
-                    <h3 style="margin-bottom: 10px;">Cách thanh toán</h3>
+                <div class="payment-methods">
                     <label class="payment-option">
                         <input type="radio" name="method" value="TRANSFER" required>
                         <span class="payment-name">Chuyển khoản MoMo</span>
@@ -61,23 +50,10 @@
                     </label>
                 </div>
 
-                <div class="terms-group" style="margin-top: 20px;">
-                    <input type="checkbox" id="agree-terms" required>
-                    <label for="agree-terms">Tôi đồng ý với <a href="#">điều khoản dịch vụ</a></label>
-                </div>
-
-                <div class="total-summary" style="margin-top: 20px;">
-                    <div class="summary-line final-total">
-                        <span>Tổng thanh toán:</span>
-                        <strong id="final-price">${param.price} đ</strong>
-                    </div>
-                </div>
-
                 <div class="action-buttons" style="margin-top: 20px;">
                     <button type="button" class="btn-back" onclick="history.back()">← Quay lại</button>
                     <button type="submit" class="btn-next">Xác nhận thanh toán →</button>
                 </div>
-
             </form>
         </div>
     </div>

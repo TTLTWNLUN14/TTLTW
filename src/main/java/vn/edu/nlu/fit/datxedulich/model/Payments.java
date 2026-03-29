@@ -8,6 +8,7 @@ public class Payments implements Serializable {
     private int bookingId;
     private int accountId;
     private int price;
+    private int km;
     private String method;
     private String payType;
     private String status;
@@ -17,11 +18,12 @@ public class Payments implements Serializable {
     public Payments() {
     }
 
-    public Payments(int paymentId, int bookingId, int accountId, int price, String method, String payType, String status, Date paidAt, int createdBy) {
+    public Payments(int paymentId, int bookingId, int accountId, int price, int km, String method, String payType, String status, Date paidAt, int createdBy) {
         this.paymentId = paymentId;
         this.bookingId = bookingId;
         this.accountId = accountId;
         this.price = price;
+        this.km = km;
         this.method = method;
         this.payType = payType;
         this.status = status;
@@ -59,6 +61,14 @@ public class Payments implements Serializable {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getKm() {
+        return km;
+    }
+
+    public void setKm(int km) {
+        this.km = km;
     }
 
     public String getMethod() {
