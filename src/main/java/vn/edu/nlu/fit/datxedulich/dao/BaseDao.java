@@ -2,6 +2,7 @@ package vn.edu.nlu.fit.datxedulich.dao;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.mapper.reflect.ReflectionMappers;
 
 import java.sql.SQLException;
 
@@ -16,8 +17,8 @@ public abstract class BaseDao {
     }
     private void connect() {
         MysqlDataSource dataSource = new MysqlDataSource();
-        System.out.println("jdbc:mysql://"+DBProperties.host+":"+DBProperties.port+"/"+DBProperties.dbname);
-        dataSource.setUrl("jdbc:mysql://"+DBProperties.host+":"+DBProperties.port+"/"+DBProperties.dbname);
+        System.out.println("jdbc:mysql://"+DBProperties.host+":"+DBProperties.port+"/"+DBProperties.dbname+ "?tinyInt1isBit=false");
+        dataSource.setUrl("jdbc:mysql://" + DBProperties.host + ":" + DBProperties.port + "/" + DBProperties.dbname + "?tinyInt1isBit=false");
         dataSource.setUser(DBProperties.username);
         dataSource.setPassword(DBProperties.password);
         try{
@@ -27,6 +28,7 @@ public abstract class BaseDao {
             throw new RuntimeException(e);
         }
         jdbi = Jdbi.create(dataSource);
+
     }
 
 }

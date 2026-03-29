@@ -38,7 +38,7 @@
                 <div class="cd-gallery">
                     <div class="cd-main-img">
                         <span class="badge-stock">3 xe có sẵn</span>
-                        <img height="400px" src="${product.image}" alt="">
+                        <img height="400px" src="${product.img}" alt="">
                     </div>
                     <div class="cd-thumb-list">
                         <div class="cd-thumb active"></div>
@@ -90,7 +90,7 @@
             <div class="cd-right">
                 <div class="cd-booking-card">
                     <div class="car-brand">FORD</div>
-                    <h1 class="cd-car-name">${product.name}</h1>
+                    <h1 class="cd-car-name">${product.typeName}</h1>
 
                     <div class="cd-price-wrap">
                         <div class="cd-price-item">

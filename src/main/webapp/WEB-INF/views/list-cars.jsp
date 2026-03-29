@@ -98,12 +98,12 @@
                     <c:forEach var="p" items="${list}">
                         <div class="car-card">
                             <div class="car-img-box">
-                                <img style="width: 197px" src="${p.image}" alt="img-cars">
+                                <img style="width: 197px" src="${p.img}" alt="img-cars">
                                 <span class="badge-stock">3 xe có sẵn</span>
                             </div>
                             <div class="car-body">
                                 <div class="car-brand">FORD</div>
-                                <h3 class="car-title"><a href="list-product/product?id=${p.id}">${p.name}</a></h3>
+                                <h3 class="car-title"><a href="list-product/product?typeId=${p.typeId}">${p.typeName}</a></h3>
                                 <div class="car-tags">
                                     <span class="car-tag">5 chỗ</span>
                                     <span class="car-tag">Diesel</span>
@@ -122,7 +122,7 @@
                                 </div>
 
                                 <div class="car-action" style="margin-top: 15px; text-align: center;">
-                                    <a href="add-cart?productId=${p.id}&quantity=1&isDriver=true"
+                                    <a href="add-cart?productId=${p.typeId}&quantity=1&isDriver=true"
                                        style="display: block; padding: 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
                                         Thêm vào giỏ hàng
                                     </a>

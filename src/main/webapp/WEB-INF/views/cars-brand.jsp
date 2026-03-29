@@ -49,7 +49,7 @@
                         <span class="brand-country">${b.country}</span>
                     </div>
                     <div class="card-middle">
-                        <p class="brand-desc">${b.description}</p>
+                        <p class="brand-desc">${b.descriptionBrand}</p>
                     </div>
                     <div class="card-stats">
                         <div class="stat-item">

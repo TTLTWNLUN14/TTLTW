@@ -1,34 +1,34 @@
 package vn.edu.nlu.fit.datxedulich.dao;
 
-import org.jdbi.v3.core.statement.PreparedBatch;
 import vn.edu.nlu.fit.datxedulich.model.Brand;
-import vn.edu.nlu.fit.datxedulich.model.Product;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class BrandDao extends  BaseDao{
-    static Map<Integer, Brand> productMap = new HashMap<Integer, Brand>();
+public class BrandDao extends BaseDao {
 
+    // all hãng xe
     public List<Brand> getListBrand() {
-        return get().withHandle(h-> h.createQuery("select * from car_brands").mapToBean(Brand.class).list());
+        return get().withHandle(h -> h.createQuery("SELECT * FROM car_brands ORDER BY brand_id ASC").mapToBean(Brand.class).list());
     }
 
-    public Brand getBrand(int brandId) {
-        return get().withHandle(h -> h.createQuery("select * from car_brands where brand_id = :brandId").bind("brandId", brandId).mapToBean(Brand.class).first()
-        );
+    // Lấy 1 hãng xe theo id
+    public Brand getBrandById(int brandId) {
+        return get().withHandle(h ->h.createQuery("SELECT * FROM car_brands WHERE brand_id = :brandId").bind("brandId", brandId).mapToBean(Brand.class).findFirst().orElse(null));
     }
 
-    // insertBrand null
-    public void insertBrand(List<Product> products) {
-        get().useHandle(handle -> {
-            PreparedBatch batch = handle.prepareBatch("//none");
-            products.forEach(product ->{
-                batch.bindBean(product).add();
-            });
-            batch.execute();
-        });
+    // Thêm hãng xe mới
+    public void insertBrand(Brand brand) {
+        get().useHandle(h ->h.createUpdate("INSERT INTO car_brands (brand_name, logo, country, description_brand, is_active) VALUES (:brandName, :logo, :country, :descriptionBrand, :active)").bindBean(brand).execute());
+    }
 
+    // Cập nhật hãng xe theo brand_id
+    public void updateBrand(Brand brand) {
+        get().useHandle(h ->
+                h.createUpdate(
+                                "UPDATE car_brands SET brand_name = :brandName, logo = :logo, country = :country, description_brand = :descriptionBrand, is_active = :active WHERE brand_id = :brandId").bindBean(brand).execute());
+    }
+
+    // Xóa hãng xe theo id
+    public void deleteBrand(int brandId) {
+        get().useHandle(h ->h.createUpdate("DELETE FROM car_brands WHERE brand_id = :brandId").bind("brandId", brandId).execute());
     }
 }

@@ -4,9 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import vn.edu.nlu.fit.datxedulich.model.Brand;
-import vn.edu.nlu.fit.datxedulich.model.Product;
 import vn.edu.nlu.fit.datxedulich.services.BrandService;
-import vn.edu.nlu.fit.datxedulich.services.ProductService;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,6 +1,7 @@
 package vn.edu.nlu.fit.datxedulich.model.cart;
 
-import vn.edu.nlu.fit.datxedulich.model.Product;
+
+import vn.edu.nlu.fit.datxedulich.model.CarType;
 
 import java.io.Serializable;
 
@@ -9,16 +10,16 @@ public class CartItem implements Serializable {
     private int quantity;
     private boolean isDriver;
     private int price;
-    private Product product;
+    private CarType carType;
 
     public CartItem() {
     }
 
-    public CartItem(int quantity, boolean isDriver,  Product product) {
+    public CartItem(int quantity, boolean isDriver,  CarType carType) {
         this.quantity = quantity;
         this.isDriver = isDriver;
-        this.price = isDriver? product.getPriceKm():product.getPriceDay();
-        this.product = product;
+        this.price = isDriver? carType.getPriceKm():carType.getPriceDay();
+        this.carType = carType;
     }
 
     public int getQuantity() {
@@ -45,12 +46,12 @@ public class CartItem implements Serializable {
         this.price = price;
     }
 
-    public Product getProduct() {
-        return product;
+    public CarType getProduct() {
+        return carType;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProduct(CarType carType) {
+        this.carType = carType;
     }
 
     public void upQuantity(int quantity) {

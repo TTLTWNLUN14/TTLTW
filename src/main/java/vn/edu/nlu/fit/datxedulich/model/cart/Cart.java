@@ -1,6 +1,6 @@
 package vn.edu.nlu.fit.datxedulich.model.cart;
 
-import vn.edu.nlu.fit.datxedulich.model.Product;
+import vn.edu.nlu.fit.datxedulich.model.CarType;
 import vn.edu.nlu.fit.datxedulich.model.User;
 
 import java.io.Serializable;
@@ -16,15 +16,15 @@ public class Cart implements Serializable {
 
     public Cart() { data= new HashMap<>(); }
 
-    public void addItem(Product product, int quantity, boolean isDriver) {
+    public void addItem(CarType product, int quantity, boolean isDriver) {
         if (quantity<=0){
             quantity=1;
         }
-        if(get(product.getId())!=null){
-            data.get(product.getId()).upQuantity(quantity);
+        if(get(product.getTypeId())!=null){
+            data.get(product.getTypeId()).upQuantity(quantity);
         }
         else {
-            data.put(product.getId(), new CartItem(quantity, isDriver,product));
+            data.put(product.getTypeId(), new CartItem(quantity, isDriver,product));
         }
     }
     public boolean updateItem(int productId, int quantity) {
