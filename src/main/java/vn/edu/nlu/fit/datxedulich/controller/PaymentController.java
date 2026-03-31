@@ -3,8 +3,7 @@ package vn.edu.nlu.fit.datxedulich.controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import vn.edu.nlu.fit.datxedulich.dao.PaymentsDAO;
-import vn.edu.nlu.fit.datxedulich.model.Payments;
+import vn.edu.nlu.fit.datxedulich.model.Payment;
 import vn.edu.nlu.fit.datxedulich.services.PaymentService;
 
 import java.io.IOException;
@@ -25,18 +24,18 @@ public class PaymentController extends HttpServlet {
             int km = Integer.parseInt(request.getParameter("km") != null ? request.getParameter("km") : "0");
             String method = request.getParameter("method");
             String payType = request.getParameter("payType");
-            Payments payments = new Payments();
-            payments.setBookingId(bookingId);
-            payments.setAccountId(1);
-            payments.setPrice(price);
-            payments.setKm(km);
-            payments.setPayType(payType);
-            payments.setMethod(method);
-            payments.setStatus("PENDING");
-            payments.setCreatedBy(1);
+            Payment payment = new Payment();
+            payment.setBookingId(bookingId);
+            payment.setAccountId(1);
+            payment.setPrice(price);
+            payment.setKm(km);
+            payment.setPayType(payType);
+            payment.setMethod(method);
+            payment.setStatus("PENDING");
+            payment.setCreatedBy(1);
 
             PaymentService paymentService = new PaymentService();
-            paymentService.createPayment(payments);
+            paymentService.createPayment(payment);
 
             if ("TRANSFER".equalsIgnoreCase(method)) {
                 response.sendRedirect(request.getContextPath() + "/assets/html/payment_qr.html");

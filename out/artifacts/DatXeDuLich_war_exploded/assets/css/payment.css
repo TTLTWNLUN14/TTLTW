@@ -1,0 +1,382 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fb;
+}
+
+.global-nav {
+    background-color: #0b1a30;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-inner {
+    width: 100%;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    color: #f9a01b;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: "Times New Roman", Times, serif;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    margin-left: auto;
+    margin-right: 40px;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #f9a01b;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #f9a01b;
+    border-radius: 2px;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+}
+
+.btn-login {
+    background-color: #1a56db;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-login:hover {
+    background-color: #1e40af;
+}
+
+.payment-page {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.payment-layout {
+    display: flex;
+    gap: 30px;
+    max-width: 1050px;
+    width: 100%;
+}
+
+.checkout-container {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.checkout-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.checkout-header h2 {
+    font-size: 16px;
+    color: #1e3a8a;
+    font-weight: bold;
+}
+
+.discount-section {
+    padding: 25px;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+.section-title {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+.red-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.discount-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 15px;
+}
+
+.coupon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.coupon-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #f9fafb;
+    transition: all 0.2s;
+}
+
+.coupon-item.active {
+    border-color: #f59e0b;
+    background-color: #fffbeb;
+}
+
+.coupon-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.coupon-info strong {
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.coupon-info span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.coupon-percent {
+    font-weight: bold;
+    color: #ef4444;
+    font-size: 16px;
+}
+
+.discount-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.discount-input-row input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    color: #111827;
+}
+
+.btn-apply {
+    padding: 0 24px;
+    border: 1px solid #1e3a8a;
+    background: transparent;
+    color: #1e3a8a;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-apply:hover {
+    background: #eff6ff;
+}
+
+.payment-methods-section {
+    padding: 25px;
+}
+
+.payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.payment-card {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.payment-card input[type="radio"] {
+    display: none;
+}
+
+.payment-name {
+    font-size: 14px;
+    color: #1f2937;
+    font-weight: 500;
+}
+
+.payment-card.active {
+    border-color: #f59e0b;
+    background-color: #fffbeb;
+}
+
+.terms-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.terms-group input {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.terms-group a {
+    color: #f59e0b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-back {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn-back:hover {
+    background: #f3f4f6;
+}
+
+.btn-next {
+    background-color: #1e3a8a;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-next:hover {
+    background-color: #172554;
+}
+
+.checkout-section {
+    padding: 25px;
+    border-bottom: 1px solid #f3f4f6;
+}
+.checkout-section:last-child {
+    border-bottom: none;
+}
+
+.info-grid {
+    display: grid;
+    gap: 12px;
+    background-color: #f9fafb;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.info-row strong {
+    color: #111827;
+}
+
+.total-summary {
+    background-color: #f9fafb;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.summary-line.final-total {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #d1d5db;
+    align-items: center;
+}
+
+.final-total span {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.final-total strong {
+    font-size: 22px;
+    color: #ef4444;
+}

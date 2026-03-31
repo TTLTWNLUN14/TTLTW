@@ -1,26 +1,26 @@
 package vn.edu.nlu.fit.datxedulich.services;
 
-import vn.edu.nlu.fit.datxedulich.dao.PaymentsDAO;
-import vn.edu.nlu.fit.datxedulich.model.Payments;
+import vn.edu.nlu.fit.datxedulich.dao.PaymentDAO;
+import vn.edu.nlu.fit.datxedulich.model.Payment;
 
 import java.util.List;
 
 public class PaymentService {
-    private PaymentsDAO paymentsDAO = new PaymentsDAO();
+    private PaymentDAO paymentDAO = new PaymentDAO();
 
-    public boolean createPayment(Payments payment) {
-        return paymentsDAO.createPayment(payment);
+    public boolean createPayment(Payment payment) {
+        return paymentDAO.createPayment(payment);
     }
 
-    public List<Payments> getAllPayments() {
-        return paymentsDAO.getAllPayments();
+    public List<Payment> getAllPayments() {
+        return paymentDAO.getAllPayments();
     }
 
-    public List<Payments> getPaymentsByAccountId(int accountId) {
-        return paymentsDAO.getPaymentsByAccount(accountId);
+    public List<Payment> getPaymentsByAccountId(int accountId) {
+        return paymentDAO.getPaymentsByAccount(accountId);
     }
 
     public boolean updatePaymentStatus(int paymentId, String status) {
-        return paymentsDAO.updatePaymentStatus(paymentId,status);
+        return paymentDAO.updatePaymentStatus(paymentId,status);
     }
 }
