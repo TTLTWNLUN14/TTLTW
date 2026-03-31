@@ -62,17 +62,9 @@
                     <div class="coupon-item">
                         <div class="coupon-info">
                             <strong>WELCOME10</strong>
-                            <span>Chào mừng thành viên mới - Giảm 10% (tối đa 200.000đ)</span>
+                            <span>Chào mừng thành viên mới - Giảm 10%</span>
                         </div>
                         <div class="coupon-percent">-10<sup>%</sup></div>
-                    </div>
-
-                    <div class="coupon-item">
-                        <div class="coupon-info">
-                            <strong>DALAT2025</strong>
-                            <span>Tuyến HCM - Đà Lạt - Giảm 12% (tối đa 300.000đ)</span>
-                        </div>
-                        <div class="coupon-percent">-12<sup>%</sup></div>
                     </div>
                 </div>
 
@@ -86,14 +78,14 @@
                 <h3 class="section-title"><span class="red-dot"></span> PHƯƠNG THỨC THANH TOÁN</h3>
 
                 <div class="payment-grid">
-                    <label class="payment-card active">
-                        <input type="radio" name="payment_method" value="momo">
-                        <span class="payment-name">Chuyển khoản / MoMo</span>
+                    <label class="payment-card active" data-target="payment_qr.html">
+                        <input type="radio" name="payment_method" value="online" checked>
+                        <span class="payment-name">Thanh toán ngay (Online / Mã QR)</span>
                     </label>
 
-                    <label class="payment-card">
-                        <input type="radio" name="payment_method" value="cash">
-                        <span class="payment-name">Tiền mặt</span>
+                    <label class="payment-card" data-target="payment_confirmation.html">
+                        <input type="radio" name="payment_method" value="deposit">
+                        <span class="payment-name">Đặt cọc (Thanh toán sau)</span>
                     </label>
                 </div>
 
@@ -118,8 +110,8 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-back"><a href="info-booking.html">← Quay lại</a> </button>
-                    <button class="btn-next"><a href="payment_qr.html">Đặt xe ngay →</a></button>
+                    <a href="info-booking.html" class="btn-back" >← Quay lại</a>
+                    <a href="payment_qr.html" id="link-submit-payment" class="btn-next" >Đặt xe ngay →</a>
                 </div>
             </div>
         </div>

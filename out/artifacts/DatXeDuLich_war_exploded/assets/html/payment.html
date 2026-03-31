@@ -1,24 +1,22 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh Toán - Auto Cars</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/payment.css">
+    <link rel="stylesheet" href="../css/payment.css">
 </head>
 
 <body>
 <nav class="global-nav">
     <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/assets/html/index.html">AUTO CARS</a>
+        <a class="nav-logo" href="index.html">AUTO CARS</a>
         <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/index.html">Trang chủ</a>
-            <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/cars-brand.html">Hãng xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/booking.html">Đặt xe</a>
-            <a class="nav-link" href="my-shopping-cart">Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})</a>
+            <a class="nav-link" href="index.html">Trang chủ</a>
+            <a class="nav-link" href="list-cars.html">Xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/cars-brand.jsp">Hãng xe</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
         </div>
         <div class="nav-actions" id="navActions">
             <a href="#" class="btn-login">Đăng nhập</a>
@@ -80,12 +78,12 @@
                 <h3 class="section-title"><span class="red-dot"></span> PHƯƠNG THỨC THANH TOÁN</h3>
 
                 <div class="payment-grid">
-                    <label class="payment-card active" data-target="payment_qr.jsp">
+                    <label class="payment-card active" data-target="payment_qr.html">
                         <input type="radio" name="payment_method" value="online" checked>
                         <span class="payment-name">Thanh toán ngay (Online / Mã QR)</span>
                     </label>
 
-                    <label class="payment-card" data-target="payment_confirmation.jsp">
+                    <label class="payment-card" data-target="payment_confirmation.html">
                         <input type="radio" name="payment_method" value="deposit">
                         <span class="payment-name">Đặt cọc (Thanh toán sau)</span>
                     </label>
@@ -112,14 +110,14 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="javascript:history.back()" class="btn-back" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;">← Quay lại</a>
-                    <a href="/PaymentQRController" id="link-submit-payment" class="btn-next" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;">Đặt xe ngay →</a>
+                    <a href="info-booking.html" class="btn-back" >← Quay lại</a>
+                    <a href="payment_qr.html" id="link-submit-payment" class="btn-next" >Đặt xe ngay →</a>
                 </div>
             </div>
         </div>
     </div>
 </main>
 
-<script src="${pageContext.request.contextPath}/assets/js/payment.js"></script>
+<script src="../js/payment.js"></script>
 </body>
 </html>
