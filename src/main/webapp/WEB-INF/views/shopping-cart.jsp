@@ -28,19 +28,16 @@
 
         <div class="order-list">
             <c:forEach items="${sessionScope.cart.items}" var="ci">
-                <div class="order-card"
-                     data-product-id="${ci.product.id}"
-                     data-price="${ci.price}"
-                     data-quantity="${ci.quantity}">
+                <div class="order-card">
                     <input type="checkbox"
                            class="order-checkbox cart-select"
                            checked
                            onchange="recalcTotal()">
                     <div class="order-info">
                         <h4>
-                            <a href="product?id=${ci.product.id}"
+                            <a href="list-product/product?typeId=${ci.product.typeId}"
                                style="text-decoration:none; color:inherit;">
-                                    ${ci.product.name}
+                                    ${ci.product.typeName}
                             </a>
                         </h4>
 
@@ -50,7 +47,7 @@
                             <span class="highlight-text">Số lượng:</span>
 
                             <form action="update-cart" method="post" style="margin:0">
-                                <input type="hidden" name="productId" value="${ci.product.id}">
+                                <input type="hidden" name="productId" value="${ci.product.typeId}">
                                 <input type="hidden" name="quantity"
                                        value="${ci.quantity > 1 ? ci.quantity - 1 : 1}">
                                 <button type="submit" class="qty-btn"
@@ -60,7 +57,7 @@
                             <span class="qty-display">${ci.quantity}</span>
 
                             <form action="update-cart" method="post" style="margin:0">
-                                <input type="hidden" name="productId" value="${ci.product.id}">
+                                <input type="hidden" name="productId" value="${ci.product.typeId}">
                                 <input type="hidden" name="quantity" value="${ci.quantity + 1}">
                                 <button type="submit" class="qty-btn">+</button>
                             </form>
@@ -70,22 +67,22 @@
 
                         <div class="card-actions">
                             <form action="del-item" method="post" style="margin:0">
-                                <input type="hidden" name="productId" value="${ci.product.id}">
+                                <input type="hidden" name="productId" value="${ci.product.typeId}>
                                 <button type="submit" class="btn-delete">Xóa</button>
                             </form>
 
                             <button class="btn-pay-item"
-                                    onclick="payItem(${ci.product.id})">
+                                    onclick="payItem(${ci.product.typeId})">
                                 Thanh toán
                             </button>
 
                             <button class="btn-detail"
-                                    onclick="toggleDetail(this, ${ci.product.id})">
+                                    onclick="toggleDetail(this, ${ci.product.typeId})">
                                 Xem chi tiết ▾
                             </button>
                         </div>
 
-                        <div class="detail-panel"  id="detail-${ci.product.id}">
+                        <div class="detail-panel"  id="detail-${ci.product.typeId}">
                             <div class="detail-grid">
 
                                 <div class="detail-section-title">Thông tin xe</div>
@@ -96,7 +93,7 @@
                                 </div>
                                 <div class="detail-field">
                                     <label>Tên xe</label>
-                                    <input type="text" value="${ci.product.name}" readonly>
+                                    <input type="text" value="${ci.product.typeName}" readonly>
                                 </div>
                                 <div class="detail-field">
                                     <label>Loại xe</label>
