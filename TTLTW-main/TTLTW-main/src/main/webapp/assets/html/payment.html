@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán - Auto Cars</title>
+    <link rel="stylesheet" href="../css/payment.css">
+</head>
+<body>
+
+<nav class="global-nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="index.html">AUTO CARS</a>
+        <div class="nav-links">
+            <a class="nav-link" href="index.html">Trang chủ</a>
+            <a class="nav-link" href="list-cars.html">Xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/cars-brand.jsp">Hãng xe</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
+        </div>
+        <div class="nav-actions" id="navActions">
+            <a href="#" class="btn-login">Đăng nhập</a>
+            <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
+        </div>
+    </div>
+</nav>
+
+<main class="payment-page">
+    <div class="payment-layout">
+
+        <div class="checkout-container">
+            <div class="checkout-header">
+                <h2>Thanh toán</h2>
+            </div>
+
+            <div class="discount-section">
+                <h3 class="section-title"><span class="red-dot"></span> MÃ GIẢM GIÁ</h3>
+                <p class="discount-subtitle">Mã ưu đãi của bạn:</p>
+
+                <div class="coupon-list">
+                    <div class="coupon-item">
+                        <div class="coupon-info">
+                            <strong>WELCOME10</strong>
+                            <span>Chào mừng thành viên mới - Giảm 10% (tối đa 200.000đ)</span>
+                        </div>
+                        <div class="coupon-percent">-10<sup>%</sup></div>
+                    </div>
+
+                    <div class="coupon-item">
+                        <div class="coupon-info">
+                            <strong>DALAT2025</strong>
+                            <span>Tuyến HCM - Đà Lạt - Giảm 12% (tối đa 300.000đ)</span>
+                        </div>
+                        <div class="coupon-percent">-12<sup>%</sup></div>
+                    </div>
+                </div>
+
+                <div class="discount-input-row">
+                    <input type="text" id="discount-code" placeholder="Chọn mã giảm giá..." readonly>
+                    <button class="btn-apply">Áp dụng</button>
+                </div>
+            </div>
+
+            <div class="payment-methods-section">
+                <h3 class="section-title">PHƯƠNG THỨC THANH TOÁN</h3>
+
+                <div class="payment-grid">
+                    <label class="payment-card active">
+                        <input type="radio" name="payment_method" value="momo" checked>
+                        <span class="payment-name">MoMo</span>
+                    </label>
+
+                    <label class="payment-card">
+                        <input type="radio" name="payment_method" value="cash">
+                        <span class="payment-name">Tiền mặt</span>
+                    </label>
+                </div>
+
+                <div class="terms-group">
+                    <input type="checkbox" id="agree-terms">
+                    <label for="agree-terms">Tôi đồng ý với <a href="#">điều khoản dịch vụ</a> và <a href="#">chính sách thuê xe</a></label>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-back"><a href="booking-userDriver.html">← Quay lại</a> </button>
+                    <button class="btn-next"><a href="payment_confirmation.html">Đặt xe ngay →</a></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cd-summary-card">
+            <div class="summary-header">
+                <h3>Tóm tắt đơn</h3>
+            </div>
+
+            <div class="summary-details">
+                <div class="summary-row">
+                    <span class="summary-label">Xe</span>
+                </div>
+
+                <div class="summary-row">
+                    <span class="summary-label">Hình thức</span>
+                </div>
+
+                <div class="summary-row">
+                    <span class="summary-label">Tuyến</span>
+                </div>
+
+                <div class="summary-row">
+                    <span class="summary-label">Ngày đi</span>
+                </div>
+
+                <div class="summary-row">
+                    <span class="summary-label">Tài xế</span>
+                </div>
+            </div>
+
+            <hr class="summary-divider">
+
+            <div class="summary-row price-row">
+                <span class="summary-label">Giá thuê</span>
+            </div>
+
+            <div class="summary-row discount-row" id="summary-discount" style="display: none;">
+                <span class="summary-label"><span class="red-dot"></span> Mã giảm giá</span>
+            </div>
+
+            <hr class="summary-divider">
+
+            <div class="summary-row total-row">
+                <span class="total-label summary-label">Tổng cộng</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="../js/payment.js"></script>
+</body>
+</html>

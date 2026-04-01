@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý loại xe - Auto Cars Admin</title>
+  <link rel="stylesheet" href="../css/cars-admin.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">Auto Cars Admin</div>
+
+  <div class="menu-title">TỔNG QUAN</div>
+  <a href="dashboard-admin.html" class="menu-item">Dashboard</a>
+
+  <div class="menu-title">VẬN HÀNH</div>
+  <a href="booking-admin.html" class="menu-item">Quản lý đặt xe</a>
+  <a href="#" class="menu-item">Quản lý thanh toán</a>
+
+  <div class="menu-title">DANH MỤC</div>
+  <a href="cars-brand-admin.html" class="menu-item">Hãng xe</a>
+  <a href="cars-admin.html" class="menu-item active">Loại xe</a>
+  <a href="#" class="menu-item">Mã giảm giá</a>
+
+  <div class="menu-title">KHÁCH HÀNG</div>
+  <a href="#" class="menu-item">Khách hàng</a>
+  <a href="#" class="menu-item">Đánh giá</a>
+  <a href="#" class="menu-item">Member</a>
+
+  <div class="menu-title">CÀI ĐẶT</div>
+  <a href="#" class="menu-item">Quản lý giá cước</a>
+  <a href="#" class="menu-item">Cài đặt hệ thống</a>
+</div>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1 class="page-title">Quản lý loại xe</h1>
+    <button class="btn-add">+ Thêm xe</button>
+  </div>
+
+  <div class="table-container">
+    <table class="custom-table">
+      <thead>
+      <tr>
+        <th>Ảnh</th>
+        <th>Tên xe</th>
+        <th>Hãng</th>
+        <th>Loại</th>
+        <th>Chỗ</th>
+        <th>Nhiên liệu</th>
+        <th>Giá/km</th>
+        <th>Giá/ngày</th>
+        <th>Xe có sẵn</th>
+        <th>Thao tác</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td></td>
+        <td><strong>Toyota Innova Cross</strong></td>
+        <td>Toyota</td>
+        <td>MPV</td>
+        <td>7</td>
+        <td>Hybrid</td>
+        <td class="text-orange">4.500đ</td>
+        <td class="text-orange">1.800.000đ</td>
+        <td><span class="badge-green">3</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-delete" title="Xóa">Xóa</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong>Toyota Fortuner</strong></td>
+        <td>Toyota</td>
+        <td>SUV</td>
+        <td>7</td>
+        <td>Diesel</td>
+        <td class="text-orange">5.500đ</td>
+        <td class="text-orange">2.500.000đ</td>
+        <td><span class="badge-green">2</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-delete" title="Xóa">Xóa</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong>Toyota Camry</strong></td>
+        <td>Toyota</td>
+        <td>Sedan</td>
+        <td>5</td>
+        <td>Hybrid</td>
+        <td class="text-orange">6.200đ</td>
+        <td class="text-orange">2.200.000đ</td>
+        <td><span class="badge-green">2</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-delete" title="Xóa">Xóa</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong>Honda CR-V</strong></td>
+        <td>Honda</td>
+        <td>SUV</td>
+        <td>5</td>
+        <td>Xăng</td>
+        <td class="text-orange">4.800đ</td>
+        <td class="text-orange">1.600.000đ</td>
+        <td><span class="badge-green">3</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-delete" title="Xóa">Xóa</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong>VinFast VF 8</strong></td>
+        <td>VinFast</td>
+        <td>SUV</td>
+        <td>5</td>
+        <td>Điện</td>
+        <td class="text-orange">4.000đ</td>
+        <td class="text-orange">1.500.000đ</td>
+        <td><span class="badge-green">4</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-delete" title="Xóa">Xóa</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong>Hyundai Tucson</strong></td>
+        <td>Hyundai</td>
+        <td>SUV</td>
+        <td>5</td>
+        <td>Xăng</td>
+        <td class="text-orange">4.400đ</td>
+        <td class="text-orange">1.500.000đ</td>
+        <td><span class="badge-green">3</span></td>
+        <td class="action-buttons">
+          <button class="btn-edit" title="Sửa">&#x270E;</button>
+          <button class="btn-delete" title="Xóa">Xóa</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

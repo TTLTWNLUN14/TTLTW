@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Đơn Hàng - Auto Cars</title>
+    <link rel="stylesheet" href="../css/payment_confirmation.css">
+</head>
+<body>
+
+<nav class="global-nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="index.html">AUTO CARS</a>
+        <div class="nav-links">
+            <a class="nav-link" href="index.html">Trang chủ</a>
+            <a class="nav-link" href="list-cars.html">Xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/cars-brand.jsp">Hãng xe</a>
+            <a class="nav-link" href="booking.html">Đặt xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
+        </div>
+        <div class="nav-actions" id="navActions">
+            <a href="#" class="btn-login">Đăng nhập</a>
+            <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
+        </div>
+    </div>
+</nav>
+
+<main class="confirm-page">
+    <div class="confirm-container">
+
+        <div class="success-header">
+            <div class="success-text">
+                <h1>Cảm ơn bạn đã đặt hàng!</h1>
+            </div>
+        </div>
+
+        <div class="summary-list">
+            <div class="summary-item">
+                <span class="label">Xe</span>
+                <span class="value"></span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Hình thức</span>
+                <span class="value"></span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Tuyến</span>
+                <span class="value"></span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Ngày đi</span>
+                <span class="value"></span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Tài xế</span>
+                <span class="value"></span>
+            </div>
+        </div>
+
+        <hr class="summary-divider">
+
+        <div class="summary-list">
+            <div class="summary-item">
+                <span class="label">Giá thuê</span>
+                <span class="value"></span>
+            </div>
+            <div class="summary-item total-row">
+                <span class="label">Tổng cộng</span>
+                <span class="value total-price"></span>
+            </div>
+        </div>
+
+        <div class="confirm-actions">
+            <button class="btn-back"><a href="index.html">← Quay về trang chủ</a> </button>
+            <button class="btn-next"><a href="../../WEB-INF/views/cars-brand.jsp">Tiếp tục mua hàng →</a></button>
+        </div>
+    </div>
+</main>
+
+<script src="../js/payment_confirmation.js"></script>
+</body>
+</html>
