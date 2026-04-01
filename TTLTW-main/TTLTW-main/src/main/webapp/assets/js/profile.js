@@ -334,4 +334,18 @@ if (myDriver) {
             navDrv.innerHTML = `Đăng ký tài xế <span style="background:var(--gold);border-radius:10px;padding:1px 7px;font-size:.7rem;color:#000;margin-left:4px">Chờ duyệt</span>`;
         }
     }
+    function switchTab(tabName) {
+        event.preventDefault();
+
+        document.querySelectorAll('.tab-pane').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+
+        document.getElementById('tab-' + tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
 }

@@ -346,3 +346,192 @@ body {
     background: #f8fafc;
     border-color: #a8b5cc;
 }
+.alert {
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.alert strong {
+    font-weight: 600;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-left: 4px solid #dc2626;
+}
+
+.alert-success {
+    background-color: #dcfce7;
+    color: #166534;
+    border-left: 4px solid #16a34a;
+}
+
+.alert-info {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-left: 4px solid #3b82f6;
+}
+
+/* ==================== FORGOT PASSWORD STYLES ==================== */
+.forgot-desc {
+    color: #6b7a99;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.forgot-step {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 16px;
+    color: #8899bb;
+    font-size: 0.9rem;
+}
+
+.back-link span {
+    cursor: pointer;
+    color: #2563c4;
+    transition: color 0.2s;
+}
+
+.back-link span:hover {
+    color: #1a3a6b;
+    text-decoration: underline;
+}
+
+/* ==================== FORM ROW STYLES ==================== */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== SOCIAL LOGIN STYLES ==================== */
+.social-divider {
+    text-align: center;
+    margin: 20px 0;
+    color: #8899bb;
+    font-size: 0.85rem;
+    position: relative;
+}
+
+.social-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.social-divider span {
+    background: white;
+    padding: 0 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.social-login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #334155;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-social:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.btn-social img {
+    width: 16px;
+    height: 16px;
+}
+
+/* ==================== BUTTON STYLES ==================== */
+.btn-gold {
+    background: linear-gradient(135deg, #f5a623 0%, #d68910 100%);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-gold:hover {
+    background: linear-gradient(135deg, #d68910 0%, #b8860b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(245, 166, 35, 0.3);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 480px) {
+    .login-box {
+        padding: 32px 24px 28px;
+        border-radius: 16px;
+    }
+
+    .login-logo span {
+        font-size: 1.5rem;
+    }
+
+    .tabs {
+        margin-bottom: 20px;
+    }
+
+    .tab-btn {
+        font-size: 0.9rem;
+        padding: 8px 0 12px;
+    }
+
+    .social-login {
+        grid-template-columns: 1fr;
+    }
+}

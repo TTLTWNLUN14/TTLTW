@@ -1,89 +1,42 @@
 package vn.edu.nlu.fit.datxedulich.model;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 public class User implements Serializable {
-    private int accountId;
-    private String username;
-    private String passWordHash;
+    private int account_id;
+    private int role_id;
     private String email;
-    private String fullName;
-    private int phone;
-    private int CCCD;
-    private Date birthday;
-    private int roleID;
+    private String username;
+    private String password_hash;
+    private String full_name;
+    private String phone;
+    private String cccd;
+    private LocalDate birthday;
     private String gender;
-    private Date lastLogin;
-    private Date firstLogin;
-    private  String isActive;
+    private String address;
+    private boolean is_active;
+    private LocalDate last_login;
+    private LocalDate first_login;
 
 
     public User() {
     }
 
-    public int getRoleID() {
-        return roleID;
+    public User(String username, String password_hash) {
+        this.username = username;
+        this.password_hash = password_hash;
     }
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
-    }
-
-    public int getPhone() {
-        return phone;
-    }
-
-    public void setPhone(int phone) {
+    public User(String email, String password_hash, int role_id, String full_name, String username, String phone) {
+        this.email = email;
+        this.password_hash = password_hash;
+        this.role_id = role_id;
+        this.full_name = full_name;
+        this.username = username;
         this.phone = phone;
-    }
-
-    public String getPassWordHash() {
-        return passWordHash;
-    }
-
-    public void setPassWordHash(String passWordHash) {
-        this.passWordHash = passWordHash;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public int getCCCD() {
-        return CCCD;
-    }
-
-    public void setCCCD(int CCCD) {
-        this.CCCD = CCCD;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+        this.is_active = true;
     }
 
     public String getUsername() {
@@ -94,6 +47,54 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPassword_hash() {
+        return password_hash;
+    }
+
+    public void setPassword_hash(String password_hash) {
+        this.password_hash = password_hash;
+    }
+
+    public boolean isIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(boolean is_active) {
+        this.is_active = is_active;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -102,46 +103,51 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getCccd() {
+        return cccd;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
     }
 
-    public Date getFirstLogin() {
-        return firstLogin;
+    public String getAddress() {
+        return address;
     }
 
-    public void setFirstLogin(Date firstLogin) {
-        this.firstLogin = firstLogin;
+    public LocalDate getLast_login() {
+        return last_login;
     }
 
-    public Date getLastLogin() {
-        return lastLogin;
+    public void setLast_login(LocalDate last_login) {
+        this.last_login = last_login;
     }
 
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
+    public LocalDate getFirst_login() {
+        return first_login;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "accountId=" + accountId +
-                ", username='" + username + '\'' +
-                ", passWordHash='" + passWordHash + '\'' +
-                ", email='" + email + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", phone=" + phone +
-                ", CCCD=" + CCCD +
-                ", birthday=" + birthday +
-                ", roleID=" + roleID +
-                ", gender='" + gender + '\'' +
-                ", lastLogin=" + lastLogin +
-                ", firstLogin=" + firstLogin +
-                ", isActive='" + isActive + '\'' +
-                '}';
+    public void setFirst_login(LocalDate first_login) {
+        this.first_login = first_login;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
     }
 }
