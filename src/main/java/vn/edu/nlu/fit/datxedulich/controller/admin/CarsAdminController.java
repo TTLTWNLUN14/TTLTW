@@ -17,7 +17,7 @@ public class CarsAdminController extends HttpServlet {
     private final BrandService brandService     = new BrandService();
     private final CarTypeService carTypeService = new CarTypeService();
 
-    // ------------------------------------------------------------------ GET --
+    // --------------- GET --------------
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -48,6 +48,25 @@
            class="btn-add">+ Thêm xe</a>
     </div>
 
+    <%-- Bộ lọc theo hãng xe --%>
+    <div class="filter-bar">
+        <label>Lọc theo hãng:</label>
+        <form method="get" action="${pageContext.request.contextPath}/cars-admin"
+              style="display:flex; gap:8px; align-items:center;">
+            <select name="brandId">
+                <option value="">-- Tất cả hãng --</option>
+                <c:forEach var="b" items="${listBrand}">
+                    <option value="${b.brandId}"
+                            <c:if test="${b.brandId == selectedBrandId}">selected</c:if>>
+                            ${b.brandName}
+                    </option>
+                </c:forEach>
+            </select>
+            <button type="submit" class="btn-filter">Lọc</button>
+        </form>
+        <a href="${pageContext.request.contextPath}/cars-admin" class="btn-reset-filter">✕ Xóa lọc</a>
+    </div>
+
     <div class="table-container">
         <table class="custom-table">
             <thead>
