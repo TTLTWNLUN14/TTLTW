@@ -1,7 +1,8 @@
 package vn.edu.nlu.fit.datxedulich.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+
 
 public class Payment implements Serializable {
     private int paymentId;

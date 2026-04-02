@@ -16,12 +16,6 @@ public class AdminVoucherController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         VoucherService voucherService = new VoucherService();
-        HttpSession session = request.getSession();
-        if (session.getAttribute("adminId") == null) {
-            response.sendRedirect(request.getContextPath() + "/admin/login");
-            return;
-        }
-
         List<Voucher> vouchers = voucherService.getAllVouchers();
         request.setAttribute("listVouchers", vouchers);
         request.getRequestDispatcher("/WEB-INF/views/voucher-admin.jsp").forward(request, response);
@@ -33,7 +27,7 @@ public class AdminVoucherController extends HttpServlet {
         VoucherService voucherService = new VoucherService();
         HttpSession session = request.getSession();
         if (session.getAttribute("adminId") == null) {
-            response.sendRedirect(request.getContextPath() + "/admin/login");
+            response.sendRedirect(request.getContextPath() + "/admin-voucher");
             return;
         }
 

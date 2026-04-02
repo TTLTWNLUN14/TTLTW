@@ -9,7 +9,7 @@ import vn.edu.nlu.fit.datxedulich.model.Payment;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AdminPaymentController", value = "/admin/payment")
+@WebServlet(name = "AdminPaymentController", value = "/admin-payment")
 public class AdminPaymentController extends HttpServlet {
 
     @Override
@@ -18,7 +18,7 @@ public class AdminPaymentController extends HttpServlet {
         List<Payment> paymentList = paymentDAO.getAllPayments();
 
         request.setAttribute("listPayments", paymentList);
-        request.getRequestDispatcher("/WEB-INF/views/admin-payments.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/payment-admin.jsp").forward(request, response);
     }
 
     @Override

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     const discountInput = document.getElementById('discount-code');
     const savedVoucher = localStorage.getItem('selectedVoucher');
 
@@ -17,21 +18,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    const btnSubmit = document.getElementById('link-submit-payment');
-    const agreeCheckbox = document.getElementById('agree-terms');
+    const btnNext = document.querySelector('.btn-next');
+    if (btnNext) {
+        btnNext.addEventListener('click', function(event) {
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+            const agreeTerms = document.getElementById('agree-terms');
 
-    btnSubmit.addEventListener('click', function (e) {
-        const isMethodSelected = document.querySelector('.payment-card.active');
-        const isAgreed = agreeCheckbox.checked;
-        if (!isAgreed || !isMethodSelected) {
-            e.preventDefault();
-
-            // Thông báo cho người dùng
-            if (!isMethodSelected) {
-                alert("Vui lòng chọn phương thức thanh toán!");
-            } else if (!isAgreed) {
-                alert("Vui lòng tích vào 'Tôi đồng ý với điều khoản' để tiếp tục!");
+            if (!paymentMethod) {
+                alert("Vui lòng chọn một phương thức thanh toán!");
+                event.preventDefault();
+                return;
             }
-        }
-    });
+
+            if (agreeTerms && !agreeTerms.checked) {
+                alert("Vui lòng tick chọn 'Tôi đồng ý với điều khoản dịch vụ và chính sách thuê xe'!");
+                event.preventDefault();
+                return;
+            }
+        });
+    }
+
 });

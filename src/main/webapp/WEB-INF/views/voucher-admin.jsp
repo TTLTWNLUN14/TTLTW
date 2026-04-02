@@ -19,7 +19,7 @@
     <div class="menu-title">DANH MỤC</div>
     <a href="cars-brand-admin.jsp" class="menu-item">Hãng xe</a>
     <a href="cars-admin.jsp" class="menu-item">Loại xe</a>
-    <a href="${pageContext.request.contextPath}/admin/voucher" class="menu-item active">Mã giảm giá</a>
+    <a href="${pageContext.request.contextPath}/admin-voucher" class="menu-item active">Mã giảm giá</a>
     <div class="menu-title">KHÁCH HÀNG</div>
     <a href="#" class="menu-item">Khách hàng</a>
     <a href="#" class="menu-item">Đánh giá</a>
@@ -31,7 +31,6 @@
         <button class="btn-add" id="openAddModalBtn">+ Thêm mã giảm giá</button>
     </div>
 
-    <!-- Hiển thị thông báo -->
     <c:if test="${param.success != null}">
         <div class="alert alert-success">Thao tác thành công!</div>
     </c:if>
@@ -96,11 +95,10 @@
     </div>
 </main>
 
-<!-- Modal Thêm voucher -->
 <div id="addModal" class="modal">
     <div class="modal-content">
         <h3>Thêm mã giảm giá</h3>
-        <form method="post" action="${pageContext.request.contextPath}/admin/voucher">
+        <form method="post" action="${pageContext.request.contextPath}/admin-voucher">
             <input type="hidden" name="action" value="create">
             <input type="text" name="code" placeholder="Mã code *" required>
             <input type="text" name="nameVoucher" placeholder="Tên voucher *" required>
@@ -119,11 +117,10 @@
     </div>
 </div>
 
-<!-- Modal Sửa voucher -->
 <div id="editModal" class="modal">
     <div class="modal-content">
         <h3>Chỉnh sửa mã giảm giá</h3>
-        <form method="post" action="${pageContext.request.contextPath}/admin/voucher">
+        <form method="post" action="${pageContext.request.contextPath}/admin-voucher">
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="voucherId" id="editVoucherId">
             <input type="text" name="code" id="editCode" required>
