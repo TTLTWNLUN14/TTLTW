@@ -11,5 +11,6 @@
 <a href="list-product">list-product</a>
 <a href="list-product/product?id=1">product</a>
 <a href="brand">brand</a>
+<a href="payment">payment</a>
 </body>
 </html>

@@ -3,11 +3,14 @@ package vn.edu.nlu.fit.datxedulich.dao;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.mapper.reflect.ReflectionMappers;
+import vn.edu.nlu.fit.datxedulich.model.Voucher;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public abstract class BaseDao {
     Jdbi jdbi;
+
     protected Jdbi get() {
         if (jdbi == null) {
             connect();
@@ -15,13 +18,14 @@ public abstract class BaseDao {
         }
         return jdbi;
     }
+
     private void connect() {
         MysqlDataSource dataSource = new MysqlDataSource();
-        System.out.println("jdbc:mysql://"+DBProperties.host+":"+DBProperties.port+"/"+DBProperties.dbname+ "?tinyInt1isBit=false");
+        System.out.println("jdbc:mysql://" + DBProperties.host + ":" + DBProperties.port + "/" + DBProperties.dbname + "?tinyInt1isBit=false");
         dataSource.setUrl("jdbc:mysql://" + DBProperties.host + ":" + DBProperties.port + "/" + DBProperties.dbname + "?tinyInt1isBit=false");
         dataSource.setUser(DBProperties.username);
         dataSource.setPassword(DBProperties.password);
-        try{
+        try {
             dataSource.setUseCompression(true);
             dataSource.setAutoReconnect(true);
         } catch (SQLException e) {

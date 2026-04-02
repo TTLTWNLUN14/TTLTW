@@ -7,6 +7,7 @@ public class Payment implements Serializable {
     private int paymentId;
     private int bookingId;
     private int accountId;
+    private int voucherId;
     private int price;
     private int km;
     private String method;
@@ -18,10 +19,11 @@ public class Payment implements Serializable {
     public Payment() {
     }
 
-    public Payment(int paymentId, int bookingId, int accountId, int price, int km, String method, String payType, String status, Date paidAt, int createdBy) {
+    public Payment(int paymentId, int bookingId, int accountId, int voucherId, int price, int km, String method, String payType, String status, Date paidAt, int createdBy) {
         this.paymentId = paymentId;
         this.bookingId = bookingId;
         this.accountId = accountId;
+        this.voucherId = voucherId;
         this.price = price;
         this.km = km;
         this.method = method;
@@ -53,6 +55,14 @@ public class Payment implements Serializable {
 
     public void setAccountId(int accountId) {
         this.accountId = accountId;
+    }
+
+    public int getVoucherId() {
+        return voucherId;
+    }
+
+    public void setVoucherId(int voucherId) {
+        this.voucherId = voucherId;
     }
 
     public int getPrice() {

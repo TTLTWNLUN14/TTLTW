@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý mã giảm giá - Auto Cars Admin</title>
+    <link rel="stylesheet" href="../css/voucher-admin.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-header">Auto Cars Admin</div>
+
+    <div class="menu-title">TỔNG QUAN</div>
+    <a href="dashboard-admin.html" class="menu-item">Dashboard</a>
+
+    <div class="menu-title">VẬN HÀNH</div>
+    <a href="booking-admin.html" class="menu-item">Quản lý đặt xe</a>
+    <a href="#" class="menu-item">Quản lý thanh toán</a>
+
+    <div class="menu-title">DANH MỤC</div>
+    <a href="../../WEB-INF/views/cars-brand-admin.jsp" class="menu-item">Hãng xe</a>
+    <a href="cars-admin.html" class="menu-item">Loại xe</a>
+    <a href="voucher-admin.html" class="menu-item active">Mã giảm giá</a>
+
+    <div class="menu-title">KHÁCH HÀNG</div>
+    <a href="#" class="menu-item">Khách hàng</a>
+    <a href="#" class="menu-item">Đánh giá</a>
+    <a href="#" class="menu-item">Member</a>
+
+    <div class="menu-title">CÀI ĐẶT</div>
+    <a href="#" class="menu-item">Quản lý giá cước</a>
+    <a href="#" class="menu-item">Cài đặt hệ thống</a>
+</div>
+
+<div class="main-content">
+    <div class="page-header">
+        <h1 class="page-title">Quản lý mã giảm giá</h1>
+        <button class="btn-add">+ Thêm mã giảm giá</button>
+    </div>
+
+    <div class="table-container">
+        <table class="custom-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Mã Code</th>
+                <th>Tên Voucher</th>
+                <th>Giảm giá</th>
+                <th>Giảm tối đa</th>
+                <th>Đơn tối thiểu</th>
+                <th>Hạng KH</th>
+                <th>Lượt dùng</th>
+                <th>Hết hạn</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td><strong>WELCOME10</strong></td>
+                <td>Chào mừng thành viên mới</td>
+                <td class="text-orange">10%</td>
+                <td class="text-orange">999.000đ</td>
+                <td>0đ</td>
+                <td>Tất cả</td>
+                <td>150</td>
+                <td>31/12/2026</td>
+                <td><span class="badge-green">Hoạt động</span></td>
+                <td class="action-buttons">
+                    <button class="btn-edit" title="Sửa">&#x270E;</button>
+                    <button class="btn-delete" title="Xóa">Xóa</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><strong>VIPAUTOCAR</strong></td>
+                <td>Ưu đãi dành riêng cho VIP</td>
+                <td class="text-orange">15%</td>
+                <td class="text-orange">3.000.000đ</td>
+                <td>5.000.000đ</td>
+                <td><strong>VIP</strong></td>
+                <td>50</td>
+                <td>30/06/2026</td>
+                <td><span class="badge-green">Hoạt động</span></td>
+                <td class="action-buttons">
+                    <button class="btn-edit" title="Sửa">&#x270E;</button>
+                    <button class="btn-delete" title="Xóa">Xóa</button>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><strong>SUMMER26</strong></td>
+                <td>Khuyến mãi mùa hè sôi động</td>
+                <td class="text-orange">12%</td>
+                <td class="text-orange">2.000.000đ</td>
+                <td>2.000.000đ</td>
+                <td>Tất cả</td>
+                <td><span class="text-orange">0</span></td>
+                <td>31/08/2026</td>
+                <td><span class="badge-red">Hết lượt</span></td>
+                <td class="action-buttons">
+                    <button class="btn-edit" title="Sửa">&#x270E;</button>
+                    <button class="btn-delete" title="Xóa">Xóa</button>
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><strong>WEEKEND5</strong></td>
+                <td>Giảm giá cuối tuần</td>
+                <td class="text-orange">5%</td>
+                <td class="text-orange">500.000đ</td>
+                <td>1.000.000đ</td>
+                <td>Tất cả</td>
+                <td>20</td>
+                <td>15/01/2026</td>
+                <td><span class="badge-gray">Hết hạn</span></td>
+                <td class="action-buttons">
+                    <button class="btn-edit" title="Sửa">&#x270E;</button>
+                    <button class="btn-delete" title="Xóa">Xóa</button>
+                </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><strong>NEWYEAR26</strong></td>
+                <td>Đón năm mới cùng Auto Cars</td>
+                <td class="text-orange">20%</td>
+                <td class="text-orange">5.000.000đ</td>
+                <td>10.000.000đ</td>
+                <td>Tất cả</td>
+                <td>100</td>
+                <td>15/02/2026</td>
+                <td><span class="badge-red">Vô hiệu hóa</span></td>
+                <td class="action-buttons">
+                    <button class="btn-edit" title="Sửa">&#x270E;</button>
+                    <button class="btn-delete" title="Xóa">Xóa</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
