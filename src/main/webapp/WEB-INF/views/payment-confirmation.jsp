@@ -18,10 +18,6 @@
       <a class="nav-link" href="../../WEB-INF/views/booking.jsp">Đặt xe</a>
       <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
     </div>
-    <div class="nav-actions" id="navActions">
-      <a href="#" class="btn-login">Đăng nhập</a>
-      <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
-    </div>
   </div>
 </nav>
 
