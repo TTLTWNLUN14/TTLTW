@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "PaymentConfirmationController", value = "/PaymentConfirmationController")
+@WebServlet(name = "PaymentConfirmationController", value = "/payment-confirmation")
 public class PaymentConfirmationController extends HttpServlet {
 
     @Override

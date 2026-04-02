@@ -104,6 +104,21 @@ body {
     background: #fff;
     border-radius: 12px;
 }
+.confirm-container {
+    text-align: center;
+}
+.confirm-container h1 {
+    font-size: 22px;
+    color: #1e3a8a;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.confirm-container .sub-msg {
+    font-size: 15px;
+    color: #6b7280;
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
 
 .success-text h1 {
     color: #1e3a8a;
@@ -168,3 +183,22 @@ body {
     background-color: #172554;
 }
 
+
+.price-tag {
+    display: inline-block;
+    margin: 16px 0 24px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ef4444;
+}
+.info-note {
+    margin: 0 auto 24px;
+    max-width: 420px;
+    padding: 14px 18px;
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #92400e;
+    text-align: left;
+}

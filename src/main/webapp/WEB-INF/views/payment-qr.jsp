@@ -10,13 +10,13 @@
 <body>
 <nav class="global-nav">
     <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/assets/html/index.html">AUTO CARS</a>
+        <a class="nav-logo" href="index.html">AUTO CARS</a>
         <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/index.html">Trang chủ</a>
-            <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/cars-brand.html">Hãng xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/booking.html">Đặt xe</a>
-            <a class="nav-link" href="my-shopping-cart">Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})</a>
+            <a class="nav-link" href="index.html">Trang chủ</a>
+            <a class="nav-link" href="list-cars.html">Xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/cars-brand.jsp">Hãng xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/booking.jsp">Đặt xe</a>
+            <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
         </div>
         <div class="nav-actions" id="navActions">
             <a href="#" class="btn-login">Đăng nhập</a>
@@ -28,24 +28,34 @@
 <main class="qr-page">
     <div class="qr-container">
         <h2>Thanh toán qua mã QR</h2>
-        <p class="qr-desc">Vui lòng dùng ứng dụng ngân hàng hoặc MoMo để quét mã dưới đây.</p>
+        <p class="qr-desc">Vui lòng dùng ứng dụng MoMo để quét mã dưới đây.</p>
 
         <div class="qr-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="Mã QR Thanh Toán">
+            <img src=""
+                 alt="Mã QR Thanh Toán">
         </div>
 
         <div class="qr-amount">
             <span>Số tiền cần chuyển:</span>
-            <strong>1.000.000đ</strong>
+            <strong style="color:#ef4444; font-size:22px;">
+                ${not empty param.price ? param.price : price} VND
+            </strong>
         </div>
 
-        <div class="qr-actions" style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;">
-            <button class="btn-back" style="padding: 10px 20px; cursor: pointer;">
-                <a href="payment.jsp?error=qr_failed" style="text-decoration: none; color: #333;">Hủy giao dịch</a>
-            </button>
-            <button class="btn-next" style="padding: 10px 20px; background: #007bff; border: none; cursor: pointer;">
-                <a href="/PaymentConfirmationController" style="text-decoration: none; color: white;">Tôi đã thanh toán</a>
-            </button>
+        <p style="font-size:13px; color:#6b7280; margin-top:12px;">
+            Nội dung chuyển khoản: <strong>Thanh toán đặt xe</strong>
+        </p>
+
+        <div class="qr-actions" style="margin-top: 24px; display: flex; gap: 15px; justify-content: center;">
+            <a href="${pageContext.request.contextPath}/payment" class="btn-back"
+               style="padding:10px 20px; text-decoration:none; display:inline-flex; align-items:center; border:1px solid #d1d5db; border-radius:6px; color:#4b5563;">
+                ← Hủy giao dịch
+            </a>
+            <a href="${pageContext.request.contextPath}/payment-confirmation?payType=ONLINE&method=TRANSFER&price=${not empty param.price ? param.price : price}"
+               class="btn-next"
+               style="padding:10px 20px; background:#1e3a8a; color:white; text-decoration:none; display:inline-flex; align-items:center; border-radius:6px; font-weight:600;">
+                Tôi đã thanh toán →
+            </a>
         </div>
     </div>
 </main>
