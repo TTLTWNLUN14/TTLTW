@@ -13,21 +13,54 @@ import java.util.List;
 public class CarsBrandAdminController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         BrandService brandService = new BrandService();
 
-        // Lấy danh sách tất cả hãng xe từ DB
-        List<Brand> listBrand = brandService.getListBrand();
+        // Toàn bộ danh sách để dành cho bộ lọc
+        List<Brand> allBrands = brandService.getListBrand();
+        request.setAttribute("allBrands", allBrands);
 
-        // Đưa vào request attribute để JSP đọc bằng ${listBrand}
+        // Lọc theo brandId nếu có filterBrandId
+        String filterStr = request.getParameter("filterBrandId");
+        List<Brand> listBrand;
+
+        if (filterStr != null && !filterStr.isEmpty()) {
+            try {
+                int filterId = Integer.parseInt(filterStr);
+                Brand found = brandService.getBrandById(filterId);
+                listBrand = found != null
+                        ? java.util.Collections.singletonList(found)
+                        : java.util.Collections.emptyList();
+                request.setAttribute("filterBrandId", filterId);
+            } catch (NumberFormatException e) {
+                listBrand = allBrands;
+            }
+        } else {
+            listBrand = allBrands;
+        }
+
         request.setAttribute("listBrand", listBrand);
-
-        // Forward sang JSP để hiển thị (không redirect vì cần giữ attribute)
         request.getRequestDispatcher("/WEB-INF/views/cars-brand-admin.jsp").forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+        String action = request.getParameter("action");
+
+        if ("delete".equals(action)) {
+            try {
+                int brandId = Integer.parseInt(request.getParameter("brandId"));
+                BrandService brandService = new BrandService();
+                brandService.deleteBrand(brandId);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        // Sau khi xóa redirect về trang danh sách
+        response.sendRedirect(request.getContextPath() + "/brand-admin");
     }
 }

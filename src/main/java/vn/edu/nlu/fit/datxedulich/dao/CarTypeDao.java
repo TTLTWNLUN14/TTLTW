@@ -25,7 +25,7 @@ public class CarTypeDao extends BaseDao{
         get().useHandle(handle -> {
             PreparedBatch batch = handle.prepareBatch(
                     "INSERT INTO car_types (brand_id, type_name, category, seating_plan, fuel, price_dirver, price_km, price_day, img, description_type, count, is_active) " +
-                            "VALUES (:brandId, :typeName, :category, :seatingPlan, :fuel, :priceDirver, :priceKm, :priceDay, :img, :descriptionType, :count, :active)"
+                            "VALUES (:brandId, :typeName, :category, :seatingPlan, :fuel, :priceDirver, :priceKm, :priceDay, :img, :descriptionType, :count, :isActive)"
             );
             products.forEach(product -> {
                 batch.bindBean(product).add();
@@ -38,12 +38,12 @@ public class CarTypeDao extends BaseDao{
     }
     // Thêm loại xe mới
     public void insertCarType(CarType ct) {
-        get().useHandle(h ->h.createUpdate("INSERT INTO car_types (brand_id, type_name, category, seating_plan, fuel,  price_dirver, price_km, price_day, img, description_type, count, is_active) VALUES  (:brandId, :typeName, :category, :seatingPlan, :fuel,  :priceDirver, :priceKm, :priceDay, :img, :descriptionType, :count, :active)").bindBean(ct).execute());
+        get().useHandle(h ->h.createUpdate("INSERT INTO car_types (brand_id, type_name, category, seating_plan, fuel, price_km, price_day, img, description_type, count, is_active) VALUES  (:brandId, :typeName, :category, :seatingPlan, :fuel,   :priceKm, :priceDay, :img, :descriptionType, :count, :isActive)").bindBean(ct).execute());
     }
 
     // Cập nhật loại xe
     public void updateCarType(CarType ct) {
-        get().useHandle(h ->h.createUpdate("UPDATE car_types SET brand_id = :brandId, type_name = :typeName, category = :category, seating_plan = :seatingPlan, fuel = :fuel, price_dirver = :priceDirver, price_km = :priceKm, price_day = :priceDay, img = :img, description_type = :descriptionType, count = :count, is_active = :active WHERE type_id = :typeId").bindBean(ct).execute());
+        get().useHandle(h ->h.createUpdate("UPDATE car_types SET brand_id = :brandId, type_name = :typeName, category = :category, seating_plan = :seatingPlan, fuel = :fuel, price_dirver = :priceDirver, price_km = :priceKm, price_day = :priceDay, img = :img, description_type = :descriptionType, count = :count, is_active = :isActive WHERE type_id = :typeId").bindBean(ct).execute());
     }
 
     // Xóa loại xe

@@ -1,126 +1,100 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh Toán - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/payment.css">
 </head>
-
 <body>
 <nav class="global-nav">
     <div class="nav-inner">
-        <a class="nav-logo" href="index.html">AUTO CARS</a>
+        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
         <div class="nav-links">
-            <a class="nav-link" href="index.html">Trang chủ</a>
-            <a class="nav-link" href="list-cars.html">Xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/cars-brand.jsp">Hãng xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/booking.jsp">Đặt xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/list-product">Xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/my-shopping-cart">
+                Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})
+            </a>
         </div>
     </div>
 </nav>
 
 <main class="payment-page">
-    <div class="payment-layout">
-        <div class="checkout-container">
-            <div class="checkout-header">
-                <h2>Thanh toán</h2>
-            </div>
-            <div class="checkout-section info-section">
-                <h3 class="section-title"><span class="red-dot"></span> THÔNG TIN CHUYẾN ĐI</h3>
-                <div class="info-grid">
-                    <div class="info-row">
-                        <span>Mã đặt xe:</span>
-                        <strong>#${not empty param.bookingId ? param.bookingId : bookingId}</strong>
-                    </div>
-                    <div class="info-row">
-                        <span>Số km:</span>
-                        <strong>${not empty param.km ? param.km : km} km</strong>
-                    </div>
-                    <div class="info-row">
-                        <span>Số tiền:</span>
-                        <strong>${not empty param.price ? param.price : price} VND</strong>
-                    </div>
-                </div>
-            </div>
+    <form action="${pageContext.request.contextPath}/payments" method="post">
+        <input type="hidden" name="bookingId" value="1"> <%-- id booking =1 do chưa có logic tạo booking --%>
+        <input type="hidden" name="price" value="${sessionScope.cart.total}">
+        <input type="hidden" name="payType" value="FULL">
 
-            <div class="checkout-section discount-section">
-                <h3 class="section-title"><span class="red-dot"></span> MÃ GIẢM GIÁ</h3>
-                <p class="discount-subtitle">Mã ưu đãi của bạn:</p>
-
-                <div class="coupon-list">
-                    <c:forEach var="voucher" items="${vouchers}">
-                        <div class="coupon-item">
-                            <div class="coupon-info">
-                                <strong>${voucher.code}</strong>
-                                <span>${voucher.nameVoucher}</span>
+        <div class="payment-layout">
+            <div class="checkout-container">
+                <div class="checkout-section">
+                    <h3 class="section-title">THÔNG TIN CHUYẾN ĐI</h3>
+                    <c:choose>
+                        <c:when test="${empty sessionScope.cart or empty sessionScope.cart.items}">
+                            <div class="no-cart-msg">Giỏ hàng trống.</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="trip-list">
+                                <c:forEach items="${sessionScope.cart.items}" var="ci" varStatus="st">
+                                    <div class="trip-card">
+                                        <div class="trip-card-header">
+                                            <span>Đơn #${st.index + 1} - ${ci.selectedTypeName}</span>
+                                            <span class="trip-card-total">
+                                                <fmt:formatNumber value="${ci.price * ci.km * ci.quantity}" type="number"/> VND
+                                            </span>
+                                        </div>
+                                        <div class="trip-rows">
+                                            <div class="trip-row">
+                                                <span class="label">Tên xe & Loại xe</span>
+                                                <span class="value">${ci.selectedTypeName} (${ci.selectedCategory})</span>
+                                            </div>
+                                            <div class="trip-row">
+                                                <span class="label">Tuyến đường</span>
+                                                <span class="value">
+                                                    <c:out value="${not empty ci.fromProvinceName ? ci.fromProvinceName : 'Chưa chọn'}"/>
+                                                    &rarr;
+                                                    <c:out value="${not empty ci.toProvinceName ? ci.toProvinceName : 'Chưa chọn'}"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
                             </div>
-                            <div class="coupon-percent">-${voucher.discount * 100}<sup>%</sup></div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+                <div class="checkout-section">
+                    <h3 class="section-title">PHƯƠNG THỨC THANH TOÁN</h3>
+                    <div class="payment-grid">
+                        <label class="payment-card">
+                            <input type="radio" name="method" value="TRANSFER" checked>
+                            <span class="payment-name">Thanh toán ngay (Mã QR)</span>
+                        </label>
+                        <label class="payment-card">
+                            <input type="radio" name="method" value="CASH">
+                            <span class="payment-name">Tiền mặt tại văn phòng</span>
+                        </label>
+                    </div>
+
+                    <div class="total-summary">
+                        <div class="summary-line final-total">
+                            <span>Tổng thanh toán:</span>
+                            <strong><fmt:formatNumber value="${sessionScope.cart.total}" type="number"/>đ</strong>
                         </div>
-                    </c:forEach>
-                </div>
-
-                <div class="discount-input-row">
-                    <input type="text" id="discount-code" placeholder="Chọn mã giảm giá..." readonly>
-                    <button class="btn-apply">Áp dụng</button>
-                </div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <a href="${pageContext.request.contextPath}/voucher"
-                       class="btn-more-voucher">
-                        Xem thêm các mã giảm giá khác &raquo;
-                    </a>
-                </div>
-            </div>
-
-            <div class="checkout-section payment-methods-section">
-                <h3 class="section-title"><span class="red-dot"></span> PHƯƠNG THỨC THANH TOÁN</h3>
-
-                <div class="payment-grid">
-                    <label class="payment-card active">
-                        <input type="radio" name="payment_method" value="online" checked>
-                        <span class="payment-name">Thanh toán ngay (Online / Mã QR)</span>
-                    </label>
-
-                    <label class="payment-card">
-                        <input type="radio" name="payment_method" value="deposit">
-                        <span class="payment-name">Đặt cọc (Thanh toán sau)</span>
-                    </label>
-                </div>
-
-                <div class="terms-group">
-                    <input type="checkbox" id="agree-terms">
-                    <label for="agree-terms">Tôi đồng ý với <a href="#">điều khoản dịch vụ</a>
-                        và <a href="#">chính sách thuê xe</a>
-                    </label>
-                </div>
-
-                <div class="total-summary">
-                    <div class="summary-line">
-                        <span>Tạm tính:</span>
-                        <span>${price} VND</span>
                     </div>
-                    <div class="summary-line">
-                        <span>Giảm giá:</span>
-                        <span>${voucherDiscount != null ? voucherDiscount : 0} VND</span>
-                    </div>
-                    <div class="summary-line final-total">
-                        <span>Tổng thanh toán:</span>
-                        <strong>${price - (voucherDiscount != null ? voucherDiscount : 0)} VND</strong>
-                    </div>
-                </div>
 
-                <div class="action-buttons">
-                    <a href="${pageContext.request.contextPath}/booking" class="btn-back">← Quay lại</a>
-                    <a href="${pageContext.request.contextPath}/payment-qr" class="btn-next">Đặt xe ngay →</a>
+                    <div class="action-buttons">
+                        <a href="${pageContext.request.contextPath}/my-shopping-cart" class="btn-back">← Quay lại</a>
+                        <button type="submit" class="btn-next">Đặt xe ngay →</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </main>
-
-<script src="${pageContext.request.contextPath}/assets/js/payment.js"></script>
 </body>
 </html>

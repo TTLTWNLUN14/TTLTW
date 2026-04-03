@@ -10,21 +10,14 @@ import java.io.IOException;
 @WebServlet(name = "RemoveItemController", value = "/del-item")
 public class RemoveItemController extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("productId"));
-        Cart cart = (Cart) request.getSession().getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            request.getSession().setAttribute("cart", cart);
-            return;
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart != null) {
+            cart.removeItem(productId);
+            session.setAttribute("cart", cart);
         }
-        cart.removeItem(productId);
-        request.getSession().setAttribute("cart", cart);
-        response.sendRedirect("my-shopping-cart");
+        response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
     }
 }

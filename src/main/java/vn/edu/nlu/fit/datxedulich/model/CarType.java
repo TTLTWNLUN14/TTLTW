@@ -9,7 +9,6 @@ public class CarType implements Serializable {
     private String category;       // SUV, Sedan, MPV, Pickup...
     private int seatingPlan;       // số chỗ ngồi
     private String fuel;           // Xăng, Điện, Hybrid, Diesel
-    private int priceDirver;       // giá thuê có tài xế (giữ đúng tên DB)
     private int priceKm;           // giá theo km
     private int priceDay;          // giá theo ngày
     private String img;            // URL ảnh xe
@@ -68,14 +67,6 @@ public class CarType implements Serializable {
         this.fuel = fuel;
     }
 
-    public int getPriceDirver() {
-        return priceDirver;
-    }
-
-    public void setPriceDirver(int priceDirver) {
-        this.priceDirver = priceDirver;
-    }
-
     public int getPriceKm() {
         return priceKm;
     }
@@ -116,11 +107,11 @@ public class CarType implements Serializable {
         this.count = count;
     }
 
-    public boolean isActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setIsActive(boolean active) {
         isActive = active;
     }
 
