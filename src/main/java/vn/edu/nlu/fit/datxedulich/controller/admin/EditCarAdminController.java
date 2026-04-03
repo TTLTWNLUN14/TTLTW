@@ -56,7 +56,7 @@ public class EditCarAdminController extends HttpServlet {
 
         CarType ct = buildCarTypeFromRequest(request);
         ct.setTypeId(Integer.parseInt(request.getParameter("typeId")));
-        ct.setActive("true".equals(request.getParameter("isActive")));
+        ct.setIsActive("true".equals(request.getParameter("isActive")));
 
         carTypeService.updateCarType(ct);
 
@@ -71,7 +71,6 @@ public class EditCarAdminController extends HttpServlet {
 
         ct.setSeatingPlan(parseIntSafe(request.getParameter("seatingPlan"), 0));
         ct.setFuel(request.getParameter("fuel"));
-        ct.setPriceDirver(parseIntSafe(request.getParameter("priceDirver"), 0));
         ct.setPriceKm(parseIntSafe(request.getParameter("priceKm"), 0));
         ct.setPriceDay(parseIntSafe(request.getParameter("priceDay"), 0));
         ct.setImg(request.getParameter("img"));
@@ -82,7 +81,11 @@ public class EditCarAdminController extends HttpServlet {
     }
     private int parseIntSafe(String value, int defaultVal) {
         if (value == null || value.isEmpty()) return defaultVal;
-        try { return Integer.parseInt(value); }
-        catch (NumberFormatException e) { return defaultVal; }
+        try {
+            return Integer.parseInt(value);
+        }
+        catch (NumberFormatException e) {
+            return defaultVal;
+        }
     }
 }

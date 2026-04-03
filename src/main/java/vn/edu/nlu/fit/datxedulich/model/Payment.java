@@ -8,33 +8,17 @@ public class Payment implements Serializable {
     private int bookingId;
     private int accountId;
     private int price;
-    private int km;
     private String method;
     private String payType;
     private String status;
     private Date paidAt;
     private int createdBy;
 
-    public Payment() {
-    }
-
-    public Payment(int paymentId, int bookingId, int accountId, int price, int km, String method, String payType, String status, Date paidAt, int createdBy) {
-        this.paymentId = paymentId;
-        this.bookingId = bookingId;
-        this.accountId = accountId;
-        this.price = price;
-        this.km = km;
-        this.method = method;
-        this.payType = payType;
-        this.status = status;
-        this.paidAt = paidAt;
-        this.createdBy = createdBy;
-    }
+    public Payment() {}
 
     public int getPaymentId() {
         return paymentId;
     }
-
     public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
     }
@@ -42,7 +26,6 @@ public class Payment implements Serializable {
     public int getBookingId() {
         return bookingId;
     }
-
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
@@ -50,7 +33,6 @@ public class Payment implements Serializable {
     public int getAccountId() {
         return accountId;
     }
-
     public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
@@ -58,23 +40,13 @@ public class Payment implements Serializable {
     public int getPrice() {
         return price;
     }
-
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getKm() {
-        return km;
-    }
-
-    public void setKm(int km) {
-        this.km = km;
     }
 
     public String getMethod() {
         return method;
     }
-
     public void setMethod(String method) {
         this.method = method;
     }
@@ -82,7 +54,6 @@ public class Payment implements Serializable {
     public String getPayType() {
         return payType;
     }
-
     public void setPayType(String payType) {
         this.payType = payType;
     }
@@ -90,7 +61,6 @@ public class Payment implements Serializable {
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
     }
@@ -98,7 +68,6 @@ public class Payment implements Serializable {
     public Date getPaidAt() {
         return paidAt;
     }
-
     public void setPaidAt(Date paidAt) {
         this.paidAt = paidAt;
     }
@@ -106,7 +75,6 @@ public class Payment implements Serializable {
     public int getCreatedBy() {
         return createdBy;
     }
-
     public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
     }

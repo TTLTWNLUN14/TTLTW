@@ -4,6 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import vn.edu.nlu.fit.datxedulich.model.Payment;
+import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
 import vn.edu.nlu.fit.datxedulich.services.PaymentService;
 
 import java.io.IOException;
@@ -13,6 +14,9 @@ public class PaymentController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        request.setAttribute("cart", cart);
         request.getRequestDispatcher("/WEB-INF/views/payment.jsp").forward(request, response);
     }
 
@@ -21,14 +25,13 @@ public class PaymentController extends HttpServlet {
         try {
             int bookingId = Integer.parseInt(request.getParameter("bookingId"));
             int price = Integer.parseInt(request.getParameter("price"));
-            int km = Integer.parseInt(request.getParameter("km") != null ? request.getParameter("km") : "0");
             String method = request.getParameter("method");
             String payType = request.getParameter("payType");
+
             Payment payment = new Payment();
             payment.setBookingId(bookingId);
             payment.setAccountId(1);
             payment.setPrice(price);
-            payment.setKm(km);
             payment.setPayType(payType);
             payment.setMethod(method);
             payment.setStatus("PENDING");
@@ -38,9 +41,9 @@ public class PaymentController extends HttpServlet {
             paymentService.createPayment(payment);
 
             if ("TRANSFER".equalsIgnoreCase(method)) {
-                response.sendRedirect(request.getContextPath() + "/assets/html/payment_qr.html");
+                response.sendRedirect(request.getContextPath() + "/payment-qr");
             } else {
-                response.sendRedirect(request.getContextPath() + "/assets/html/payment_confirmation.html");
+                response.sendRedirect(request.getContextPath() + "/payment-confirmation");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,29 +14,26 @@ public class Cart implements Serializable {
     Map<Integer, CartItem> data;
     private User user;
 
-    public Cart() { data= new HashMap<>(); }
+    public Cart() { data = new HashMap<>(); }
 
     public void addItem(CarType product, int quantity, boolean isDriver) {
-        if (quantity<=0){
-            quantity=1;
-        }
-        if(get(product.getTypeId())!=null){
+        if (quantity <= 0) quantity = 1;
+        if (get(product.getTypeId()) != null) {
             data.get(product.getTypeId()).upQuantity(quantity);
-        }
-        else {
-            data.put(product.getTypeId(), new CartItem(quantity, isDriver,product));
+        } else {
+            data.put(product.getTypeId(), new CartItem(quantity, isDriver, product));
         }
     }
+
     public boolean updateItem(int productId, int quantity) {
-        if(get(productId)==null) return false;
-        if(quantity<=0){
-            quantity=1;
-        }
+        if (get(productId) == null) return false;
+        if (quantity <= 0) quantity = 1;
         data.get(productId).setQuantity(quantity);
         return true;
     }
+
     public CartItem removeItem(int productId) {
-        if(get(productId)==null) return null;
+        if (get(productId) == null) return null;
         return data.remove(productId);
     }
 
@@ -50,9 +47,10 @@ public class Cart implements Serializable {
         return new ArrayList<>(data.values());
     }
 
-    public int getTotal(){
+    // Tổng = sum(priceKm * km * qty) của từng item
+    public int getTotal() {
         AtomicInteger total = new AtomicInteger();
-        getItems().forEach(item -> total.addAndGet(item.getPrice() * item.getQuantity()));
+        getItems().forEach(item -> total.addAndGet(item.getTotal()));
         return total.get();
     }
 
@@ -62,13 +60,7 @@ public class Cart implements Serializable {
 
     public int getTotalQuantity() {
         AtomicInteger total = new AtomicInteger();
-        getItem().forEach(item->{
-            total.addAndGet(item.getQuantity());
-        });
+        getItems().forEach(item -> total.addAndGet(item.getQuantity()));
         return total.get();
-    }
-
-    public List<CartItem> getItem() {
-        return new ArrayList<>(data.values());
     }
 }

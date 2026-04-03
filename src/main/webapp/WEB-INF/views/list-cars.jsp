@@ -1,25 +1,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Danh sách xe - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/list-cars.css">
 </head>
 <body>
 
 <nav class="global-nav">
     <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/assets/html/index.html">AUTO CARS</a>
+        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
         <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/assets/html/index.html">Trang chủ</a>
-            <a class="nav-link active" href="${pageContext.request.contextPath}/assets/html/list-cars.html">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/cars-brand.html">Hãng xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/WEB-INF/views/booking.html">Đặt xe</a>
-            <a class="nav-link" href="my-shopping-cart">Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
+            <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/cars-brand">Hãng xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/booking">Đặt xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/my-shopping-cart">
+                Giỏ hàng (<c:out value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/>)
+            </a>
         </div>
         <div class="nav-actions" id="navActions">
             <a href="#" class="btn-login">Đăng nhập</a>
-            <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
+            <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
         </div>
     </div>
 </nav>
@@ -33,9 +35,10 @@
         </div>
 
         <div class="brands-filter-bar" id="brandFilterBar">
-            <button class="brand-pill active">Tất cả</button>
-            <button class="brand-pill">Toyota</button>
-            <button class="brand-pill">Honda</button>
+            <button class="brand-pill active" onclick="filterBrand(0, this)">Tất cả</button>
+            <c:forEach items="${brands}" var="b">
+                <button class="brand-pill" onclick="filterBrand(${b.brandId}, this)">${b.brandName}</button>
+            </c:forEach>
         </div>
 
         <div class="cars-layout">
@@ -91,23 +94,29 @@
 
             <div class="cars-main">
                 <div class="cars-header">
-                    <span class="car-count">14 loại xe</span>
+                    <span class="car-count"> loại xe</span>
                 </div>
 
-                <div  class="cars-grid" id="carGrid" >
+                <div class="cars-grid" id="carGrid">
                     <c:forEach var="p" items="${list}">
                         <div class="car-card">
                             <div class="car-img-box">
                                 <img style="width: 197px" src="${p.img}" alt="img-cars">
-                                <span class="badge-stock">3 xe có sẵn</span>
+                                <span class="badge-stock">${p.count} xe có sẵn</span>
                             </div>
                             <div class="car-body">
-                                <div class="car-brand">FORD</div>
-                                <h3 class="car-title"><a href="list-product/product?typeId=${p.typeId}">${p.typeName}</a></h3>
+                                <div class="car-brand">
+                                    <c:forEach items="${brands}" var="b">
+                                        <c:if test="${b.brandId == p.brandId}">${b.brandName}</c:if>
+                                    </c:forEach>
+                                </div>
+                                <h3 class="car-title">
+                                    <a href="${pageContext.request.contextPath}/list-product/product?typeId=${p.typeId}">${p.typeName}</a>
+                                </h3>
                                 <div class="car-tags">
-                                    <span class="car-tag">5 chỗ</span>
-                                    <span class="car-tag">Diesel</span>
-                                    <span class="car-tag">Pickup</span>
+                                    <span class="car-tag">${p.seatingPlan} chỗ</span>
+                                    <span class="car-tag">${p.fuel}</span>
+                                    <span class="car-tag">${p.category}</span>
                                 </div>
 
                                 <div class="car-prices">
@@ -117,12 +126,12 @@
                                     </div>
                                     <div class="price-col right-align">
                                         <div class="main-price">${p.priceDay}</div>
-                                        <div>VNĐ/Ngày</div>
+                                        <div>VNĐ/Ngày</div>
                                     </div>
                                 </div>
 
                                 <div class="car-action" style="margin-top: 15px; text-align: center;">
-                                    <a href="add-cart?productId=${p.typeId}&quantity=1&isDriver=true"
+                                    <a href="${pageContext.request.contextPath}/add-cart?productId=${p.typeId}&quantity=1&isDriver=true"
                                        style="display: block; padding: 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
                                         Thêm vào giỏ hàng
                                     </a>
@@ -136,7 +145,18 @@
     </div>
 </div>
 
- <script src="${pageContext.request.contextPath}/assets/js/list-cars.js"></script>
+<script>
+function filterBrand(brandId, btn) {
+    document.querySelectorAll('.brand-pill').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    if (brandId === 0) {
+        window.location.href = '${pageContext.request.contextPath}/list-product';
+    } else {
+        window.location.href = '${pageContext.request.contextPath}/list-product?brandId=' + brandId;
+    }
+}
+</script>
+<script src="${pageContext.request.contextPath}/assets/js/list-cars.js"></script>
 
 </body>
 </html>

@@ -44,7 +44,7 @@ public class AddCarAdminController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         CarType ct = buildCarTypeFromRequest(request);
-        ct.setActive(true);
+        ct.setIsActive(true);
 
         carTypeService.insertCarType(ct);
 
@@ -59,7 +59,6 @@ public class AddCarAdminController extends HttpServlet {
 
         ct.setSeatingPlan(parseIntSafe(request.getParameter("seatingPlan"), 0));
         ct.setFuel(request.getParameter("fuel"));
-        ct.setPriceDirver(parseIntSafe(request.getParameter("priceDirver"), 0));
         ct.setPriceKm(parseIntSafe(request.getParameter("priceKm"), 0));
         ct.setPriceDay(parseIntSafe(request.getParameter("priceDay"), 0));
         ct.setImg(request.getParameter("img"));

@@ -301,3 +301,9 @@ hr {
     font-size: 13px;
     box-sizing: border-box;
 }
+.detail-panel {
+    display: none;
+}
+.detail-panel.open {
+    display: block;
+}

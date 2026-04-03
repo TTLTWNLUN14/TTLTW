@@ -42,6 +42,32 @@
         <a href="add-brand" class="btn-add">+ Thêm hãng</a>
     </div>
 
+    <div class="filter-bar">
+        <form method="get" action="${pageContext.request.contextPath}/brand-admin" class="filter-form">
+            <label class="filter-label" for="filterBrandId">Lọc nhanh hãng xe:</label>
+
+            <select name="filterBrandId" id="filterBrandId" class="filter-select"
+                    onchange="this.form.submit()">
+                <option value="">-- Tất cả hãng xe --</option>
+                <c:forEach var="b" items="${allBrands}">
+                    <option value="${b.brandId}"
+                            <c:if test="${b.brandId == filterBrandId}">selected</c:if>>
+                            ${b.brandName}
+                    </option>
+                </c:forEach>
+            </select>
+
+            <c:if test="${not empty filterBrandId}">
+                <a href="${pageContext.request.contextPath}/brand-admin"
+                   class="btn-clear-filter">✕ Bỏ lọc</a>
+            </c:if>
+        </form>
+
+        <span class="filter-count">
+            Đang hiển thị <strong>${listBrand.size()}</strong> / ${allBrands.size()} hãng
+        </span>
+    </div>
+
     <div class="table-container">
         <table class="custom-table">
             <thead>
@@ -67,40 +93,52 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
+
                     <td><strong>${b.brandName}</strong></td>
                     <td>${b.country}</td>
 
-                        <%--  check isActive=1 -> hd, =0 -> ngung  --%>
                     <td>
                         <c:choose>
-                            <c:when test="${b.isActive}">Hoạt động ${b.isActive}</c:when>
+                            <c:when test="${b.isActive}">
+                                <span class="status-badge">Hoạt động</span>
+                            </c:when>
                             <c:otherwise>
-                                <span class="status-badge"
-                                      style="background:#fee2e2; color:#dc2626;">Ngừng hoạt động  ${b.isActive}</span>
+                                <span class="status-badge status-inactive">Ngừng hoạt động</span>
                             </c:otherwise>
                         </c:choose>
                     </td>
+
                     <td class="action-buttons">
-                            <%-- bam vao nut edit thi nhay qua trang edit vs brandId --%>
                         <a href="${pageContext.request.contextPath}/edit-brand?brandId=${b.brandId}"
                            class="btn-edit">&#x270E;</a>
 
-<%--========================================== chua lam duoc ==========================================--%>
-                        <form method="post">
+                        <form method="post"
+                              action="${pageContext.request.contextPath}/brand-admin"
+                              style="margin:0; display:inline;">
+                            <input type="hidden" name="action"  value="delete">
+                            <input type="hidden" name="brandId" value="${b.brandId}">
                             <button type="submit" class="btn-disable">Xóa</button>
                         </form>
-<%--===================================================================================================--%>
-                            <%--truyen brandId vao url chuyen sang trang them loai xe thuoc hang xe nay   --%>
-                        <a href="${pageContext.request.contextPath}/cars-admin?brandId=${b.brandId}" class="btn-add-type">+</a>
 
+                            <%-- Nút thêm loại xe thuộc hãng này --%>
+                        <a href="${pageContext.request.contextPath}/cars-admin?brandId=${b.brandId}"
+                           class="btn-add-type" title="Thêm loại xe">+</a>
                     </td>
                 </tr>
             </c:forEach>
 
             <c:if test="${empty listBrand}">
                 <tr>
-                    <td colspan="6" style="text-align:center; padding:40px; color:#94a3b8;">
-                        Chưa có hãng xe nào. Nhấn <strong>+ Thêm hãng</strong> để bắt đầu.
+                    <td colspan="5" style="text-align:center; padding:40px; color:#94a3b8;">
+                        <c:choose>
+                            <c:when test="${not empty filterBrandId}">
+                                Không tìm thấy hãng xe phù hợp.
+                                <a href="${pageContext.request.contextPath}/brand-admin">Xem tất cả</a>
+                            </c:when>
+                            <c:otherwise>
+                                Chưa có hãng xe nào. Nhấn <strong>+ Thêm hãng</strong> để bắt đầu.
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
             </c:if>

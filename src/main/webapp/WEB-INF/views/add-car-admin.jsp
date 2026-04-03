@@ -95,10 +95,6 @@
 
             <div class="form-row-3">
                 <div class="form-group">
-                    <label>Giá có tài (đ)</label>
-                    <input type="number" name="priceDirver" placeholder="0" min="0">
-                </div>
-                <div class="form-group">
                     <label>Giá/km (đ)</label>
                     <input type="number" name="priceKm" placeholder="4500" min="0">
                 </div>

@@ -42,13 +42,11 @@
 
     <div class="page-header">
         <h1 class="page-title">Quản lý loại xe</h1>
-        <%-- thêm xe -> add-car-admin --%>
         <a href="${pageContext.request.contextPath}/cars-admin/add
                <c:if test='${selectedBrandId != null}'>?brandId=${selectedBrandId}</c:if>"
            class="btn-add">+ Thêm xe</a>
     </div>
 
-    <%-- Bộ lọc theo hãng xe --%>
     <div class="filter-bar">
         <label>Lọc theo hãng:</label>
         <form method="get" action="${pageContext.request.contextPath}/cars-admin"
@@ -112,7 +110,7 @@
                     <td><span class="badge-count">${ct.count}</span></td>
                     <td>
                         <c:choose>
-                            <c:when test="${ct.active}">
+                            <c:when test="${ct.isActive}">
                                 <span class="status-badge">Hoạt động</span>
                             </c:when>
                             <c:otherwise>
@@ -186,5 +184,6 @@
         document.getElementById('deleteForm').submit();
     }
 </script>
+
 </body>
 </html>
