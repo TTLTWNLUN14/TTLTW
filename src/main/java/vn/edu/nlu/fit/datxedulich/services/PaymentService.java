@@ -2,11 +2,12 @@ package vn.edu.nlu.fit.datxedulich.services;
 
 import vn.edu.nlu.fit.datxedulich.dao.PaymentDAO;
 import vn.edu.nlu.fit.datxedulich.model.Payment;
+import vn.edu.nlu.fit.datxedulich.model.Voucher;
 
 import java.util.List;
 
 public class PaymentService {
-    private PaymentDAO paymentDAO = new PaymentDAO();
+    private final PaymentDAO paymentDAO = new PaymentDAO();
 
     public boolean createPayment(Payment payment) {
         return paymentDAO.createPayment(payment);
@@ -22,5 +23,16 @@ public class PaymentService {
 
     public boolean updatePaymentStatus(int paymentId, String status) {
         return paymentDAO.updatePaymentStatus(paymentId,status);
+    }
+
+    public List<Voucher> getAvailableVouchers(double price) {
+        return paymentDAO.getActiveVouchers(price);
+    }
+
+    public boolean applyVoucher(int voucherId, double orderPrice) {
+        if (paymentDAO.validateVoucher(voucherId, orderPrice)) {
+            return paymentDAO.reduceVoucherUsage(voucherId);
+        }
+        return false;
     }
 }
