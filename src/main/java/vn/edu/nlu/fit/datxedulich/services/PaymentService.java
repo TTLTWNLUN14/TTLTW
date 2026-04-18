@@ -25,14 +25,5 @@ public class PaymentService {
         return paymentDAO.updatePaymentStatus(paymentId,status);
     }
 
-    public List<Voucher> getAvailableVouchers(double price) {
-        return paymentDAO.getActiveVouchers(price);
-    }
 
-    public boolean applyVoucher(int voucherId, double orderPrice) {
-        if (paymentDAO.validateVoucher(voucherId, orderPrice)) {
-            return paymentDAO.reduceVoucherUsage(voucherId);
-        }
-        return false;
-    }
 }

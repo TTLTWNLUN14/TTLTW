@@ -137,7 +137,6 @@ body {
     color: #ffffff;
 }
 
-/* ===== LOGIN WRAP ===== */
 .login-wrap {
     flex: 1;
     display: flex;
@@ -326,11 +325,6 @@ body {
     transition: 0.3s;
     cursor: pointer;
 }
-.svc-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-}
-
 .svc-card h3 {
     font-size: 20px;
     color: #000000;
@@ -397,7 +391,6 @@ body {
     padding: 64px 0;
 }
 
-/* ===== TABS ===== */
 .tabs {
     display: flex;
     justify-content: space-between;
@@ -509,7 +502,7 @@ body {
     color: #475569;
     font-weight: 500;
 }
-}
+
 .car-card__divider {
     height: 1px;
     background: #e8edf5;
@@ -703,7 +696,7 @@ body {
     margin-bottom: 70px;
 }
 
-/* ===== FORM ROW (2 columns) ===== */
+
 .form-row {
     display: flex;
     gap: 14px;
@@ -754,8 +747,6 @@ body {
     padding: 60px 0 0;
 }
 
-/* ===== REGISTER TAB ACTIVE STATE ===== */
-/* When register tab is active, use bordered pill style instead of underline */
 #tRegister.active {
     color: #1a3a6b;
     border: 2px solid #1a3a6b;

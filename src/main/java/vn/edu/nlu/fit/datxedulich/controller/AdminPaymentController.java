@@ -35,9 +35,7 @@ public class AdminPaymentController extends HttpServlet {
                 Payment payment = new Payment();
                 payment.setBookingId(Integer.parseInt(request.getParameter("bookingId")));
                 payment.setAccountId(Integer.parseInt(request.getParameter("accountId")));
-                payment.setVoucherId(Integer.parseInt(request.getParameter("voucherId")));
                 payment.setPrice(Integer.parseInt(request.getParameter("price")));
-                payment.setKm(request.getParameter("km") != null && ! request.getParameter("km").isEmpty() ? Integer.parseInt(request.getParameter("km")) : 0);
                 payment.setMethod(request.getParameter("method"));
                 payment.setPayType(request.getParameter("payType"));
                 payment.setStatus(request.getParameter("status") != null ? request.getParameter("status") : "PENDING");
@@ -48,9 +46,7 @@ public class AdminPaymentController extends HttpServlet {
                 payment.setPaymentId(Integer.parseInt(request.getParameter("paymentId")));
                 payment.setBookingId(Integer.parseInt(request.getParameter("bookingId")));
                 payment.setAccountId(Integer.parseInt(request.getParameter("accountId")));
-                payment.setVoucherId(Integer.parseInt(request.getParameter("voucherId")));
                 payment.setPrice(Integer.parseInt(request.getParameter("price")));
-                payment.setKm(request.getParameter("km") != null && ! request.getParameter("km").isEmpty() ? Integer.parseInt(request.getParameter("km")) : 0);
                 payment.setMethod(request.getParameter("method"));
                 payment.setPayType(request.getParameter("payType"));
                 payment.setStatus(request.getParameter("status"));
