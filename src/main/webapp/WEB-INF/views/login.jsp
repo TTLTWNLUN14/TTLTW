@@ -30,31 +30,32 @@
                 <button class="tab-btn"        id="tRegister" onclick="setTab('register')">Đăng ký</button>
             </div>
 
-           <div class="form-panel show" id="pLogin">
-                           <div class="form-group">
-                               <label>Tên đăng nhập</label>
-                               <input id="lUser" class="form-control" placeholder="username">
-                           </div>
-                           <div class="form-group">
-                               <label>Mật khẩu</label>
-                               <input id="lPass" class="form-control" type="password" placeholder="••••••••">
-                           </div>
-                           <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="doLogin()">Đăng nhập</button>
+            <div class="form-panel show" id="pLogin">
+                <form method="POST" action="${pageContext.request.contextPath}/login">
+                    <div class="form-group">
+                        <label>Tên đăng nhập</label>
+                        <input name="username" id="lUser" class="form-control" placeholder="username">
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input name="password" id="lPass" class="form-control" type="password" placeholder="••••••••">
+                    </div>
 
-                           <div class="social-divider"><span>Hoặc</span></div>
-                           <div class="social-login">
-                               <a href="${pageContext.request.contextPath}/login-google" class="btn-social google">
-                                   <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
-                                   Google
-                               </a>
-                               <a href="${pageContext.request.contextPath}/login-facebook" class="btn-social facebook">
-                                   <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
-                                   Facebook
-                               </a>
-                           </div>
-                           <div class="forgot-link">Quên mật khẩu? <span onclick="setTab('forgot')">Lấy lại ngay</span></div>
-                       </div>
+                    <c:if test="${not empty loginError}">
+                        <div style="color:red; margin-bottom:8px;">${loginError}</div>
+                    </c:if>
 
+                    <label style="font-size:0.9rem;">
+                        <input type="checkbox" name="rememberMe"> Ghi nhớ đăng nhập
+                    </label>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">
+                        Đăng nhập
+                    </button>
+                </form>
+
+                <div class="forgot-link">Quên mật khẩu? <span onclick="setTab('forgot')">Lấy lại ngay</span></div>
+            </div>
             <div class="form-panel" id="pRegister">
                 <div class="form-group">
                     <label>Tên đăng nhập</label>

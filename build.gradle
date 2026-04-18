@@ -1,0 +1,74 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id "org.hidetake.ssh" version "2.11.2"
+    id 'war'
+}
+
+apply plugin: 'org.hidetake.ssh'
+
+remotes {
+    host {
+        host = 'trgnhan291.id.vn'
+        user = 'nhan'
+        password = '292004nhan'
+    }
+}
+
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
+
+task docker_app_start {
+    doLast {
+        println 'begin docker_app_start (Tomcat 10)'
+        ssh.run {
+            session(remotes.host) {
+                execute 'docker stop tomcat10', ignoreError: true
+
+                execute 'docker run -it --rm -d --name tomcat10 -v /usr/deploy:/usr/local/tomcat/webapps -p 80:8080 tomcat:10.1&'
+            }
+        }
+    }
+}
+
+task docker_upload_file_to_server {
+    doLast {
+        println 'begin docker_upload_file_to_server'
+        ssh.run {
+            session(remotes.host) {
+                execute 'rm -f /usr/deploy/lab.war'
+                put from: "${project.projectDir}/build/libs/DatXeDuLich.war",
+                        into: "/usr/deploy/lab.war"
+            }
+        }
+    }
+}
+
+task docker_deploy {
+    dependsOn build
+    dependsOn docker_upload_file_to_server
+    dependsOn docker_app_start
+    tasks.getByName('docker_app_start').mustRunAfter docker_upload_file_to_server
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.1'
+    runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+
+    implementation 'org.jdbi:jdbi3-core:3.52.0'
+    implementation 'com.mysql:mysql-connector-j:9.6.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0-M2'
+}
+
+test {
+    useJUnitPlatform()
+}
