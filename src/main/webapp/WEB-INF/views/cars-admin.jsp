@@ -160,8 +160,9 @@
 <form id="deleteForm" method="post"
       action="${pageContext.request.contextPath}/cars-admin"
       style="display:none;">
-    <input type="hidden" name="action" value="delete">
-    <input type="hidden" name="typeId" id="deleteTypeId">
+    <input type="hidden" name="action"  value="delete">
+    <input type="hidden" name="typeId"  id="deleteTypeId">
+    <input type="hidden" name="brandId" value="${selectedBrandId}">
 </form>
 <script>
    // Mở confirm dialog: ghi tên xe + typeId vào dialog rồi hiện lên
