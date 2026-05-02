@@ -26,6 +26,7 @@ public class ListProductController extends HttpServlet {
             try {
                 int brandId = Integer.parseInt(brandIdStr);
                 list = ps.getProductsByBrandId(brandId);
+                request.setAttribute("selectedBrandId", brandId);
             } catch (NumberFormatException e) {
                 list = ps.getListCarType();
             }
