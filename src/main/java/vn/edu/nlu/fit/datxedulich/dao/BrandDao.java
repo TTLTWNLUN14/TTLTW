@@ -32,4 +32,13 @@ public class BrandDao extends BaseDao {
     public void deleteBrand(int brandId) {
         get().useHandle(h -> h.createUpdate("DELETE FROM car_brands WHERE brand_id = :brandId").bind("brandId", brandId).execute());
     }
+
+    public boolean hasCarTypes(int brandId) {
+        return get().withHandle(h ->
+                h.createQuery("SELECT COUNT(*) FROM car_types WHERE brand_id = :brandId")
+                        .bind("brandId", brandId)
+                        .mapTo(Integer.class)
+                        .one()
+        ) > 0;
+    }
 }

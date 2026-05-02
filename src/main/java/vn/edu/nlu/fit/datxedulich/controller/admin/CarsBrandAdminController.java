@@ -55,12 +55,18 @@ public class CarsBrandAdminController extends HttpServlet {
             try {
                 int brandId = Integer.parseInt(request.getParameter("brandId"));
                 BrandService brandService = new BrandService();
-                brandService.deleteBrand(brandId);
+                boolean deleted = brandService.deleteBrand(brandId);
+
+                if (!deleted) {
+                    // Còn loại xe con → không xóa, báo lỗi về trang
+                    response.sendRedirect(request.getContextPath()
+                            + "/brand-admin?error=has_cars");
+                    return;
+                }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
-        // Sau khi xóa redirect về trang danh sách
         response.sendRedirect(request.getContextPath() + "/brand-admin");
     }
 }

@@ -17,7 +17,6 @@ public class CarsAdminController extends HttpServlet {
     private final BrandService brandService     = new BrandService();
     private final CarTypeService carTypeService = new CarTypeService();
 
-    // --------------- GET --------------
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,13 +50,22 @@ public class CarsAdminController extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        String action = request.getParameter("action");
+        String action    = request.getParameter("action");
+        String brandIdStr = request.getParameter("brandId");
 
         if ("delete".equals(action)) {
-            int typeId = Integer.parseInt(request.getParameter("typeId"));
-            carTypeService.deleteCarType(typeId);
+            try {
+                int typeId = Integer.parseInt(request.getParameter("typeId"));
+                carTypeService.deleteCarType(typeId);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
 
-        response.sendRedirect(request.getContextPath() + "/cars-admin");
+        String redirectUrl = request.getContextPath() + "/cars-admin";
+        if (brandIdStr != null && !brandIdStr.isEmpty()) {
+            redirectUrl += "?brandId=" + brandIdStr;
+        }
+        response.sendRedirect(redirectUrl);
     }
 }

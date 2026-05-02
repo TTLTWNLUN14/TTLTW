@@ -42,6 +42,12 @@
         <a href="add-brand" class="btn-add">+ Thêm hãng</a>
     </div>
 
+    <c:if test="${param.error == 'has_cars'}">
+        <div style="background:#fff0f0; border:1px solid #f5c6cb; color:#721c24;
+                padding:10px 16px; border-radius:6px; margin-bottom:14px;">Không thể xóa hãng xe này vì còn loại xe bên trong. Hãy xóa hết loại xe trước.
+        </div>
+    </c:if>
+
     <div class="filter-bar">
         <form method="get" action="${pageContext.request.contextPath}/brand-admin" class="filter-form">
             <label class="filter-label" for="filterBrandId">Lọc nhanh hãng xe:</label>
@@ -112,13 +118,8 @@
                         <a href="${pageContext.request.contextPath}/edit-brand?brandId=${b.brandId}"
                            class="btn-edit">&#x270E;</a>
 
-                        <form method="post"
-                              action="${pageContext.request.contextPath}/brand-admin"
-                              style="margin:0; display:inline;">
-                            <input type="hidden" name="action"  value="delete">
-                            <input type="hidden" name="brandId" value="${b.brandId}">
-                            <button type="submit" class="btn-disable">Xóa</button>
-                        </form>
+                        <button class="btn-disable"
+                                onclick="openConfirm(${b.brandId}, '${b.brandName}')">Xóa</button>
 
                             <%-- Nút thêm loại xe thuộc hãng này --%>
                         <a href="${pageContext.request.contextPath}/cars-admin?brandId=${b.brandId}"
@@ -146,6 +147,43 @@
         </table>
     </div>
 </div>
+<div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+        <h3>Xác nhận xóa hãng xe</h3>
+        <p>Bạn có chắc muốn xóa hãng xe<br>
+            <strong id="confirmBrandName"></strong>?<br>
+            Hành động này không thể hoàn tác.</p>
+        <div class="confirm-actions">
+            <button class="btn-confirm-cancel" onclick="closeConfirm()">Hủy bỏ</button>
+            <button class="btn-confirm-delete" onclick="submitDelete()">Xóa hãng</button>
+        </div>
+    </div>
+</div>
 
+<form id="deleteForm" method="post"
+      action="${pageContext.request.contextPath}/brand-admin"
+      style="display:none;">
+    <input type="hidden" name="action"  value="delete">
+    <input type="hidden" name="brandId" id="deleteBrandId">
+</form>
+<script>
+    function openConfirm(brandId, brandName) {
+        document.getElementById('confirmBrandName').textContent = brandName;
+        document.getElementById('deleteBrandId').value = brandId;
+        document.getElementById('confirmOverlay').classList.add('open');
+    }
+
+    function closeConfirm() {
+        document.getElementById('confirmOverlay').classList.remove('open');
+    }
+
+    document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeConfirm();
+    });
+
+    function submitDelete() {
+        document.getElementById('deleteForm').submit();
+    }
+</script>
 </body>
 </html>
