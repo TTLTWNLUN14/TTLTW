@@ -118,13 +118,8 @@
                         <a href="${pageContext.request.contextPath}/edit-brand?brandId=${b.brandId}"
                            class="btn-edit">&#x270E;</a>
 
-                        <form method="post"
-                              action="${pageContext.request.contextPath}/brand-admin"
-                              style="margin:0; display:inline;">
-                            <input type="hidden" name="action"  value="delete">
-                            <input type="hidden" name="brandId" value="${b.brandId}">
-                            <button type="submit" class="btn-disable">Xóa</button>
-                        </form>
+                        <button class="btn-disable"
+                                onclick="openConfirm(${b.brandId}, '${b.brandName}')">Xóa</button>
 
                             <%-- Nút thêm loại xe thuộc hãng này --%>
                         <a href="${pageContext.request.contextPath}/cars-admin?brandId=${b.brandId}"
@@ -152,6 +147,43 @@
         </table>
     </div>
 </div>
+<div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+        <h3>Xác nhận xóa hãng xe</h3>
+        <p>Bạn có chắc muốn xóa hãng xe<br>
+            <strong id="confirmBrandName"></strong>?<br>
+            Hành động này không thể hoàn tác.</p>
+        <div class="confirm-actions">
+            <button class="btn-confirm-cancel" onclick="closeConfirm()">Hủy bỏ</button>
+            <button class="btn-confirm-delete" onclick="submitDelete()">Xóa hãng</button>
+        </div>
+    </div>
+</div>
 
+<form id="deleteForm" method="post"
+      action="${pageContext.request.contextPath}/brand-admin"
+      style="display:none;">
+    <input type="hidden" name="action"  value="delete">
+    <input type="hidden" name="brandId" id="deleteBrandId">
+</form>
+<script>
+    function openConfirm(brandId, brandName) {
+        document.getElementById('confirmBrandName').textContent = brandName;
+        document.getElementById('deleteBrandId').value = brandId;
+        document.getElementById('confirmOverlay').classList.add('open');
+    }
+
+    function closeConfirm() {
+        document.getElementById('confirmOverlay').classList.remove('open');
+    }
+
+    document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeConfirm();
+    });
+
+    function submitDelete() {
+        document.getElementById('deleteForm').submit();
+    }
+</script>
 </body>
 </html>
