@@ -101,7 +101,12 @@
 
                 <div class="cars-grid" id="carGrid">
                     <c:forEach var="p" items="${list}">
-                        <div class="car-card">
+                        <div class="car-card"
+                             data-brand="${p.brandId}"
+                             data-category="${p.category}"
+                             data-seat="${p.seatingPlan}"
+                             data-fuel="${p.fuel}"
+                             data-price="${p.priceKm}">
                             <div class="car-img-box">
                                 <img style="width: 197px" src="${p.img}" alt="img-cars">
                                 <span class="badge-stock">${p.count} xe có sẵn</span>
