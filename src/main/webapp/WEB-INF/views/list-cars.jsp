@@ -35,9 +35,11 @@
         </div>
 
         <div class="brands-filter-bar" id="brandFilterBar">
-            <button class="brand-pill active" onclick="filterBrand(0, this)">Tất cả</button>
+            <button class="brand-pill ${empty selectedBrandId ? 'active' : ''}"
+                    onclick="filterBrand(0, this)">Tất cả</button>
             <c:forEach items="${brands}" var="b">
-                <button class="brand-pill" onclick="filterBrand(${b.brandId}, this)">${b.brandName}</button>
+                <button class="brand-pill ${b.brandId == selectedBrandId ? 'active' : ''}"
+                        onclick="filterBrand(${b.brandId}, this)">${b.brandName}</button>
             </c:forEach>
         </div>
 
