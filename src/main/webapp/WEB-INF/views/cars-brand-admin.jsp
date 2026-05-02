@@ -42,6 +42,12 @@
         <a href="add-brand" class="btn-add">+ Thêm hãng</a>
     </div>
 
+    <c:if test="${param.error == 'has_cars'}">
+        <div style="background:#fff0f0; border:1px solid #f5c6cb; color:#721c24;
+                padding:10px 16px; border-radius:6px; margin-bottom:14px;">Không thể xóa hãng xe này vì còn loại xe bên trong. Hãy xóa hết loại xe trước.
+        </div>
+    </c:if>
+
     <div class="filter-bar">
         <form method="get" action="${pageContext.request.contextPath}/brand-admin" class="filter-form">
             <label class="filter-label" for="filterBrandId">Lọc nhanh hãng xe:</label>

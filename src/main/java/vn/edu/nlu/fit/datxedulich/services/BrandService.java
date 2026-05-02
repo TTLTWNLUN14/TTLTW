@@ -23,7 +23,11 @@ public class BrandService {
         brandDao.updateBrand(brand);
     }
 
-    public void deleteBrand(int id) {
+    public boolean deleteBrand(int id) {
+        if (brandDao.hasCarTypes(id)) {
+            return false;
+        }
         brandDao.deleteBrand(id);
+        return true;
     }
 }
