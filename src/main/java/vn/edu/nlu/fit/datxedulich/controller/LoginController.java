@@ -7,25 +7,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Cookie;
-import vn.edu.nlu.fit.datxedulich.dao.UserDAO;
 import vn.edu.nlu.fit.datxedulich.model.User;
+import vn.edu.nlu.fit.datxedulich.services.UserService;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
-import java.util.Base64;
 
 @WebServlet(name = "LoginController", value = "/login")
 public class LoginController extends HttpServlet {
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserService userService = new UserService();
     private static final int SESSION_TIMEOUT = 48 * 60;
     private static final int COOKIE_MAX_AGE = 48 * 60 * 60;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
 
         String rememberMeCookie = getCookieValue(request, "rememberMe");
         if (rememberMeCookie != null && !rememberMeCookie.isEmpty()) {
@@ -37,24 +35,28 @@ public class LoginController extends HttpServlet {
                     String username = parts[0];
                     String password = parts[1];
 
-                    User user = userDAO.findByUsername(username);
-                    if (user != null) {
-                        String hashedPassword = hashPassword(password);
-                        if (user.getPassword_hash().equals(hashedPassword)) {
-                            setSessionAndRedirect(request, response, user);
-                            return;
-                        }
+                    var result = userService.authenticate(username, password);
+                    if ((Boolean) result.get("success")) {
+                        User user = (User) result.get("user");
+                        setSessionAndRedirect(request, response, user);
+                        return;
                     }
                 }
             } catch (Exception e) {
                 deleteCookie(response, "rememberMe");
+                e.printStackTrace();
             }
         }
-
         String loginError = request.getParameter("loginError");
         if (loginError != null) {
-            request.setAttribute("loginError", loginError);
+            request.setAttribute("loginError", URLDecoder.decode(loginError, "UTF-8"));
         }
+
+        String oauthError = request.getParameter("oauthError");
+        if (oauthError != null) {
+            request.setAttribute("oauthError", URLDecoder.decode(oauthError, "UTF-8"));
+        }
+
         request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
@@ -66,38 +68,35 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
 
-        User user = userDAO.findByUsername(username);
+        System.out.println(" Yêu cầu đăng nhập: " + username);
 
-        if (user == null) {
-            String errorMessage = URLEncoder.encode("Tên đăng nhập không tồn tại", "UTF-8");
-            response.sendRedirect(request.getContextPath() + "/login?loginError=" + errorMessage);
-            return;
-        }
+        var result = userService.authenticate(username, password);
 
-        String hashedPassword = hashPassword(password);
+        if ((Boolean) result.get("success")) {
+            User user = (User) result.get("user");
 
-        if (!user.getPassword_hash().equals(hashedPassword)) {
-            String errorMessage = URLEncoder.encode("Mật khẩu không chính xác", "UTF-8");
-            response.sendRedirect(request.getContextPath() + "/login?loginError=" + errorMessage);
-            return;
-        }
+            setSessionAndRedirect(request, response, user);
 
-        setSessionAndRedirect(request, response, user);
+            if ("on".equals(rememberMe) || "true".equals(rememberMe)) {
+                try {
+                    String cookieData = username + "|" + password;
+                    String encodedData = URLEncoder.encode(cookieData, "UTF-8");
 
-        if ("on".equals(rememberMe) || "true".equals(rememberMe)) {
-            try {
-                String cookieData = username + "|" + password;
-                String encodedData = URLEncoder.encode(cookieData, "UTF-8");
-
-                Cookie rememberMeCookie = new Cookie("rememberMe", encodedData);
-                rememberMeCookie.setMaxAge(COOKIE_MAX_AGE);
-                rememberMeCookie.setPath("/");
-                rememberMeCookie.setHttpOnly(true);
-                rememberMeCookie.setSecure(false);
-                response.addCookie(rememberMeCookie);
-            } catch (Exception e) {
-                e.printStackTrace();
+                    Cookie rememberMeCookie = new Cookie("rememberMe", encodedData);
+                    rememberMeCookie.setMaxAge(COOKIE_MAX_AGE);
+                    rememberMeCookie.setPath("/");
+                    rememberMeCookie.setHttpOnly(true);
+                    rememberMeCookie.setSecure(false);
+                    response.addCookie(rememberMeCookie);
+                    System.out.println("✓ Đã lưu cookie 'Ghi nhớ đăng nhập'");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            String errorMessage = URLEncoder.encode((String) result.get("message"), "UTF-8");
+            System.out.println(" Đăng nhập thất bại: " + result.get("message"));
+            response.sendRedirect(request.getContextPath() + "/login?loginError=" + errorMessage);
         }
     }
 
@@ -112,24 +111,8 @@ public class LoginController extends HttpServlet {
 
         session.setMaxInactiveInterval(SESSION_TIMEOUT * 60);
 
-        userDAO.updateLastLogin(user.getAccount_id());
+        System.out.println("✓ Đăng nhập thành công! User: " + user.getUsername());
         response.sendRedirect(request.getContextPath() + "/index");
-
-    }
-
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] messageDigest = md.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : messageDigest) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private String getCookieValue(HttpServletRequest request, String cookieName) {
