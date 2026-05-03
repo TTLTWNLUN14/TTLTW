@@ -5,10 +5,12 @@ import vn.edu.nlu.fit.datxedulich.model.User;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class UserService {
 
+    private final UserDAO userDAO = new UserDAO();
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -26,7 +28,6 @@ public class UserService {
 
     public Map<String, Object> authenticate(String username, String password) {
         Map<String, Object> result = new HashMap<>();
-        UserDAO userDAO = new UserDAO();
 
         try {
             if (username == null || username.isEmpty() ||
@@ -70,11 +71,9 @@ public class UserService {
 
         return result;
     }
-
     public Map<String, Object> register(String username, String password, String confirmPassword,
                                         String email, String phone, String fullName) {
         Map<String, Object> result = new HashMap<>();
-        UserDAO userDAO = new UserDAO();
 
         try {
             if (username == null || username.trim().isEmpty() ||
@@ -83,7 +82,7 @@ public class UserService {
                     phone == null || phone.trim().isEmpty() ||
                     fullName == null || fullName.trim().isEmpty()) {
                 result.put("success", false);
-                result.put("message", "Tất cả các phải được điền");
+                result.put("message", "Tất cả các trường phải được điền");
                 return result;
             }
             username = username.trim();
@@ -156,6 +155,74 @@ public class UserService {
         return result;
     }
 
+    public Map<String, Object> loginOrRegisterOAuth(String provider, String providerId,
+                                                    String email, String fullName) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            User user = userDAO.findByEmail(email);
+
+            if (user != null) {
+                if (!user.isIs_active()) {
+                    result.put("success", false);
+                    result.put("message", "Tài khoản đã bị vô hiệu hóa");
+                    return result;
+                }
+                userDAO.updateLastLogin(user.getAccount_id());
+                result.put("success", true);
+                result.put("user", user);
+                result.put("message", "Đăng nhập thành công");
+                return result;
+            }
+            String baseUsername = provider + "_" + providerId.substring(0, Math.min(8, providerId.length()));
+            String username = baseUsername;
+
+            int suffix = 1;
+            while (userDAO.isUsernameExists(username)) {
+                username = baseUsername + suffix++;
+            }
+
+            String passwordHash = "OAUTH_" + provider.toUpperCase() + "_" + providerId;
+
+            User newUser = new User(
+                    email,
+                    passwordHash,
+                    2,
+                    (fullName != null && !fullName.isEmpty()) ? fullName : "User",
+                    username,
+                    ""
+            );
+            newUser.setIs_active(true);
+
+            boolean created = userDAO.create(newUser);
+            if (!created) {
+                result.put("success", false);
+                result.put("message", "Không thể tạo tài khoản. Vui lòng thử lại sau");
+                return result;
+            }
+
+            User createdUser = userDAO.findByEmail(email);
+            if (createdUser == null) {
+                result.put("success", false);
+                result.put("message", "Lỗi đọc tài khoản sau khi tạo");
+                return result;
+            }
+
+            userDAO.updateLastLogin(createdUser.getAccount_id());
+            result.put("success", true);
+            result.put("user", createdUser);
+            result.put("message", "Tạo tài khoản và đăng nhập thành công");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("success", false);
+            result.put("message", "Lỗi hệ thống: " + e.getMessage());
+        }
+
+        return result;
+    }
+
+
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -172,7 +239,6 @@ public class UserService {
     }
 
     public User getUserById(int accountId) {
-        UserDAO userDAO = new UserDAO();
         return userDAO.findById(accountId);
     }
 }
