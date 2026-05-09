@@ -183,14 +183,21 @@
                         </c:if>
                     </div>
 
-                    <%-- Nút: Đặt xe → /booking pre-select xe này --%>
+                    <c:if test="${param.added == '1'}">
+                        <div class="alert-success" style="background:#d1fae5; color:#065f46; border:1px solid #6ee7b7;
+border-radius:8px; padding:10px 14px; margin-bottom:12px;font-size:0.9rem;">Đã thêm <strong>${product.typeName}</strong> vào giỏ hàng!
+                            <a href="${pageContext.request.contextPath}/my-shopping-cart"
+                               style="color:#065f46; font-weight:600; margin-left:8px;">Xem giỏ →</a>
+                        </div>
+                    </c:if>
+
+                    <%-- Nút Đặt xe → /booking --%>
                     <a href="${pageContext.request.contextPath}/booking?typeId=${product.typeId}&isDriver=true"
-                       class="btn-primary w-100">
-                        Đặt xe ngay
+                       class="btn-primary w-100">Đặt xe ngay
                     </a>
-                    <a href="${pageContext.request.contextPath}/add-cart?productId=${product.typeId}&quantity=1&isDriver=true"
-                       class="btn-outline w-100 mt-10">
-                        Thêm vào giỏ hàng
+
+                    <a href="${pageContext.request.contextPath}/add-cart?productId=${product.typeId}&quantity=1&isDriver=true&from=detail&typeId=${product.typeId}"
+                       class="btn-outline w-100 mt-10">Thêm vào giỏ hàng
                     </a>
 
                 </div>

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Cookie;
 import vn.edu.nlu.fit.datxedulich.model.User;
 import vn.edu.nlu.fit.datxedulich.services.UserService;
+import vn.edu.nlu.fit.datxedulich.dao.CartDAO;
+import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.net.URLDecoder;
@@ -18,6 +20,7 @@ import java.security.MessageDigest;
 public class LoginController extends HttpServlet {
 
     private final UserService userService = new UserService();
+    private final CartDAO cartDAO = new CartDAO();
     private static final int SESSION_TIMEOUT = 48 * 60;
     private static final int COOKIE_MAX_AGE = 48 * 60 * 60;
 
@@ -64,8 +67,8 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username   = request.getParameter("username");
+        String password   = request.getParameter("password");
         String rememberMe = request.getParameter("rememberMe");
 
         System.out.println(" Yêu cầu đăng nhập: " + username);
@@ -79,7 +82,7 @@ public class LoginController extends HttpServlet {
 
             if ("on".equals(rememberMe) || "true".equals(rememberMe)) {
                 try {
-                    String cookieData = username + "|" + password;
+                    String cookieData  = username + "|" + password;
                     String encodedData = URLEncoder.encode(cookieData, "UTF-8");
 
                     Cookie rememberMeCookie = new Cookie("rememberMe", encodedData);
@@ -104,12 +107,28 @@ public class LoginController extends HttpServlet {
             throws IOException {
         HttpSession session = request.getSession();
         session.setAttribute("account_id", user.getAccount_id());
-        session.setAttribute("username", user.getUsername());
-        session.setAttribute("email", user.getEmail());
-        session.setAttribute("full_name", user.getFull_name());
-        session.setAttribute("role_id", user.getRole_id());
+        session.setAttribute("username",   user.getUsername());
+        session.setAttribute("email",      user.getEmail());
+        session.setAttribute("full_name",  user.getFull_name());
+        session.setAttribute("role_id",    user.getRole_id());
 
         session.setMaxInactiveInterval(SESSION_TIMEOUT * 60);
+
+        try {
+            Cart dbCart = cartDAO.loadCart(user.getAccount_id());
+            if (dbCart != null && !dbCart.getItems().isEmpty()) {
+                Cart sessionCart = (Cart) session.getAttribute("cart");
+                if (sessionCart != null && !sessionCart.getItems().isEmpty()) {
+                    for (var item : sessionCart.getItems()) {
+                        dbCart.addItem(item.getProduct(), item.getQuantity(), item.isDriver());
+                    }
+                    cartDAO.saveCart(user.getAccount_id(), dbCart);
+                }
+                session.setAttribute("cart", dbCart);
+            }
+        } catch (Exception e) {
+            System.err.println("Không thể load cart từ DB: " + e.getMessage());
+        }
 
         System.out.println("✓ Đăng nhập thành công! User: " + user.getUsername());
         response.sendRedirect(request.getContextPath() + "/index");
