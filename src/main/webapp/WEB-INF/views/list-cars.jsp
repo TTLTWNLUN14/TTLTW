@@ -46,52 +46,82 @@
         <div class="cars-layout">
 
             <div class="cars-sidebar">
-                <div class="filter-section">
-                    <div class="filter-title">Loại xe</div>
-                    <div class="filter-chips">
-                        <span class="chip active">Tất cả</span>
-                        <span class="chip">Sedan</span>
-                        <span class="chip">SUV</span>
-                        <span class="chip">MPV</span>
-                        <span class="chip">Pickup</span>
+                <form method="get" action="${pageContext.request.contextPath}/list-product" id="filterForm">
+
+                    <div class="filter-section">
+                        <div class="filter-title">Hãng xe</div>
+                        <select name="brandId" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">-- Tất cả hãng --</option>
+                            <c:forEach var="b" items="${brands}">
+                                <option value="${b.brandId}"
+                                        <c:if test="${b.brandId == selectedBrandId}">selected</c:if>>
+                                        ${b.brandName}
+                                </option>
+                            </c:forEach>
+                        </select>
                     </div>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-title">Số chỗ ngồi</div>
-                    <div class="filter-chips">
-                        <span class="chip active">Tất cả</span>
-                        <span class="chip">4 chỗ</span>
-                        <span class="chip">5 chỗ</span>
-                        <span class="chip">7 chỗ</span>
-                        <span class="chip">8+ chỗ</span>
+
+                    <div class="filter-section">
+                        <div class="filter-title">Loại xe</div>
+                        <select name="category" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">-- Tất cả --</option>
+                            <option value="SUV"    <c:if test="${selectedCategory == 'SUV'}">selected</c:if>>SUV</option>
+                            <option value="Sedan"  <c:if test="${selectedCategory == 'Sedan'}">selected</c:if>>Sedan</option>
+                            <option value="MPV"    <c:if test="${selectedCategory == 'MPV'}">selected</c:if>>MPV</option>
+                            <option value="Pickup" <c:if test="${selectedCategory == 'Pickup'}">selected</c:if>>Pickup</option>
+                            <option value="Hatchback" <c:if test="${selectedCategory == 'Hatchback'}">selected</c:if>>Hatchback</option>
+                        </select>
                     </div>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-title">Nhiên liệu</div>
-                    <div class="filter-chips">
-                        <span class="chip active">Tất cả</span>
-                        <span class="chip">Xăng</span>
-                        <span class="chip">Điện</span>
-                        <span class="chip">Hybrid</span>
-                        <span class="chip">Diesel</span>
+
+                    <div class="filter-section">
+                        <div class="filter-title">Số chỗ ngồi</div>
+                        <select name="seatingPlan" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">-- Tất cả --</option>
+                            <option value="4"  <c:if test="${selectedSeat == 4}">selected</c:if>>4 chỗ</option>
+                            <option value="5"  <c:if test="${selectedSeat == 5}">selected</c:if>>5 chỗ</option>
+                            <option value="7"  <c:if test="${selectedSeat == 7}">selected</c:if>>7 chỗ</option>
+                            <option value="9"  <c:if test="${selectedSeat == 9}">selected</c:if>>9 chỗ</option>
+                            <option value="16" <c:if test="${selectedSeat == 16}">selected</c:if>>16 chỗ</option>
+                        </select>
                     </div>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-title">Hình thức thuê</div>
-                    <div class="filter-chips">
-                        <span class="chip active">Tất cả</span>
-                        <span class="chip">Có tài xế</span>
-                        <span class="chip">Tự lái</span>
+
+                    <div class="filter-section">
+                        <div class="filter-title">Nhiên liệu</div>
+                        <select name="fuel" class="filter-select" onchange="document.getElementById('filterForm').submit()">
+                            <option value="">-- Tất cả --</option>
+                            <option value="Xăng"   <c:if test="${selectedFuel == 'Xăng'}">selected</c:if>>Xăng</option>
+                            <option value="Điện"   <c:if test="${selectedFuel == 'Điện'}">selected</c:if>>Điện</option>
+                            <option value="Hybrid" <c:if test="${selectedFuel == 'Hybrid'}">selected</c:if>>Hybrid</option>
+                            <option value="Diesel" <c:if test="${selectedFuel == 'Diesel'}">selected</c:if>>Diesel</option>
+                        </select>
                     </div>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-title">Giá/km tối đa</div>
-                    <div class="price-range">
-                        <input class="price-slider" type="range" id="maxPrice" min="3000" max="15000" step="500" value="15000">
-                        <div class="price-labels"><span>3.000đ</span><span id="priceLabel">15.000đ</span></div>
+
+                    <div class="filter-section">
+                        <div class="filter-title">Giá tối đa / km</div>
+                        <input type="range" name="maxPriceKm" id="maxPrice"
+                               min="3000" max="15000" step="500"
+                               value="${not empty selectedMaxPrice ? selectedMaxPrice : 15000}"
+                               oninput="document.getElementById('priceLabel').textContent = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ'"
+                               onchange="document.getElementById('filterForm').submit()">
+                        <div class="price-labels">
+                            <span>3.000đ</span>
+                            <span id="priceLabel">
+                    <c:choose>
+                        <c:when test="${not empty selectedMaxPrice}">${selectedMaxPrice}đ</c:when>
+                        <c:otherwise>15.000đ</c:otherwise>
+                    </c:choose>
+                </span>
+                        </div>
                     </div>
-                </div>
-                <button class="btn-ghost" id="resetFiltersBtn" style="margin-top:4px">↺ Xóa bộ lọc</button>
+
+                    <%-- Nút xóa tất cả bộ lọc --%>
+                    <a href="${pageContext.request.contextPath}/list-product"
+                       class="btn-ghost" style="display:block; margin-top:8px; text-align:center;">
+                        ↺ Xóa bộ lọc
+                    </a>
+
+                </form>
+
             </div>
 
             <div class="cars-main">
