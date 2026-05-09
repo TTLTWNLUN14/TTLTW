@@ -3,6 +3,7 @@ package vn.edu.nlu.fit.datxedulich.controller.cart;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import vn.edu.nlu.fit.datxedulich.dao.CartDAO;
 import vn.edu.nlu.fit.datxedulich.model.CarType;
 import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
 import vn.edu.nlu.fit.datxedulich.services.ProductService;
@@ -11,6 +12,8 @@ import java.io.IOException;
 
 @WebServlet(name = "AddCartController", value = "/add-cart")
 public class AddCartController extends HttpServlet {
+
+    private final CartDAO cartDAO = new CartDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,6 +46,10 @@ public class AddCartController extends HttpServlet {
             if (product != null) {
                 cart.addItem(product, quantity, isDriver);
                 session.setAttribute("cart", cart);
+                Integer accountId = (Integer) session.getAttribute("account_id");
+                if (accountId != null) {
+                    cartDAO.saveCart(accountId, cart);
+                }
             }
 
             if ("detail".equals(from) && typeIdStr != null) {
