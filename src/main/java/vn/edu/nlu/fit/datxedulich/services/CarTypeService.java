@@ -27,7 +27,24 @@ public class CarTypeService {
         carTypeDao.updateCarType(ct);
     }
 
-    public void deleteCarType(int typeId) {
-        carTypeDao.deleteCarType(typeId);
+    public boolean deleteCarType(int typeId) {
+        return carTypeDao.deleteCarType(typeId);
+    }
+
+    public List<CarType> filterCarTypes(Integer brandId, String category,
+                                        Integer seatingPlan, String fuel, Integer maxPriceKm) {
+        return carTypeDao.filterCarTypes(brandId, category, seatingPlan, fuel, maxPriceKm);
+    }
+
+    public List<CarType> getCarTypesPaged(int page, int pageSize) {
+        return carTypeDao.getCarTypesPaged(page, pageSize);
+    }
+
+    public int countCarTypes() {
+        return carTypeDao.countCarTypes();
+    }
+
+    public int countCarTypesByBrand(int brandId) {
+        return carTypeDao.countCarTypesByBrand(brandId);
     }
 }

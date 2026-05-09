@@ -39,32 +39,37 @@ public class CarsAdminController extends HttpServlet {
             listCarType = carTypeService.getListCarType();
         }
 
+        String msg = request.getParameter("msg");
+        if (msg != null) request.setAttribute("msg", msg);
+
         request.setAttribute("listCarType", listCarType);
-        request.getRequestDispatcher("/WEB-INF/views/cars-admin.jsp")
-                .forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/cars-admin.jsp").forward(request, response);
     }
 
-    // delete
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        String action    = request.getParameter("action");
+        String action     = request.getParameter("action");
         String brandIdStr = request.getParameter("brandId");
 
+        String msg = "";
         if ("delete".equals(action)) {
             try {
                 int typeId = Integer.parseInt(request.getParameter("typeId"));
-                carTypeService.deleteCarType(typeId);
+                // FIX: gọi deleteCarType mới — tự xử lý FK conflict bên trong
+                boolean deleted = carTypeService.deleteCarType(typeId);
+                msg = deleted ? "delete_ok" : "delete_fail";
             } catch (NumberFormatException e) {
                 e.printStackTrace();
+                msg = "delete_fail";
             }
         }
 
-        String redirectUrl = request.getContextPath() + "/cars-admin";
+        String redirectUrl = request.getContextPath() + "/cars-admin?msg=" + msg;
         if (brandIdStr != null && !brandIdStr.isEmpty()) {
-            redirectUrl += "?brandId=" + brandIdStr;
+            redirectUrl += "&brandId=" + brandIdStr;
         }
         response.sendRedirect(redirectUrl);
     }
