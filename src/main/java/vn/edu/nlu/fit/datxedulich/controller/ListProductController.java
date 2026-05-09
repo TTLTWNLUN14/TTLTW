@@ -14,6 +14,7 @@ import java.util.List;
 @WebServlet(name = "ListProductController", value = "/list-product")
 public class ListProductController extends HttpServlet {
 
+    private static final int PAGE_SIZE = 9;
     private final CarTypeService ps = new CarTypeService();
     private final BrandService   bs = new BrandService();
 
@@ -27,21 +28,41 @@ public class ListProductController extends HttpServlet {
         String  fuel        = emptyToNull(request.getParameter("fuel"));
         Integer maxPriceKm  = parseIntParam(request, "maxPriceKm");
 
-        List<CarType> list;
+        int page = 1;
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.isBlank()) {
+            try { page = Math.max(1, Integer.parseInt(pageStr)); }
+            catch (NumberFormatException ignored) {}
+        }
 
         boolean hasFilter = brandId != null || category != null
                 || seatingPlan != null || fuel != null || maxPriceKm != null;
 
+        List<CarType> list;
+        int totalItems;
+
         if (hasFilter) {
-            list = ps.filterCarTypes(brandId, category, seatingPlan, fuel, maxPriceKm);
+            List<CarType> allFiltered = ps.filterCarTypes(brandId, category, seatingPlan, fuel, maxPriceKm);
+            totalItems = allFiltered.size();
+            int from = (page - 1) * PAGE_SIZE;
+            int to   = Math.min(from + PAGE_SIZE, totalItems);
+            list = (from < totalItems) ? allFiltered.subList(from, to) : List.of();
         } else {
-            list = ps.getListCarType();
+            totalItems = ps.countCarTypes();
+            list = ps.getCarTypesPaged(page, PAGE_SIZE);
         }
+
+        int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
 
         List<Brand> brands = bs.getListBrand();
 
-        request.setAttribute("list",           list);
-        request.setAttribute("brands",         brands);
+        request.setAttribute("list",            list);
+        request.setAttribute("brands",          brands);
+        request.setAttribute("currentPage",     page);
+        request.setAttribute("totalPages",      totalPages);
+        request.setAttribute("totalItems",      totalItems);
+        request.setAttribute("pageSize",        PAGE_SIZE);
+
         request.setAttribute("selectedBrandId",  brandId);
         request.setAttribute("selectedCategory", category);
         request.setAttribute("selectedSeat",     seatingPlan);

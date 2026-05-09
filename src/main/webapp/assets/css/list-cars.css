@@ -416,3 +416,24 @@ body {
 a {
     text-decoration: none;
 }
+.page-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 36px; height: 36px; padding: 0 10px;
+    border: 1px solid #e2e8f0; border-radius: 6px;
+    color: #374151; text-decoration: none; font-size: 0.9rem;
+    transition: all 0.15s;
+}
+.page-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+.page-btn.active {
+    background: #f97316;
+    color: #fff;
+    border-color: #f97316;
+    font-weight: 600;
+}
+.page-btn.disabled {
+    color: #cbd5e1;
+    pointer-events: none;
+}
