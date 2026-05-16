@@ -14,7 +14,7 @@ import java.util.List;
 @WebServlet(name = "CarsAdminController", value = "/cars-admin")
 public class CarsAdminController extends HttpServlet {
 
-    private final BrandService brandService     = new BrandService();
+    private final BrandService   brandService   = new BrandService();
     private final CarTypeService carTypeService = new CarTypeService();
 
     @Override
@@ -24,20 +24,24 @@ public class CarsAdminController extends HttpServlet {
         List<Brand> listBrand = brandService.getListBrand();
         request.setAttribute("listBrand", listBrand);
 
-        String brandIdStr = request.getParameter("brandId");
+        Integer brandId     = parseIntParam(request, "brandId");
+        String  category    = emptyToNull(request.getParameter("category"));
+        Integer seatingPlan = parseIntParam(request, "seatingPlan");
+
         List<CarType> listCarType;
 
-        if (brandIdStr != null && !brandIdStr.isEmpty()) {
-            try {
-                int brandId = Integer.parseInt(brandIdStr);
-                listCarType = carTypeService.getCarTypesByBrandId(brandId);
-                request.setAttribute("selectedBrandId", brandId);
-            } catch (NumberFormatException e) {
-                listCarType = carTypeService.getListCarType();
-            }
+        boolean hasFilter = brandId != null || category != null || seatingPlan != null;
+
+        if (hasFilter) {
+            // fuel và maxPriceKm không có trong admin, truyền null
+            listCarType = carTypeService.filterCarTypes(brandId, category, seatingPlan, null, null);
         } else {
             listCarType = carTypeService.getListCarType();
         }
+
+        request.setAttribute("selectedBrandId",   brandId);
+        request.setAttribute("selectedCategory",  category);
+        request.setAttribute("selectedSeat",      seatingPlan);
 
         String msg = request.getParameter("msg");
         if (msg != null) request.setAttribute("msg", msg);
@@ -53,12 +57,13 @@ public class CarsAdminController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action     = request.getParameter("action");
         String brandIdStr = request.getParameter("brandId");
+        String category   = request.getParameter("category");
+        String seatStr    = request.getParameter("seatingPlan");
 
         String msg = "";
         if ("delete".equals(action)) {
             try {
-                int typeId = Integer.parseInt(request.getParameter("typeId"));
-                // FIX: gọi deleteCarType mới — tự xử lý FK conflict bên trong
+                int typeId  = Integer.parseInt(request.getParameter("typeId"));
                 boolean deleted = carTypeService.deleteCarType(typeId);
                 msg = deleted ? "delete_ok" : "delete_fail";
             } catch (NumberFormatException e) {
@@ -67,10 +72,26 @@ public class CarsAdminController extends HttpServlet {
             }
         }
 
-        String redirectUrl = request.getContextPath() + "/cars-admin?msg=" + msg;
-        if (brandIdStr != null && !brandIdStr.isEmpty()) {
-            redirectUrl += "&brandId=" + brandIdStr;
-        }
-        response.sendRedirect(redirectUrl);
+        // Giữ lại cả 3 filter khi redirect sau xóa
+        StringBuilder redirectUrl = new StringBuilder(
+                request.getContextPath() + "/cars-admin?msg=" + msg);
+        if (brandIdStr != null && !brandIdStr.isEmpty())
+            redirectUrl.append("&brandId=").append(brandIdStr);
+        if (category != null && !category.isEmpty())
+            redirectUrl.append("&category=").append(category);
+        if (seatStr != null && !seatStr.isEmpty())
+            redirectUrl.append("&seatingPlan=").append(seatStr);
+
+        response.sendRedirect(redirectUrl.toString());
+    }
+
+    private Integer parseIntParam(HttpServletRequest req, String name) {
+        String v = req.getParameter(name);
+        if (v == null || v.isBlank()) return null;
+        try { return Integer.parseInt(v.trim()); } catch (NumberFormatException e) { return null; }
+    }
+
+    private String emptyToNull(String s) {
+        return (s == null || s.isBlank()) ? null : s.trim();
     }
 }
