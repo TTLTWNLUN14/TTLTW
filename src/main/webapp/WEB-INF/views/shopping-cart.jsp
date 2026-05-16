@@ -181,6 +181,82 @@
                 </div>
             </c:forEach>
         </div>
+        <div class="history-section">
+            <h3>Lịch sử đặt xe của bạn</h3>
+
+            <div class="status-tab-bar">
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=all"
+                   class="status-tab ${statusFilter == 'all' || empty statusFilter ? 'active' : ''}">
+                    Tất cả
+                </a>
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Chờ xác nhận"
+                   class="status-tab ${statusFilter == 'Chờ xác nhận' ? 'active' : ''}">
+                    Chờ xác nhận
+                </a>
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Đang diễn ra"
+                   class="status-tab ${statusFilter == 'Đang diễn ra' ? 'active' : ''}">
+                    Đang diễn ra
+                </a>
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Hoàn thành"
+                   class="status-tab ${statusFilter == 'Hoàn thành' ? 'active' : ''}">
+                    Hoàn thành
+                </a>
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Đã hủy"
+                   class="status-tab ${statusFilter == 'Đã hủy' ? 'active' : ''}">
+                    Đã hủy
+                </a>
+            </div>
+            <c:choose>
+                <c:when test="${not empty bookingHistory}">
+                    <table class="history-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên xe</th>
+                            <th>Lộ trình</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${bookingHistory}" var="bk">
+                            <tr>
+                                <td>#${bk.bookingId}</td>
+                                <td><strong>${bk.carName}</strong></td>
+                                <td>${bk.route}</td>
+                                <td>${bk.bookingDate}</td>
+                                <td><fmt:formatNumber value="${bk.totalPrice}" type="number"/> VND</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${bk.status == 'Chờ xác nhận'}">
+                                            <span class="status-badge-order badge-cho">${bk.status}</span>
+                                        </c:when>
+                                        <c:when test="${bk.status == 'Đang diễn ra'}">
+                                            <span class="status-badge-order badge-dang">${bk.status}</span>
+                                        </c:when>
+                                        <c:when test="${bk.status == 'Hoàn thành'}">
+                                            <span class="status-badge-order badge-hoan">${bk.status}</span>
+                                        </c:when>
+                                        <c:when test="${bk.status == 'Đã hủy'}">
+                                            <span class="status-badge-order badge-huy">${bk.status}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="status-badge-order">${bk.status}</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    <div class="history-empty">Không có đơn nào phù hợp.</div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+
     </div>
 
     <div class="right-panel">
