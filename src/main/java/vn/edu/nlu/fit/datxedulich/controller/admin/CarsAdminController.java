@@ -14,6 +14,7 @@ import java.util.List;
 @WebServlet(name = "CarsAdminController", value = "/cars-admin")
 public class CarsAdminController extends HttpServlet {
 
+    private static final int PAGE_SIZE = 10;
     private final BrandService   brandService   = new BrandService();
     private final CarTypeService carTypeService = new CarTypeService();
 
@@ -28,20 +29,39 @@ public class CarsAdminController extends HttpServlet {
         String  category    = emptyToNull(request.getParameter("category"));
         Integer seatingPlan = parseIntParam(request, "seatingPlan");
 
-        List<CarType> listCarType;
+        int page = 1;
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.isBlank()) {
+            try { page = Math.max(1, Integer.parseInt(pageStr)); }
+            catch (NumberFormatException ignored) {}
+        }
 
         boolean hasFilter = brandId != null || category != null || seatingPlan != null;
 
+        List<CarType> listCarType;
+        int totalItems;
+
         if (hasFilter) {
-            // fuel và maxPriceKm không có trong admin, truyền null
-            listCarType = carTypeService.filterCarTypes(brandId, category, seatingPlan, null, null);
+            List<CarType> allFiltered = carTypeService.filterCarTypes(brandId, category, seatingPlan, null, null);
+            totalItems = allFiltered.size();
+            int from = (page - 1) * PAGE_SIZE;
+            int to   = Math.min(from + PAGE_SIZE, totalItems);
+            listCarType = (from < totalItems) ? allFiltered.subList(from, to) : List.of();
         } else {
-            listCarType = carTypeService.getListCarType();
+            totalItems  = carTypeService.countCarTypes();
+            listCarType = carTypeService.getCarTypesPaged(page, PAGE_SIZE);
         }
 
-        request.setAttribute("selectedBrandId",   brandId);
-        request.setAttribute("selectedCategory",  category);
-        request.setAttribute("selectedSeat",      seatingPlan);
+        int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
+
+        request.setAttribute("selectedBrandId",  brandId);
+        request.setAttribute("selectedCategory", category);
+        request.setAttribute("selectedSeat",     seatingPlan);
+
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages",  totalPages);
+        request.setAttribute("totalItems",  totalItems);
+        request.setAttribute("pageSize",    PAGE_SIZE);
 
         String msg = request.getParameter("msg");
         if (msg != null) request.setAttribute("msg", msg);
@@ -59,6 +79,7 @@ public class CarsAdminController extends HttpServlet {
         String brandIdStr = request.getParameter("brandId");
         String category   = request.getParameter("category");
         String seatStr    = request.getParameter("seatingPlan");
+        String pageStr    = request.getParameter("page");
 
         String msg = "";
         if ("delete".equals(action)) {
@@ -72,7 +93,6 @@ public class CarsAdminController extends HttpServlet {
             }
         }
 
-        // Giữ lại cả 3 filter khi redirect sau xóa
         StringBuilder redirectUrl = new StringBuilder(
                 request.getContextPath() + "/cars-admin?msg=" + msg);
         if (brandIdStr != null && !brandIdStr.isEmpty())
@@ -81,6 +101,8 @@ public class CarsAdminController extends HttpServlet {
             redirectUrl.append("&category=").append(category);
         if (seatStr != null && !seatStr.isEmpty())
             redirectUrl.append("&seatingPlan=").append(seatStr);
+        if (pageStr != null && !pageStr.isEmpty())
+            redirectUrl.append("&page=").append(pageStr);
 
         response.sendRedirect(redirectUrl.toString());
     }

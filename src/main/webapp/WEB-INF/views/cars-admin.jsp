@@ -156,6 +156,60 @@
             </tbody>
         </table>
     </div>
+
+    <c:if test="${totalPages > 1}">
+        <div class="pagination" style="
+            display:flex; justify-content:center; align-items:center;
+            gap:6px; margin-top:32px; flex-wrap:wrap;">
+
+            <c:choose>
+                <c:when test="${currentPage > 1}">
+                    <a href="${pageContext.request.contextPath}/cars-admin?page=${currentPage - 1}
+                        <c:if test='${not empty selectedBrandId}'>&brandId=${selectedBrandId}</c:if>
+                        <c:if test='${not empty selectedCategory}'>&category=${selectedCategory}</c:if>
+                        <c:if test='${not empty selectedSeat}'>&seatingPlan=${selectedSeat}</c:if>"
+                       class="page-btn">‹ Trước</a>
+                </c:when>
+                <c:otherwise>
+                    <span class="page-btn disabled">‹ Trước</span>
+                </c:otherwise>
+            </c:choose>
+
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${i == currentPage}">
+                        <span class="page-btn active">${i}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/cars-admin?page=${i}
+                            <c:if test='${not empty selectedBrandId}'>&brandId=${selectedBrandId}</c:if>
+                            <c:if test='${not empty selectedCategory}'>&category=${selectedCategory}</c:if>
+                            <c:if test='${not empty selectedSeat}'>&seatingPlan=${selectedSeat}</c:if>"
+                           class="page-btn">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+            <c:choose>
+                <c:when test="${currentPage < totalPages}">
+                    <a href="${pageContext.request.contextPath}/cars-admin?page=${currentPage + 1}
+                        <c:if test='${not empty selectedBrandId}'>&brandId=${selectedBrandId}</c:if>
+                        <c:if test='${not empty selectedCategory}'>&category=${selectedCategory}</c:if>
+                        <c:if test='${not empty selectedSeat}'>&seatingPlan=${selectedSeat}</c:if>"
+                       class="page-btn">Sau ›</a>
+                </c:when>
+                <c:otherwise>
+                    <span class="page-btn disabled">Sau ›</span>
+                </c:otherwise>
+            </c:choose>
+
+        </div>
+
+        <p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:8px;">
+            Trang ${currentPage}/${totalPages} — ${totalItems} loại xe
+        </p>
+    </c:if>
+
 </div>
 
 <div class="confirm-overlay" id="confirmOverlay">
@@ -178,6 +232,7 @@
     <input type="hidden" name="brandId"     value="${selectedBrandId}">
     <input type="hidden" name="category"    value="${selectedCategory}">
     <input type="hidden" name="seatingPlan" value="${selectedSeat}">
+    <input type="hidden" name="page"        value="${currentPage}">
 </form>
 <script>
     function openConfirm(typeId, carName) {
