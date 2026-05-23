@@ -43,8 +43,8 @@
     </div>
 
     <c:if test="${param.error == 'has_cars'}">
-        <div style="background:#fff0f0; border:1px solid #f5c6cb; color:#721c24;
-                padding:10px 16px; border-radius:6px; margin-bottom:14px;">Không thể xóa hãng xe này vì còn loại xe bên trong. Hãy xóa hết loại xe trước.
+        <div class="alert-error">
+            Không thể xóa hãng xe này vì còn loại xe bên trong. Hãy xóa hết loại xe trước.
         </div>
     </c:if>
 
@@ -91,11 +91,10 @@
                     <td>
                         <c:choose>
                             <c:when test="${not empty b.logo}">
-                                <img src="${b.logo}" alt="${b.brandName}"
-                                     style="width:48px; height:36px; object-fit:contain;">
+                                <img src="${b.logo}" alt="${b.brandName}" class="brand-logo-img">
                             </c:when>
                             <c:otherwise>
-                                <span style="color:#aaa; font-size:0.8rem;">—</span>
+                                <span class="empty-logo-text">—</span>
                             </c:otherwise>
                         </c:choose>
                     </td>
@@ -130,7 +129,7 @@
 
             <c:if test="${empty listBrand}">
                 <tr>
-                    <td colspan="5" style="text-align:center; padding:40px; color:#94a3b8;">
+                    <td colspan="5" class="empty-table-cell">
                         <c:choose>
                             <c:when test="${not empty filterBrandId}">
                                 Không tìm thấy hãng xe phù hợp.
@@ -151,11 +150,15 @@
     <div class="confirm-box">
         <h3>Xác nhận xóa hãng xe</h3>
         <p>Bạn có chắc muốn xóa hãng xe<br>
-            <strong id="confirmBrandName"></strong>?<br>
-            Hành động này không thể hoàn tác.</p>
+            <strong id="confirmBrandName"></strong>?</p>
+
+        <p class="warning-text"><strong>Lưu ý:</strong> Tất cả các loại xe thuộc hãng này có thể bị ảnh hưởng
+            hoặc cần được xóa trước. Hành động này không thể hoàn tác.
+        </p>
+
         <div class="confirm-actions">
             <button class="btn-confirm-cancel" onclick="closeConfirm()">Hủy bỏ</button>
-            <button class="btn-confirm-delete" onclick="submitDelete()">Xóa hãng</button>
+            <button type="button" class="btn-confirm-delete" onclick="submitDelete()">Xóa hãng</button>
         </div>
     </div>
 </div>
