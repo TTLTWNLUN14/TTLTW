@@ -12,7 +12,6 @@ body {
     color: #333;
 }
 
-/* === Sidebar (Thanh bên trái) === */
 .sidebar {
     width: 260px;
     background-color: #f4f6f9;
@@ -92,6 +91,15 @@ body {
     background-color: #15407a;
 }
 
+.alert-error {
+    background-color: #fff0f0;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+}
+
 .table-container {
     width: 100%;
 }
@@ -138,6 +146,22 @@ body {
     color: #0b1a2e;
 }
 
+.brand-logo-img {
+    width: 48px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.empty-logo-text {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.empty-table-cell {
+    text-align: center;
+    padding: 40px;
+    color: #94a3b8;
+}
 
 .action-buttons {
     display: flex;
@@ -175,11 +199,13 @@ body {
 .btn-disable:hover {
     background-color: #dc2626;
 }
+
 .btn-add-type {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px; height: 30px;
+    width: 30px;
+    height: 30px;
     background: #16a34a;
     color: white;
     border-radius: 50%;
@@ -189,10 +215,16 @@ body {
     line-height: 1;
     transition: background 0.2s, transform 0.1s;
 }
-.btn-add-type:hover { background: #15803d; transform: scale(1.1); }
-.btn-add-type title { display: none; }
 
-/* === Trạng thái hoạt động === */
+.btn-add-type:hover {
+    background: #15803d;
+    transform: scale(1.1);
+}
+
+.btn-add-type title {
+    display: none;
+}
+
 .status-badge {
     display: inline-block;
     background-color: #e6f8ec;
@@ -208,7 +240,6 @@ body {
     color: #dc2626;
 }
 
-/* === Bộ lọc hãng xe === */
 .filter-bar {
     display: flex;
     align-items: center;
@@ -285,6 +316,7 @@ body {
 .filter-count strong {
     color: #1d549a;
 }
+
 .confirm-overlay {
     display: none;
     position: fixed;
@@ -333,6 +365,16 @@ body {
     color: #0b1a2e;
 }
 
+.warning-text {
+    color: #dc2626;
+    background-color: #fff0f0;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    margin: 10px 0;
+}
+
 .confirm-actions {
     display: flex;
     gap: 12px;
@@ -351,7 +393,9 @@ body {
     color: #555;
 }
 
-.btn-confirm-cancel:hover { background: #f8fafc; }
+.btn-confirm-cancel:hover {
+    background: #f8fafc;
+}
 
 .btn-confirm-delete {
     flex: 1;
@@ -365,4 +409,10 @@ body {
     font-weight: 700;
 }
 
-.btn-confirm-delete:hover { background: #dc2626; }
+.btn-confirm-delete:hover {
+    background: #dc2626;
+}
+
+#deleteForm {
+    display: none;
+}

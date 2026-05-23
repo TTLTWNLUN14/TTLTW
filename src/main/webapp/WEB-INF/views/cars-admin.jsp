@@ -140,8 +140,8 @@
                     <td class="action-buttons">
                         <a href="${pageContext.request.contextPath}/cars-admin/edit?typeId=${ct.typeId}"
                            class="btn-edit">&#x270E; Sửa</a>
-                        <button class="btn-delete"
-                                onclick="openConfirm(${ct.typeId}, '${ct.typeName}')">Xóa</button>
+                        <button type="button" class="btn-delete"
+                                onclick="openDeleteModal('${ct.typeId}', '${ct.typeName}')">Xóa</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -212,44 +212,28 @@
 
 </div>
 
-<div class="confirm-overlay" id="confirmOverlay">
-    <div class="confirm-box">
-        <h3>Xác nhận xóa xe</h3>
-        <p>Bạn có chắc muốn xóa xe<br><strong id="confirmCarName"></strong>?<br>
-            Hành động này không thể hoàn tác.</p>
-        <div class="confirm-actions">
-            <button class="btn-confirm-cancel" onclick="closeConfirm()">Hủy bỏ</button>
-            <button class="btn-confirm-delete" onclick="submitDelete()">Xóa xe</button>
+<div id="deleteModal" class="modal-wrapper">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Xác nhận xóa xe</h3>
+            <span class="modal-close" onclick="closeDeleteModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa xe <strong id="deleteTargetName">...</strong>?</p>
+            <small class="text-danger">Hành động này không thể hoàn tác và có thể ảnh hưởng đến các dữ liệu liên quan.</small>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Hủy bỏ</button>
+
+            <form id="realDeleteForm" action="${pageContext.request.contextPath}/cars-admin" method="post" style="display:inline; margin:0;">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="typeId" id="deleteTypeId">
+                <button type="submit" class="btn-confirm-delete">Xác nhận xóa</button>
+            </form>
         </div>
     </div>
 </div>
 
-<form id="deleteForm" method="post"
-      action="${pageContext.request.contextPath}/cars-admin"
-      style="display:none;">
-    <input type="hidden" name="action"      value="delete">
-    <input type="hidden" name="typeId"      id="deleteTypeId">
-    <input type="hidden" name="brandId"     value="${selectedBrandId}">
-    <input type="hidden" name="category"    value="${selectedCategory}">
-    <input type="hidden" name="seatingPlan" value="${selectedSeat}">
-    <input type="hidden" name="page"        value="${currentPage}">
-</form>
-<script>
-    function openConfirm(typeId, carName) {
-        document.getElementById('confirmCarName').textContent = carName;
-        document.getElementById('deleteTypeId').value = typeId;
-        document.getElementById('confirmOverlay').classList.add('open');
-    }
-    function closeConfirm() {
-        document.getElementById('confirmOverlay').classList.remove('open');
-    }
-    document.getElementById('confirmOverlay').addEventListener('click', function(e) {
-        if (e.target === this) closeConfirm();
-    });
-    function submitDelete() {
-        document.getElementById('deleteForm').submit();
-    }
-</script>
-
+<script src="${pageContext.request.contextPath}/assets/js/cars-admin.js"></script>
 </body>
 </html>
