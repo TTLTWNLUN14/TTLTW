@@ -5,7 +5,10 @@
     <title>Đăng nhập – Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/login.css">
     <style>
-        /* ── Chỉ CSS cho các thành phần MỚI thêm vào ── */
+        /* ════════════════════════════════════════════════════════ */
+        /* CSS CHO CÁC THÀNH PHẦN MỚI (OAuth, Form Validation) */
+        /* ════════════════════════════════════════════════════════ */
+
         .social-divider {
             display: flex;
             align-items: center;
@@ -21,6 +24,7 @@
             height: 1px;
             background: rgba(255,255,255,.12);
         }
+
         .btn-social {
             display: flex;
             align-items: center;
@@ -35,14 +39,86 @@
             text-decoration: none;
             margin-bottom: 8px;
             border: none;
-            transition: opacity .2s;
+            transition: all .2s;
+            font-family: inherit;
         }
-        .btn-social:hover { opacity: .85; }
-        .btn-google   { background: #fff; color: #333; }
+        .btn-social:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.15);
+        }
+        .btn-google {
+            background: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .btn-google:hover { background: #f8f8f8; }
         .btn-facebook { background: #1877F2; color: #fff; }
-        .btn-social svg { width: 18px; height: 18px; flex-shrink: 0; }
-        .reg-error { color: #ff5c5c; font-size: .85rem; margin-bottom: 8px; display: none; }
-        .oauth-error { color: #ff5c5c; font-size: .85rem; margin-bottom: 10px; }
+        .btn-facebook:hover { background: #0a66c2; }
+
+        .btn-social svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: .85rem;
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 4px;
+            display: none;
+            border-left: 3px solid #ef4444;
+        }
+        .form-error.show {
+            display: block;
+        }
+
+        .form-success {
+            color: #10b981;
+            font-size: .85rem;
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 4px;
+            border-left: 3px solid #10b981;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+        .password-toggle-btn {
+            position: absolute;
+            right: 10px;
+            top: 35px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+            padding: 0 5px;
+        }
+        .password-toggle-btn:hover { color: #333; }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563c4 !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 196, 0.1);
+        }
+
+        .forgot-link {
+            text-align: center;
+            margin-top: 12px;
+            font-size: .9rem;
+        }
+        .forgot-link span {
+            color: #2563c4;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .forgot-link span:hover { color: #1a3a6b; }
+
     </style>
 </head>
 <body>
@@ -58,6 +134,7 @@
         </div>
     </div>
 </nav>
+
 <div class="login-wrap">
     <div class="login-box">
         <div class="login-logo">
@@ -66,41 +143,38 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" id="tLogin"    onclick="setTab('login')">Đăng nhập</button>
-            <button class="tab-btn"        id="tRegister" onclick="setTab('register')">Đăng ký</button>
+            <button class="tab-btn active" id="tLogin" onclick="setTab('login')">Đăng nhập</button>
+            <button class="tab-btn" id="tRegister" onclick="setTab('register')">Đăng ký</button>
         </div>
 
         <div class="form-panel show" id="pLogin">
-            <form method="POST" action="${pageContext.request.contextPath}/login">
+            <form method="POST" action="${pageContext.request.contextPath}/login" id="loginForm">
                 <div class="form-group">
                     <label>Tên đăng nhập</label>
-                    <input name="username" id="lUser" class="form-control" placeholder="username">
+                    <input name="username" id="lUser" class="form-control" placeholder="username" required>
                 </div>
-                <div class="form-group">
+
+                <div class="form-group password-toggle">
                     <label>Mật khẩu</label>
-                    <input name="password" id="lPass" class="form-control" type="password" placeholder="••••••••">
+                    <input name="password" id="lPass" class="form-control" type="password" placeholder="••••••••" required>
                 </div>
 
                 <c:if test="${not empty loginError}">
-                    <div style="color:red; margin-bottom:8px;">${loginError}</div>
-                </c:if>
-                <c:if test="${not empty registerSuccess}">
-                    <div style="color:green; margin-bottom:8px;">${registerSuccess}</div>
-                </c:if>
-                <c:if test="${not empty oauthError}">
-                    <div class="oauth-error">${oauthError}</div>
+                    <div class="form-error show">${loginError}</div>
                 </c:if>
 
-                <label style="font-size:0.9rem;">
-                    <input type="checkbox" name="rememberMe"> Ghi nhớ đăng nhập
+                <label style="font-size:0.9rem; display: flex; align-items: center; gap: 6px;">
+                    <input type="checkbox" name="rememberMe" style="width: 16px; height: 16px; cursor: pointer;">
+                    Ghi nhớ đăng nhập (48 giờ)
                 </label>
 
-                <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">
-                    Đăng nhập
+                <button type="submit" class="btn btn-primary" style="width:100%;margin-top:12px;">
+                     Đăng nhập
                 </button>
             </form>
 
             <div class="social-divider">hoặc đăng nhập với</div>
+
             <a href="${pageContext.request.contextPath}/oauth/google" class="btn-social btn-google">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -110,9 +184,10 @@
                 </svg>
                 Google
             </a>
+
             <a href="${pageContext.request.contextPath}/oauth/facebook" class="btn-social btn-facebook">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.93-1.956 1.886v2.286h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796V24c5.728-.904 10.125-5.894 10.125-11.927z"/>
                 </svg>
                 Facebook
             </a>
@@ -120,57 +195,68 @@
             <div class="forgot-link">Quên mật khẩu? <span onclick="setTab('forgot')">Lấy lại ngay</span></div>
         </div>
 
-        <%-- ══ PANEL: ĐĂNG KÝ ══ (CẬP NHẬT: thêm <form> + fullName + submit thật) --%>
         <div class="form-panel" id="pRegister">
-
             <c:if test="${not empty registerError}">
-                <div style="color:red; margin-bottom:8px;">${registerError}</div>
+                <div class="form-error show">${registerError}</div>
+            </c:if>
+            <c:if test="${not empty registerSuccess}">
+                <div class="form-success">${registerSuccess}</div>
             </c:if>
 
             <form method="POST" action="${pageContext.request.contextPath}/register"
                   id="registerForm" onsubmit="return validateRegister(event)">
+
                 <div class="form-group">
-                    <label>Họ và tên</label>
+                    <label>Họ và tên <span style="color: #ef4444;">*</span></label>
                     <input name="fullName" id="rFullName" class="form-control"
                            placeholder="Nguyễn Văn A" value="${param.fullName}" required>
+                    <small style="color: #999;">Tên đầy đủ của bạn</small>
                 </div>
+
                 <div class="form-group">
-                    <label>Tên đăng nhập</label>
+                    <label>Tên đăng nhập <span style="color: #ef4444;">*</span></label>
                     <input name="username" id="rUser" class="form-control"
                            placeholder="username" value="${param.username}" required>
+                    <small style="color: #999;">3-20 ký tự, không chứa khoảng trắng</small>
                 </div>
+
                 <div class="form-group">
-                    <label>Số điện thoại</label>
-                    <input name="phone" id="rPhone" class="form-control"
-                           placeholder="09xxxxxxxx" value="${param.phone}" required>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
+                    <label>Email <span style="color: #ef4444;">*</span></label>
                     <input name="email" id="rEmail" class="form-control" type="email"
                            placeholder="email@example.com" value="${param.email}" required>
+                    <small style="color: #999;">Dùng để khôi phục mật khẩu</small>
                 </div>
+
+                <div class="form-group">
+                    <label>Số điện thoại <span style="color: #ef4444;">*</span></label>
+                    <input name="phone" id="rPhone" class="form-control"
+                           placeholder="09xxxxxxxx" value="${param.phone}" required>
+                    <small style="color: #999;">Số di động 9-11 chữ số</small>
+                </div>
+
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Mật khẩu</label>
+                    <div class="form-group password-toggle">
+                        <label>Mật khẩu <span style="color: #ef4444;">*</span></label>
                         <input name="password" id="rPass" class="form-control"
                                type="password" placeholder="Tối thiểu 6 ký tự" required>
+                        <small style="color: #999; display: block; margin-top: 4px;">Ít nhất 6 ký tự</small>
                     </div>
-                    <div class="form-group">
-                        <label>Nhập lại</label>
+                    <div class="form-group password-toggle">
+                        <label>Nhập lại mật khẩu <span style="color: #ef4444;">*</span></label>
                         <input name="confirmPassword" id="rPass2" class="form-control"
                                type="password" placeholder="••••••••" required>
+
                     </div>
                 </div>
 
-                <div id="regClientError" class="reg-error"></div>
+                <div id="regClientError" class="form-error"></div>
 
-                <button type="submit" class="btn btn-gold" style="width:100%;margin-top:8px;">
-                    Tạo tài khoản
+                <button type="submit" class="btn btn-gold" style="width:100%;margin-top:12px;">
+                     Tạo tài khoản
                 </button>
             </form>
-
-            <%-- Nút đăng ký nhanh bên thứ 3 (MỚI THÊM) --%>
             <div class="social-divider">hoặc đăng ký với</div>
+
             <a href="${pageContext.request.contextPath}/oauth/google" class="btn-social btn-google">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -180,15 +266,15 @@
                 </svg>
                 Google
             </a>
+
             <a href="${pageContext.request.contextPath}/oauth/facebook" class="btn-social btn-facebook">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.93-1.956 1.886v2.286h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796V24c5.728-.904 10.125-5.894 10.125-11.927z"/>
                 </svg>
                 Facebook
             </a>
         </div>
 
-        <%-- ══ PANEL: QUÊN MẬT KHẨU ══ (giữ nguyên) --%>
         <div class="form-panel" id="pForgot">
             <div class="form-group">
                 <label>Email đã đăng ký</label>
@@ -198,7 +284,6 @@
             <div class="forgot-link"><span onclick="setTab('login')">← Quay lại đăng nhập</span></div>
         </div>
 
-        <%-- ══ PANEL: ĐẶT LẠI MẬT KHẨU ══ (giữ nguyên) --%>
         <div class="form-panel" id="pReset">
             <div class="form-group">
                 <label>Mã xác nhận</label>
@@ -215,42 +300,11 @@
 
 <div id="toast"></div>
 
-<script src="${pageContext.request.contextPath}/js/login.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/login.js"></script>
 <script>
-    /* Mở đúng tab khi server trả về lỗi / thành công */
     <c:if test="${not empty registerError}">setTab('register');</c:if>
     <c:if test="${not empty registerSuccess}">setTab('login');</c:if>
 
-    /* Validate register phía client */
-    function validateRegister(e) {
-        var errEl = document.getElementById('regClientError');
-        errEl.style.display = 'none';
-
-        var fname = document.getElementById('rFullName').value.trim();
-        var user  = document.getElementById('rUser').value.trim();
-        var phone = document.getElementById('rPhone').value.trim();
-        var email = document.getElementById('rEmail').value.trim();
-        var pass  = document.getElementById('rPass').value;
-        var pass2 = document.getElementById('rPass2').value;
-
-        function err(msg) {
-            errEl.textContent = msg;
-            errEl.style.display = 'block';
-            e.preventDefault();
-            return false;
-        }
-
-        if (!fname || !user || !phone || !email || !pass || !pass2)
-            return err('Vui lòng điền đầy đủ tất cả các trường.');
-        if (user.length < 3 || user.length > 20)
-            return err('Tên đăng nhập phải từ 3 đến 20 ký tự.');
-        if (pass.length < 6)
-            return err('Mật khẩu phải ít nhất 6 ký tự.');
-        if (pass !== pass2)
-            return err('Mật khẩu xác nhận không khớp.');
-        if (!/^\d{9,11}$/.test(phone))
-            return err('Số điện thoại không hợp lệ (9–11 chữ số).');
-        return true;
     }
 </script>
 </body>
