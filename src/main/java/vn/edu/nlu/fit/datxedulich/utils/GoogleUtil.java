@@ -1,4 +1,4 @@
-package vn.edu.nlu.fit.datxedulich.Util;
+package vn.edu.nlu.fit.datxedulich.utils;
 
 public class GoogleUtil {
 

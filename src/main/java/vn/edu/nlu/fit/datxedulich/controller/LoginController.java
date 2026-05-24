@@ -36,9 +36,9 @@ public class LoginController extends HttpServlet {
 
                 if (parts.length == 2) {
                     String username = parts[0];
-                    String password = parts[1];
+                    String hashedPassword = parts[1];
 
-                    var result = userService.authenticate(username, password);
+                    var result = userService.authenticateWithHash(username, hashedPassword);
                     if ((Boolean) result.get("success")) {
                         User user = (User) result.get("user");
                         setSessionAndRedirect(request, response, user);
@@ -50,6 +50,7 @@ public class LoginController extends HttpServlet {
                 e.printStackTrace();
             }
         }
+
         String loginError = request.getParameter("loginError");
         if (loginError != null) {
             request.setAttribute("loginError", URLDecoder.decode(loginError, "UTF-8"));
@@ -82,7 +83,8 @@ public class LoginController extends HttpServlet {
 
             if ("on".equals(rememberMe) || "true".equals(rememberMe)) {
                 try {
-                    String cookieData  = username + "|" + password;
+                    String hashedPassword = result.get("hashedPassword").toString();
+                    String cookieData  = username + "|" + hashedPassword;
                     String encodedData = URLEncoder.encode(cookieData, "UTF-8");
 
                     Cookie rememberMeCookie = new Cookie("rememberMe", encodedData);
@@ -91,7 +93,7 @@ public class LoginController extends HttpServlet {
                     rememberMeCookie.setHttpOnly(true);
                     rememberMeCookie.setSecure(false);
                     response.addCookie(rememberMeCookie);
-                    System.out.println("✓ Đã lưu cookie 'Ghi nhớ đăng nhập'");
+                    System.out.println(" Đã lưu cookie 'Ghi nhớ đăng nhập'");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -130,7 +132,7 @@ public class LoginController extends HttpServlet {
             System.err.println("Không thể load cart từ DB: " + e.getMessage());
         }
 
-        System.out.println("✓ Đăng nhập thành công! User: " + user.getUsername());
+        System.out.println("Đăng nhập thành công! User: " + user.getUsername());
         response.sendRedirect(request.getContextPath() + "/index");
     }
 
