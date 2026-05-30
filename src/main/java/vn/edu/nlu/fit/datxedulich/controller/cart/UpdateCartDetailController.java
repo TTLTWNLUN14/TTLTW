@@ -3,6 +3,7 @@ package vn.edu.nlu.fit.datxedulich.controller.cart;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import vn.edu.nlu.fit.datxedulich.dao.CartDAO;
 import vn.edu.nlu.fit.datxedulich.dao.CarTypeDao;
 import vn.edu.nlu.fit.datxedulich.model.CarType;
 import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
@@ -13,6 +14,14 @@ import java.io.IOException;
 
 @WebServlet(name = "UpdateCartDetailController", value = "/update-cart-detail")
 public class UpdateCartDetailController extends HttpServlet {
+
+    private final CartDAO cartDAO = new CartDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -91,6 +100,11 @@ public class UpdateCartDetailController extends HttpServlet {
         if (phone != null) item.setPhone(phone);
 
         session.setAttribute("cart", cart);
+        Integer accountId = (Integer) session.getAttribute("account_id");
+        if (accountId != null) {
+            cartDAO.saveCart(accountId, cart);
+        }
+
         response.sendRedirect(request.getContextPath() + "/my-shopping-cart?openDetailId=" + productId);
     }
 }
