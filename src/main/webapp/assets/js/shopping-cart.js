@@ -1,4 +1,6 @@
-function openCartDetail(btn, typeId) {
+var cancelModal = document.getElementById('cancelModal');
+
+function toggleDetail(btn, typeId) {
     var panel = document.getElementById('detail-' + typeId);
     if (panel.style.display === 'none' || panel.style.display === '') {
         panel.style.display = 'block';
@@ -16,3 +18,11 @@ function updateProv(selectEl, hiddenId) {
         hidden.value = opt && opt.value !== "" ? opt.text : '';
     }
 }
+
+cancelModal.addEventListener('click', function(e) {
+    if (e.target === cancelModal) {
+        closeCancelModal();
+    }
+});
+
+document.getElementById('cancelModalClose').addEventListener('click', closeCancelModal);

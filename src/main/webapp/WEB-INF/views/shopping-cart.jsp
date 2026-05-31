@@ -246,6 +246,14 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
+                                <td>
+                                    <c:if test="${bk.status == 'Chờ xác nhận'}">
+                                        <button type="button" class="btn-cancel-order"
+                                                onclick="openCancelModal(${bk.bookingId})">
+                                            Hủy đơn
+                                        </button>
+                                    </c:if>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -278,6 +286,20 @@
     </div>
 </div>
 
+<div id="cancelModal">
+    <div class="modal-box">
+        <h3>Xác nhận hủy đơn</h3>
+        <p>Bạn có chắc muốn hủy đơn <strong id="cancelModalLabel"></strong> không?
+            Hành động này không thể hoàn tác.</p>
+        <form id="cancelForm" action="${pageContext.request.contextPath}/cancel-booking" method="post">
+            <input type="hidden" name="bookingId" id="cancelBookingIdInput">
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-cancel" id="cancelModalClose">Không, ở lại</button>
+                <button type="submit" class="btn-modal-confirm">Có, hủy đơn</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="${pageContext.request.contextPath}/assets/js/shopping-cart.js"></script>
 </body>
 </html>

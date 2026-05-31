@@ -58,7 +58,8 @@ public class MemberDAO extends BaseDao {
                                         "ct.type_name as carName, " +
                                         "CONCAT(b.pickup_province, ' → ', b.dropoff_province) as route, " +
                                         "DATE(b.pickup_date) as bookingDate, b.total_price as totalPrice, " +
-                                        "CASE WHEN b.return_date < NOW() THEN 'Hoàn thành' " +
+                                        "CASE WHEN b.status = 'Đã hủy' THEN 'Đã hủy' " +
+                                        "WHEN b.return_date < NOW() THEN 'Hoàn thành' " +
                                         "WHEN b.pickup_date > NOW() THEN 'Chờ xác nhận' ELSE 'Đang diễn ra' END as status " +
                                         "FROM bookings b " +
                                         "INNER JOIN customers c ON b.customer_id = c.customer_id " +
@@ -70,6 +71,25 @@ public class MemberDAO extends BaseDao {
                         .mapToBean(Booking.class)
                         .list()
         );
+    }
+
+    public boolean cancelBooking(int bookingId, int accountId) {
+        try {
+            int rows = get().withHandle(h ->
+                    h.createUpdate(
+                                    "UPDATE bookings SET status = 'Đã hủy' " +
+                                            "WHERE booking_id = :bookingId " +
+                                            "AND customer_id = (SELECT customer_id FROM customers WHERE account_id = :accountId)"
+                            )
+                            .bind("bookingId", bookingId)
+                            .bind("accountId", accountId)
+                            .execute()
+            );
+            return rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean updatePassword(int accountId, String newPassword) {
