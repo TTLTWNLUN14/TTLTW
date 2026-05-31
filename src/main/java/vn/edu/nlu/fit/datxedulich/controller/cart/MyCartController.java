@@ -51,7 +51,7 @@ public class MyCartController extends HttpServlet {
         }
         request.setAttribute("carsMap", carsMap);
 
-        Object accountIdObj = session.getAttribute("accountId");
+        Object accountIdObj = session.getAttribute("account_id");
         if (accountIdObj != null) {
             try {
                 int accountId = Integer.parseInt(accountIdObj.toString());

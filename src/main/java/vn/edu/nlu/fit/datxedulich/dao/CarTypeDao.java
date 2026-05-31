@@ -11,7 +11,7 @@ public class CarTypeDao extends BaseDao {
     static Map<Integer, CarType> productMap = new HashMap<Integer, CarType>();
 
     public List<CarType> getListCarType() {
-        return get().withHandle(h -> h.createQuery("select * from car_types").mapToBean(CarType.class).list());
+        return get().withHandle(h -> h.createQuery("SELECT * FROM car_types WHERE is_active = 1").mapToBean(CarType.class).list());
     }
 
     public CarType getCarTypeById(int id) {
@@ -31,7 +31,7 @@ public class CarTypeDao extends BaseDao {
     }
 
     public List<CarType> getCarTypesByBrandId(int brandId) {
-        return get().withHandle(h -> h.createQuery("SELECT * FROM car_types WHERE brand_id = :brandId ORDER BY type_id")
+        return get().withHandle(h -> h.createQuery("SELECT * FROM car_types WHERE brand_id = :brandId AND is_active = 1 ORDER BY type_id")
                 .bind("brandId", brandId).mapToBean(CarType.class).list());
     }
 
@@ -51,11 +51,10 @@ public class CarTypeDao extends BaseDao {
                 .bindBean(ct).execute());
     }
 
-    // FIX: Soft delete - đánh dấu is_active = false thay vì DELETE cứng
     // Tránh lỗi foreign key khi xe đã có booking/cart liên quan
     public boolean softDeleteCarType(int typeId) {
         int rows = get().withHandle(h -> h.createUpdate(
-                        "UPDATE car_types SET is_active = false WHERE type_id = :typeId")
+                        "UPDATE car_types SET is_active = 0 WHERE type_id = :typeId")
                 .bind("typeId", typeId).execute());
         return rows > 0;
     }
@@ -87,10 +86,10 @@ public class CarTypeDao extends BaseDao {
         }
     }
 
-    // Thêm: lọc nhiều tiêu chí (dùng cho commit 2)
+    // Thêm: lọc nhiều tiêu chí
     public List<CarType> filterCarTypes(Integer brandId, String category, Integer seatingPlan,
                                         String fuel, Integer maxPriceKm) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM car_types WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM car_types WHERE is_active = 1");
         if (brandId != null && brandId > 0)       sql.append(" AND brand_id = :brandId");
         if (category != null && !category.isEmpty()) sql.append(" AND category = :category");
         if (seatingPlan != null && seatingPlan > 0)  sql.append(" AND seating_plan = :seatingPlan");
@@ -109,24 +108,24 @@ public class CarTypeDao extends BaseDao {
         });
     }
 
-    // Phân trang (dùng cho commit 4)
+    // Phân trang
     public List<CarType> getCarTypesPaged(int page, int pageSize) {
         int offset = (page - 1) * pageSize;
         return get().withHandle(h -> h.createQuery(
-                        "SELECT * FROM car_types ORDER BY type_id LIMIT :limit OFFSET :offset")
+                        "SELECT * FROM car_types WHERE is_active = 1 ORDER BY type_id LIMIT :limit OFFSET :offset")
                 .bind("limit", pageSize)
                 .bind("offset", offset)
                 .mapToBean(CarType.class).list());
     }
 
     public int countCarTypes() {
-        return get().withHandle(h -> h.createQuery("SELECT COUNT(*) FROM car_types")
+        return get().withHandle(h -> h.createQuery("SELECT COUNT(*) FROM car_types WHERE is_active = 1")
                 .mapTo(Integer.class).one());
     }
 
     public int countCarTypesByBrand(int brandId) {
         return get().withHandle(h -> h.createQuery(
-                        "SELECT COUNT(*) FROM car_types WHERE brand_id = :brandId")
+                        "SELECT COUNT(*) FROM car_types WHERE brand_id = :brandId AND is_active = 1")
                 .bind("brandId", brandId)
                 .mapTo(Integer.class).one());
     }
