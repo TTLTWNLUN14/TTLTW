@@ -7,6 +7,9 @@
     <title>${product.typeName} - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/list-cars.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/car-detail.css">
+    <script>
+        const CONTEXT_PATH = '${pageContext.request.contextPath}';
+    </script>
 </head>
 <body>
 
@@ -19,12 +22,12 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/cars-brand">Hãng xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/booking">Đặt xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/my-shopping-cart">
-                Giỏ hàng (<c:out value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/>)
+                Giỏ hàng (<span class="cart-count"><c:out value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/></span>)
             </a>
         </div>
         <div class="nav-actions">
             <a href="#" class="btn-login">Đăng nhập</a>
-            <a href="#" class="btn-login" style="margin-left:20px">Đăng ký</a>
+            <a href="#" class="btn-login ml-20">Đăng ký</a>
         </div>
     </div>
 </nav>
@@ -32,7 +35,6 @@
 <div class="page-main">
     <div class="page-wrap-lg">
 
-        <%-- Breadcrumb --%>
         <ul class="breadcrumb">
             <li><a href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a></li>
             <li><a href="${pageContext.request.contextPath}/list-product">Xe</a></li>
@@ -49,7 +51,6 @@
         <div class="cd-layout">
 
             <div class="cd-left">
-
                 <div class="cd-gallery">
                     <div class="cd-main-img">
                         <span class="badge-stock">${product.count} xe có sẵn</span>
@@ -127,7 +128,6 @@
                         <p class="cd-desc-text">${product.descriptionType}</p>
                     </c:if>
                 </div>
-
             </div>
 
             <div class="cd-right">
@@ -139,7 +139,6 @@
 
                     <h1 class="cd-car-name">${product.typeName}</h1>
 
-                    <%-- Bảng giá 3 cột từ DB --%>
                     <div class="cd-price-wrap">
                         <div class="cd-price-item">
                             <span class="cd-price-unit">Tự lái/km</span>
@@ -167,7 +166,6 @@
                         </div>
                     </div>
 
-                    <%-- Tags --%>
                     <div class="cd-tags">
                         <c:if test="${product.seatingPlan > 0}">
                             <span class="cd-tag">${product.seatingPlan} chỗ</span>
@@ -183,30 +181,35 @@
                         </c:if>
                     </div>
 
-                    <c:if test="${param.added == '1'}">
-                        <div class="alert-success" style="background:#d1fae5; color:#065f46; border:1px solid #6ee7b7;
-border-radius:8px; padding:10px 14px; margin-bottom:12px;font-size:0.9rem;">Đã thêm <strong>${product.typeName}</strong> vào giỏ hàng!
-                            <a href="${pageContext.request.contextPath}/my-shopping-cart"
-                               style="color:#065f46; font-weight:600; margin-left:8px;">Xem giỏ →</a>
-                        </div>
-                    </c:if>
-
-                    <%-- Nút Đặt xe → /booking --%>
                     <a href="${pageContext.request.contextPath}/booking?typeId=${product.typeId}&isDriver=true"
                        class="btn-primary w-100">Đặt xe ngay
                     </a>
 
-                    <a href="${pageContext.request.contextPath}/add-cart?productId=${product.typeId}&quantity=1&isDriver=true&from=detail&typeId=${product.typeId}"
-                       class="btn-outline w-100 mt-10">Thêm vào giỏ hàng
-                    </a>
+                    <button class="btn-outline w-100 mt-10" onclick="addToCart(${product.typeId}, 1, true, '${product.typeName}', this)">
+                        Thêm vào giỏ hàng
+                    </button>
 
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
+
+<div id="cartModal" class="modal-overlay">
+    <div class="modal-box">
+        <span class="modal-close" onclick="closeModal('cartModal')">&times;</span>
+        <div class="modal-icon">✓</div>
+        <div class="modal-title">Thêm thành công!</div>
+        <div class="modal-body">
+            Đã thêm <strong id="modalProductName">Tên xe</strong> vào giỏ hàng.
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn btn-continue" onclick="closeModal('cartModal')">Tiếp tục chọn xe</button>
+            <a href="${pageContext.request.contextPath}/my-shopping-cart" class="modal-btn btn-go-cart">Xem giỏ hàng</a>
+        </div>
+    </div>
+</div>
+<script src="${pageContext.request.contextPath}/assets/js/car-detail.js"></script>
 
 </body>
 </html>
