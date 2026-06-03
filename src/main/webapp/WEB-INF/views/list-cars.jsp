@@ -4,6 +4,9 @@
 <head>
     <title>Danh sách xe - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/list-cars.css">
+    <script>
+        const CONTEXT_PATH = '${pageContext.request.contextPath}';
+    </script>
 </head>
 <body>
 
@@ -16,13 +19,13 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/cars-brand">Hãng xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/booking">Đặt xe</a>
             <a class="nav-link" href="${pageContext.request.contextPath}/my-shopping-cart">
-                Giỏ hàng (<c:out
-                    value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/>)
+                Giỏ hàng (<span class="cart-count"><c:out
+                    value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/></span>)
             </a>
         </div>
         <div class="nav-actions" id="navActions">
             <a href="#" class="btn-login">Đăng nhập</a>
-            <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
+            <a href="#" class="btn-login ml-20">Đăng ký</a>
         </div>
     </div>
 </nav>
@@ -52,8 +55,7 @@
 
                     <div class="filter-section">
                         <div class="filter-title">Hãng xe</div>
-                        <select name="brandId" class="filter-select"
-                                onchange="document.getElementById('filterForm').submit()">
+                        <select name="brandId" class="filter-select">
                             <option value="">-- Tất cả hãng --</option>
                             <c:forEach var="b" items="${brands}">
                                 <option value="${b.brandId}"
@@ -66,8 +68,7 @@
 
                     <div class="filter-section">
                         <div class="filter-title">Loại xe</div>
-                        <select name="category" class="filter-select"
-                                onchange="document.getElementById('filterForm').submit()">
+                        <select name="category" class="filter-select">
                             <option value="">-- Tất cả --</option>
                             <option value="SUV" <c:if test="${selectedCategory == 'SUV'}">selected</c:if>>SUV</option>
                             <option value="Sedan" <c:if test="${selectedCategory == 'Sedan'}">selected</c:if>>Sedan
@@ -83,8 +84,7 @@
 
                     <div class="filter-section">
                         <div class="filter-title">Số chỗ ngồi</div>
-                        <select name="seatingPlan" class="filter-select"
-                                onchange="document.getElementById('filterForm').submit()">
+                        <select name="seatingPlan" class="filter-select">
                             <option value="">-- Tất cả --</option>
                             <option value="4" <c:if test="${selectedSeat == 4}">selected</c:if>>4 chỗ</option>
                             <option value="5" <c:if test="${selectedSeat == 5}">selected</c:if>>5 chỗ</option>
@@ -96,8 +96,7 @@
 
                     <div class="filter-section">
                         <div class="filter-title">Nhiên liệu</div>
-                        <select name="fuel" class="filter-select"
-                                onchange="document.getElementById('filterForm').submit()">
+                        <select name="fuel" class="filter-select">
                             <option value="">-- Tất cả --</option>
                             <option value="Xăng" <c:if test="${selectedFuel == 'Xăng'}">selected</c:if>>Xăng</option>
                             <option value="Điện" <c:if test="${selectedFuel == 'Điện'}">selected</c:if>>Điện</option>
@@ -112,17 +111,15 @@
                         <div class="filter-title">Giá tối đa / km</div>
                         <input type="range" name="maxPriceKm" id="maxPrice"
                                min="3000" max="15000" step="500"
-                               value="${not empty selectedMaxPrice ? selectedMaxPrice : 15000}"
-                               oninput="document.getElementById('priceLabel').textContent = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ'"
-                               onchange="document.getElementById('filterForm').submit()">
+                               value="${not empty selectedMaxPrice ? selectedMaxPrice : 15000}">
                         <div class="price-labels">
                             <span>3.000đ</span>
                             <span id="priceLabel">
-                    <c:choose>
-                        <c:when test="${not empty selectedMaxPrice}">${selectedMaxPrice}đ</c:when>
-                        <c:otherwise>15.000đ</c:otherwise>
-                    </c:choose>
-                </span>
+                                <c:choose>
+                                    <c:when test="${not empty selectedMaxPrice}">${selectedMaxPrice}đ</c:when>
+                                    <c:otherwise>15.000đ</c:otherwise>
+                                </c:choose>
+                            </span>
                         </div>
                     </div>
 
@@ -150,7 +147,7 @@
                              data-fuel="${p.fuel}"
                              data-price="${p.priceKm}">
                             <div class="car-img-box">
-                                <img style="width: 197px" src="${p.img}" alt="img-cars">
+                                <img class="car-img" src="${p.img}" alt="img-cars">
                                 <span class="badge-stock">${p.count} xe có sẵn</span>
                             </div>
                             <div class="car-body">
@@ -179,20 +176,18 @@
                                     </div>
                                 </div>
 
-                                <div class="car-action" style="margin-top: 15px; text-align: center;">
-                                    <a href="${pageContext.request.contextPath}/add-cart?productId=${p.typeId}&quantity=1&isDriver=true"
-                                       style="display: block; padding: 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                                <div class="car-action-wrap">
+                                    <button class="btn-add-cart"
+                                            onclick="addToCart(${p.typeId}, 1, true, '${p.typeName}', this)">
                                         Thêm vào giỏ hàng
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
                 <c:if test="${totalPages > 1}">
-                    <div class="pagination" style="
-        display: flex; justify-content: center; align-items: center;
-        gap: 6px; margin-top: 32px; flex-wrap: wrap;">
+                    <div class="pagination-container">
 
                         <c:choose>
                             <c:when test="${currentPage > 1}">
@@ -243,7 +238,7 @@
 
                     </div>
 
-                    <p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:8px;">
+                    <p class="pagination-info">
                         Trang ${currentPage}/${totalPages} — ${totalItems} loại xe
                     </p>
                 </c:if>
@@ -253,20 +248,35 @@
     </div>
 </div>
 
-<script>
-    function filterBrand(brandId, btn) {
-        document.querySelectorAll('.brand-pill').forEach(function (b) {
-            b.classList.remove('active');
-        });
-        btn.classList.add('active');
-        if (brandId === 0) {
-            window.location.href = '${pageContext.request.contextPath}/list-product';
-        } else {
-            window.location.href = '${pageContext.request.contextPath}/list-product?brandId=' + brandId;
-        }
-    }
-</script>
-<script src="${pageContext.request.contextPath}/assets/js/list-cars.js"></script>
 
+<div id="cartModal" class="modal-overlay">
+    <div class="modal-box">
+        <span class="modal-close" onclick="closeModal('cartModal')">&times;</span>
+        <div class="modal-icon">✓</div>
+        <div class="modal-title">Thêm thành công!</div>
+        <div class="modal-body">
+            Đã thêm <strong id="modalProductName">Tên xe</strong> vào giỏ hàng.
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn btn-continue" onclick="closeModal('cartModal')">Tiếp tục chọn xe</button>
+            <a href="${pageContext.request.contextPath}/my-shopping-cart" class="modal-btn btn-go-cart">Xem giỏ hàng</a>
+        </div>
+    </div>
+</div>
+
+<div id="errorModal" class="modal-overlay">
+    <div class="modal-box">
+        <span class="modal-close" onclick="closeModal('errorModal')">&times;</span>
+        <div class="modal-icon" style="color: #ef4444;">⚠</div>
+        <div class="modal-title">Có lỗi xảy ra!</div>
+        <div class="modal-body" id="modalErrorMessage">
+            Có lỗi xảy ra trong quá trình thêm giỏ hàng. Vui lòng thử lại!
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn btn-continue" style="width: 100%; flex: none;" onclick="closeModal('errorModal')">Đóng</button>
+        </div>
+    </div>
+</div>
+<script src="${pageContext.request.contextPath}/assets/js/list-cars.js"></script>
 </body>
 </html>
