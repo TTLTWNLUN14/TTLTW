@@ -37,6 +37,13 @@
 
 <div class="main-content">
 
+    <c:if test="${param.msg == 'delete_ok'}">
+        <div class="toast-success" id="toastMsg">Đã xóa xe thành công.</div>
+    </c:if>
+    <c:if test="${param.msg == 'delete_fail'}">
+        <div class="toast-error" id="toastMsg">Xóa thất bại. Vui lòng thử lại.</div>
+    </c:if>
+
     <div class="page-header">
         <h1 class="page-title">Quản lý loại xe</h1>
         <a href="${pageContext.request.contextPath}/cars-admin/add<c:if test='${selectedBrandId != null}'>?brandId=${selectedBrandId}</c:if>"

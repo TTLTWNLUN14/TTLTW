@@ -42,9 +42,9 @@
         <a href="add-brand" class="btn-add">+ Thêm hãng</a>
     </div>
 
-    <c:if test="${param.error == 'has_cars'}">
-        <div class="alert-error">
-            Không thể xóa hãng xe này vì còn loại xe bên trong. Hãy xóa hết loại xe trước.
+    <c:if test="${param.msg == 'deleted'}">
+        <div class="toast-success" id="toastSuccess">
+            Đã xóa hãng xe ${param.name} và toàn bộ xe thuộc hãng này.
         </div>
     </c:if>
 
@@ -152,8 +152,8 @@
         <p>Bạn có chắc muốn xóa hãng xe<br>
             <strong id="confirmBrandName"></strong>?</p>
 
-        <p class="warning-text"><strong>Lưu ý:</strong> Tất cả các loại xe thuộc hãng này có thể bị ảnh hưởng
-            hoặc cần được xóa trước. Hành động này không thể hoàn tác.
+        <p class="warning-text">Toàn bộ loại xe thuộc hãng này sẽ bị xóa cùng!<br>
+            Hành động này không thể hoàn tác.
         </p>
 
         <div class="confirm-actions">
@@ -169,24 +169,6 @@
     <input type="hidden" name="action"  value="delete">
     <input type="hidden" name="brandId" id="deleteBrandId">
 </form>
-<script>
-    function openConfirm(brandId, brandName) {
-        document.getElementById('confirmBrandName').textContent = brandName;
-        document.getElementById('deleteBrandId').value = brandId;
-        document.getElementById('confirmOverlay').classList.add('open');
-    }
-
-    function closeConfirm() {
-        document.getElementById('confirmOverlay').classList.remove('open');
-    }
-
-    document.getElementById('confirmOverlay').addEventListener('click', function(e) {
-        if (e.target === this) closeConfirm();
-    });
-
-    function submitDelete() {
-        document.getElementById('deleteForm').submit();
-    }
-</script>
+<script src="${pageContext.request.contextPath}/assets/js/cars-brand-admin.js"></script>
 </body>
 </html>

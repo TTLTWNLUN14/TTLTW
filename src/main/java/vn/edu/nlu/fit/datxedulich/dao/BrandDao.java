@@ -28,6 +28,13 @@ public class BrandDao extends BaseDao {
                         "UPDATE car_brands SET brand_name = :brandName, logo = :logo, country = :country, description_brand = :descriptionBrand, is_active = :isActive WHERE brand_id = :brandId").bindBean(brand).execute());
     }
 
+    // Xóa tất cả loại xe thuộc hãng trước ( khi xóa hãng xe -> xóa hết các xe trong hãng xe -> xóa hãng xe)
+    public void deleteCarTypesByBrandId(int brandId) {
+        get().useHandle(h -> h.createUpdate(
+                        "DELETE FROM car_types WHERE brand_id = :brandId")
+                .bind("brandId", brandId).execute());
+    }
+
     // Xóa hãng xe theo id
     public void deleteBrand(int brandId) {
         get().useHandle(h -> h.createUpdate("DELETE FROM car_brands WHERE brand_id = :brandId").bind("brandId", brandId).execute());
