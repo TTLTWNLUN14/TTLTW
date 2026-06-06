@@ -18,14 +18,14 @@ public class BrandDao extends BaseDao {
 
     // Thêm hãng xe mới
     public void insertBrand(Brand brand) {
-        get().useHandle(h -> h.createUpdate("INSERT INTO car_brands (brand_name, logo, country, description_brand, is_active) VALUES (:brandName, :logo, :country, :descriptionBrand, :isActive)").bindBean(brand).execute());
+        get().useHandle(h -> h.createUpdate("INSERT INTO car_brands (brand_name, logo, country, description_brand) VALUES (:brandName, :logo, :country, :descriptionBrand)").bindBean(brand).execute());
     }
 
     // Cập nhật hãng xe theo brand_id
     public void updateBrand(Brand brand) {
         get().useHandle(h ->
                 h.createUpdate(
-                        "UPDATE car_brands SET brand_name = :brandName, logo = :logo, country = :country, description_brand = :descriptionBrand, is_active = :isActive WHERE brand_id = :brandId").bindBean(brand).execute());
+                        "UPDATE car_brands SET brand_name = :brandName, logo = :logo, country = :country, description_brand = :descriptionBrand WHERE brand_id = :brandId").bindBean(brand).execute());
     }
 
     // Xóa tất cả loại xe thuộc hãng trước (cascade)
@@ -47,9 +47,9 @@ public class BrandDao extends BaseDao {
         sql.append(" ORDER BY brand_id ASC");
 
         return get().withHandle(h -> {
-            var query = h.createQuery(sql.toString()).mapToBean(Brand.class);
+            var query = h.createQuery(sql.toString());
             if (country != null && !country.isEmpty()) query.bind("country", country);
-            return query.list();
+            return query.mapToBean(Brand.class).list();
         });
     }
 

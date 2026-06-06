@@ -22,31 +22,53 @@ public class PaymentController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-            int price = Integer.parseInt(request.getParameter("price"));
-            String method = request.getParameter("method");
-            String payType = request.getParameter("payType");
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
 
-            Payment payment = new Payment();
-            payment.setBookingId(bookingId);
-            payment.setAccountId(1);
-            payment.setPrice(price);
-            payment.setPayType(payType);
-            payment.setMethod(method);
-            payment.setStatus("PENDING");
-            payment.setCreatedBy(1);
-
-            PaymentService paymentService = new PaymentService();
-            paymentService.createPayment(payment);
-
-            if ("TRANSFER".equalsIgnoreCase(method)) {
-                response.sendRedirect(request.getContextPath() + "/payment-qr");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/payment-confirmation");
+        String[] selectedItems = request.getParameterValues("selectedItems");
+        if (selectedItems != null && selectedItems.length > 0) {
+            java.util.Set<String> selectedSet =
+                    new java.util.HashSet<>(java.util.Arrays.asList(selectedItems));
+            Cart selectedCart = new Cart();
+            if (cart != null) {
+                cart.getItems().stream()
+                        .filter(item -> selectedSet.contains(
+                                String.valueOf(item.getProduct().getTypeId())))
+                        .forEach(item -> selectedCart.addItem(
+                                item.getProduct(), item.getQuantity(), item.isDriver()));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            request.setAttribute("cart", selectedCart);
+        } else {
+            try {
+                int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+                int price = Integer.parseInt(request.getParameter("price"));
+                String method = request.getParameter("method");
+                String payType = request.getParameter("payType");
+
+                Payment payment = new Payment();
+                payment.setBookingId(bookingId);
+                payment.setAccountId(1);
+                payment.setPrice(price);
+                payment.setPayType(payType);
+                payment.setMethod(method);
+                payment.setStatus("PENDING");
+                payment.setCreatedBy(1);
+
+                PaymentService paymentService = new PaymentService();
+                paymentService.createPayment(payment);
+
+                if ("TRANSFER".equalsIgnoreCase(method)) {
+                    response.sendRedirect(request.getContextPath() + "/payment-qr");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/payment-confirmation");
+                }
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            request.setAttribute("cart", cart);
         }
+
+        request.getRequestDispatcher("/WEB-INF/views/payment.jsp").forward(request, response);
     }
 }

@@ -528,3 +528,40 @@ a {
 .btn-go-cart:hover {
     background: #1e40af;
 }
+.car-action-wrap {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn-book-now {
+    flex: 1;
+    background: #f9a01b;
+    color: #fff;
+    border: none;
+    padding: 10px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+}
+.btn-book-now:hover { background: #d4880f; }
+
+.btn-add-cart {
+    flex: 1;
+    background: #1e50a0;
+    color: #fff;
+    border: none;
+    padding: 10px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+}
+.btn-add-cart:hover { background: #153e7f; }

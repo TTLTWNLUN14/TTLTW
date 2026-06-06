@@ -32,12 +32,24 @@
             <div class="tab">Đang xử lý</div>
         </div>
 
+        <div class="select-all-bar">
+            <label>
+                <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+                Chọn tất cả
+            </label>
+        </div>
+
         <div class="order-list">
             <c:forEach items="${sessionScope.cart.items}" var="ci">
                 <c:set var="itemTypeIdStr">${ci.product.typeId}</c:set>
                 <c:set var="isOpen" value="${param.openDetailId == itemTypeIdStr}" />
 
                 <div class="order-card">
+                    <input type="checkbox"
+                           class="item-checkbox"
+                           value="${ci.product.typeId}"
+                           data-total="${ci.price * ci.km * ci.quantity}"
+                           onchange="updateSelectedTotal()">
                     <div class="order-info">
                         <h4>
                             <a href="${pageContext.request.contextPath}/list-product/product?typeId=${ci.product.typeId}"
@@ -271,8 +283,11 @@
         <h3>Thanh toán</h3>
         <hr>
         <div class="total-price">
+            <span>Đã chọn: <strong id="selectedCount">0</strong> đơn</span>
+        </div>
+        <div class="total-price">
             <span>Tổng tiền:</span>
-            <strong><fmt:formatNumber value="${sessionScope.cart.total}" type="number"/> VND</strong>
+            <strong id="selectedTotal">0 VND</strong>
         </div>
         <c:forEach items="${sessionScope.cart.items}" var="ci">
             <div style="font-size:13px; color:#555; margin-bottom:4px;">
@@ -282,7 +297,9 @@
             </div>
         </c:forEach>
         <hr>
-        <a class="btn-payment" href="${pageContext.request.contextPath}/payments">Thanh toán</a>
+        <form id="paymentForm" action="${pageContext.request.contextPath}/payments" method="post">
+        </form>
+        <button id="btnPayment" class="btn-payment" onclick="submitPayment()" disabled>Thanh toán</button>
     </div>
 </div>
 

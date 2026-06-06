@@ -78,7 +78,6 @@
                 <th>Logo</th>
                 <th>Hãng xe</th>
                 <th>Quốc gia</th>
-                <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
             </thead>
