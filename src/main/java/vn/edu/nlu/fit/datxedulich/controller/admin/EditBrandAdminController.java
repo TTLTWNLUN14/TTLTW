@@ -55,8 +55,6 @@ public class EditBrandAdminController extends HttpServlet {
         brand.setLogo(request.getParameter("logo"));
         brand.setCountry(request.getParameter("country"));
         brand.setDescriptionBrand(request.getParameter("descriptionBrand"));
-        // checkbox isActive: nếu tick thì gửi "true", không tick thì null
-        brand.setIsActive("true".equals(request.getParameter("isActive")));
 
         BrandService brandService = new BrandService();
         brandService.updateBrand(brand);

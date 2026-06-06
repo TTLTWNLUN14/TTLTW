@@ -177,6 +177,8 @@
                                 </div>
 
                                 <div class="car-action-wrap">
+                                    <a href="${pageContext.request.contextPath}/booking?typeId=${p.typeId}&isDriver=true"
+                                       class="btn-book-now">Đặt ngay</a>
                                     <button class="btn-add-cart"
                                             onclick="addToCart(${p.typeId}, 1, true, '${p.typeName}', this)">
                                         Thêm vào giỏ hàng

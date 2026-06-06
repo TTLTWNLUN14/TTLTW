@@ -14,3 +14,12 @@ window.onclick = function(event) {
         modal.style.display = 'none';
     }
 }
+
+const toast = document.getElementById('toastMsg');
+if (toast) {
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-16px)';
+        setTimeout(() => toast.remove(), 100);
+    }, 1000);
+}

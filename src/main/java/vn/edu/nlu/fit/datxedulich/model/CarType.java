@@ -14,7 +14,6 @@ public class CarType implements Serializable {
     private String img;            // URL ảnh xe
     private String descriptionType;
     private int count;             // số xe có sẵn
-    private boolean isActive;
 
     public CarType() {
     }
@@ -105,14 +104,6 @@ public class CarType implements Serializable {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean active) {
-        isActive = active;
     }
 
 }

@@ -18,30 +18,18 @@ public class CarsBrandAdminController extends HttpServlet {
 
         BrandService brandService = new BrandService();
 
-        // Toàn bộ danh sách để dành cho bộ lọc
         List<Brand> allBrands = brandService.getListBrand();
         request.setAttribute("allBrands", allBrands);
 
-        // Lọc theo brandId nếu có filterBrandId
-        String filterStr = request.getParameter("filterBrandId");
-        List<Brand> listBrand;
+        String country = request.getParameter("country");
 
-        if (filterStr != null && !filterStr.isEmpty()) {
-            try {
-                int filterId = Integer.parseInt(filterStr);
-                Brand found = brandService.getBrandById(filterId);
-                listBrand = found != null
-                        ? java.util.Collections.singletonList(found)
-                        : java.util.Collections.emptyList();
-                request.setAttribute("filterBrandId", filterId);
-            } catch (NumberFormatException e) {
-                listBrand = allBrands;
-            }
-        } else {
-            listBrand = allBrands;
-        }
+        boolean hasFilter = (country != null && !country.isEmpty());
+        List<Brand> listBrand = hasFilter
+                ? brandService.filterBrands(country)
+                : allBrands;
 
         request.setAttribute("listBrand", listBrand);
+        request.setAttribute("selectedCountry", country);
         request.getRequestDispatcher("/WEB-INF/views/cars-brand-admin.jsp").forward(request, response);
     }
 
@@ -55,14 +43,9 @@ public class CarsBrandAdminController extends HttpServlet {
             try {
                 int brandId = Integer.parseInt(request.getParameter("brandId"));
                 BrandService brandService = new BrandService();
-                boolean deleted = brandService.deleteBrand(brandId);
-
-                if (!deleted) {
-                    // Còn loại xe con → không xóa, báo lỗi về trang
-                    response.sendRedirect(request.getContextPath()
-                            + "/brand-admin?error=has_cars");
-                    return;
-                }
+                brandService.deleteBrand(brandId);
+                response.sendRedirect(request.getContextPath() + "/brand-admin?msg=deleted");
+                return;
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
