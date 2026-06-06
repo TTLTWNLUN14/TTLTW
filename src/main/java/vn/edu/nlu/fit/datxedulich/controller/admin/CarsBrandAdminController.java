@@ -18,30 +18,18 @@ public class CarsBrandAdminController extends HttpServlet {
 
         BrandService brandService = new BrandService();
 
-        // Toàn bộ danh sách để dành cho bộ lọc
         List<Brand> allBrands = brandService.getListBrand();
         request.setAttribute("allBrands", allBrands);
 
-        // Lọc theo brandId nếu có filterBrandId
-        String filterStr = request.getParameter("filterBrandId");
-        List<Brand> listBrand;
+        String country = request.getParameter("country");
 
-        if (filterStr != null && !filterStr.isEmpty()) {
-            try {
-                int filterId = Integer.parseInt(filterStr);
-                Brand found = brandService.getBrandById(filterId);
-                listBrand = found != null
-                        ? java.util.Collections.singletonList(found)
-                        : java.util.Collections.emptyList();
-                request.setAttribute("filterBrandId", filterId);
-            } catch (NumberFormatException e) {
-                listBrand = allBrands;
-            }
-        } else {
-            listBrand = allBrands;
-        }
+        boolean hasFilter = (country != null && !country.isEmpty());
+        List<Brand> listBrand = hasFilter
+                ? brandService.filterBrands(country)
+                : allBrands;
 
         request.setAttribute("listBrand", listBrand);
+        request.setAttribute("selectedCountry", country);
         request.getRequestDispatcher("/WEB-INF/views/cars-brand-admin.jsp").forward(request, response);
     }
 

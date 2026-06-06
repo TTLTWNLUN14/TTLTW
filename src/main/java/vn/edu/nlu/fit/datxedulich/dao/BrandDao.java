@@ -28,7 +28,7 @@ public class BrandDao extends BaseDao {
                         "UPDATE car_brands SET brand_name = :brandName, logo = :logo, country = :country, description_brand = :descriptionBrand, is_active = :isActive WHERE brand_id = :brandId").bindBean(brand).execute());
     }
 
-    // Xóa tất cả loại xe thuộc hãng trước ( khi xóa hãng xe -> xóa hết các xe trong hãng xe -> xóa hãng xe)
+    // Xóa tất cả loại xe thuộc hãng trước (cascade)
     public void deleteCarTypesByBrandId(int brandId) {
         get().useHandle(h -> h.createUpdate(
                         "DELETE FROM car_types WHERE brand_id = :brandId")
@@ -38,6 +38,19 @@ public class BrandDao extends BaseDao {
     // Xóa hãng xe theo id
     public void deleteBrand(int brandId) {
         get().useHandle(h -> h.createUpdate("DELETE FROM car_brands WHERE brand_id = :brandId").bind("brandId", brandId).execute());
+    }
+
+    // Lọc hãng xe theo quốc gia
+    public List<Brand> filterBrands(String country) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM car_brands WHERE 1=1");
+        if (country != null && !country.isEmpty()) sql.append(" AND country = :country");
+        sql.append(" ORDER BY brand_id ASC");
+
+        return get().withHandle(h -> {
+            var query = h.createQuery(sql.toString()).mapToBean(Brand.class);
+            if (country != null && !country.isEmpty()) query.bind("country", country);
+            return query.list();
+        });
     }
 
     public boolean hasCarTypes(int brandId) {

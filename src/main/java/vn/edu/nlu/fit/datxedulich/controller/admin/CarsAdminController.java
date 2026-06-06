@@ -25,9 +25,10 @@ public class CarsAdminController extends HttpServlet {
         List<Brand> listBrand = brandService.getListBrand();
         request.setAttribute("listBrand", listBrand);
 
-        Integer brandId     = parseIntParam(request, "brandId");
-        String  category    = emptyToNull(request.getParameter("category"));
+        Integer brandId = parseIntParam(request, "brandId");
+        String category = emptyToNull(request.getParameter("category"));
         Integer seatingPlan = parseIntParam(request, "seatingPlan");
+        String fuel = emptyToNull(request.getParameter("fuel"));
 
         int page = 1;
         String pageStr = request.getParameter("page");
@@ -36,13 +37,13 @@ public class CarsAdminController extends HttpServlet {
             catch (NumberFormatException ignored) {}
         }
 
-        boolean hasFilter = brandId != null || category != null || seatingPlan != null;
+        boolean hasFilter = brandId != null || category != null || seatingPlan != null || fuel != null;
 
         List<CarType> listCarType;
         int totalItems;
 
         if (hasFilter) {
-            List<CarType> allFiltered = carTypeService.filterCarTypes(brandId, category, seatingPlan, null, null);
+            List<CarType> allFiltered = carTypeService.filterCarTypes(brandId, category, seatingPlan, fuel, null);
             totalItems = allFiltered.size();
             int from = (page - 1) * PAGE_SIZE;
             int to   = Math.min(from + PAGE_SIZE, totalItems);
@@ -54,9 +55,10 @@ public class CarsAdminController extends HttpServlet {
 
         int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
 
-        request.setAttribute("selectedBrandId",  brandId);
-        request.setAttribute("selectedCategory", category);
-        request.setAttribute("selectedSeat",     seatingPlan);
+        request.setAttribute("selectedBrandId",brandId);
+        request.setAttribute("selectedCategory",category);
+        request.setAttribute("selectedSeat",seatingPlan);
+        request.setAttribute("selectedFuel",fuel);
 
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages",  totalPages);
@@ -79,6 +81,7 @@ public class CarsAdminController extends HttpServlet {
         String brandIdStr = request.getParameter("brandId");
         String category   = request.getParameter("category");
         String seatStr    = request.getParameter("seatingPlan");
+        String fuelStr    = request.getParameter("fuel");
         String pageStr    = request.getParameter("page");
 
         String msg = "";
@@ -101,6 +104,8 @@ public class CarsAdminController extends HttpServlet {
             redirectUrl.append("&category=").append(category);
         if (seatStr != null && !seatStr.isEmpty())
             redirectUrl.append("&seatingPlan=").append(seatStr);
+        if (fuelStr != null && !fuelStr.isEmpty())
+            redirectUrl.append("&fuel=").append(fuelStr);
         if (pageStr != null && !pageStr.isEmpty())
             redirectUrl.append("&page=").append(pageStr);
 

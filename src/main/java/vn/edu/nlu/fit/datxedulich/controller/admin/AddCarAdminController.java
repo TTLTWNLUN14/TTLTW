@@ -44,11 +44,15 @@ public class AddCarAdminController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         CarType ct = buildCarTypeFromRequest(request);
-        ct.setIsActive(true);
 
         carTypeService.insertCarType(ct);
 
-        response.sendRedirect(request.getContextPath() + "/cars-admin");
+        String brandIdStr = request.getParameter("brandId");
+        String redirect = request.getContextPath() + "/cars-admin?msg=add_ok";
+        if (brandIdStr != null && !brandIdStr.isEmpty()) {
+            redirect += "&brandId=" + brandIdStr;
+        }
+        response.sendRedirect(redirect);
     }
 
     private CarType buildCarTypeFromRequest(HttpServletRequest request) {

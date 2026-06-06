@@ -44,30 +44,27 @@
 
     <c:if test="${param.msg == 'deleted'}">
         <div class="toast-success" id="toastSuccess">
-            Đã xóa hãng xe ${param.name} và toàn bộ xe thuộc hãng này.
+            Đã xóa hãng xe và toàn bộ xe thuộc hãng này thành công.
         </div>
     </c:if>
 
     <div class="filter-bar">
-        <form method="get" action="${pageContext.request.contextPath}/brand-admin" class="filter-form">
-            <label class="filter-label" for="filterBrandId">Lọc nhanh hãng xe:</label>
+        <form method="get" action="${pageContext.request.contextPath}/brand-admin"
+              style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
 
-            <select name="filterBrandId" id="filterBrandId" class="filter-select"
-                    onchange="this.form.submit()">
-                <option value="">-- Tất cả hãng xe --</option>
-                <c:forEach var="b" items="${allBrands}">
-                    <option value="${b.brandId}"
-                            <c:if test="${b.brandId == filterBrandId}">selected</c:if>>
-                            ${b.brandName}
-                    </option>
-                </c:forEach>
+            <label>Quốc gia:</label>
+            <select name="country">
+                <option value="">-- Tất cả --</option>
+                <option value="Nhật"  <c:if test="${selectedCountry == 'Nhật'}">selected</c:if>>Nhật</option>
+                <option value="Đức"   <c:if test="${selectedCountry == 'Đức'}">selected</c:if>>Đức</option>
+                <option value="Hàn"   <c:if test="${selectedCountry == 'Hàn'}">selected</c:if>>Hàn</option>
+                <option value="Mỹ"    <c:if test="${selectedCountry == 'Mỹ'}">selected</c:if>>Mỹ</option>
+                <option value="Trung" <c:if test="${selectedCountry == 'Trung'}">selected</c:if>>Trung</option>
             </select>
 
-            <c:if test="${not empty filterBrandId}">
-                <a href="${pageContext.request.contextPath}/brand-admin"
-                   class="btn-clear-filter">✕ Bỏ lọc</a>
-            </c:if>
+            <button type="submit" class="btn-filter">Lọc</button>
         </form>
+        <a href="${pageContext.request.contextPath}/brand-admin" class="btn-reset-filter">✕ Xóa lọc</a>
 
         <span class="filter-count">
             Đang hiển thị <strong>${listBrand.size()}</strong> / ${allBrands.size()} hãng
@@ -102,17 +99,6 @@
                     <td><strong>${b.brandName}</strong></td>
                     <td>${b.country}</td>
 
-                    <td>
-                        <c:choose>
-                            <c:when test="${b.isActive}">
-                                <span class="status-badge">Hoạt động</span>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="status-badge status-inactive">Ngừng hoạt động</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-
                     <td class="action-buttons">
                         <a href="${pageContext.request.contextPath}/edit-brand?brandId=${b.brandId}"
                            class="btn-edit">&#x270E;</a>
@@ -129,9 +115,9 @@
 
             <c:if test="${empty listBrand}">
                 <tr>
-                    <td colspan="5" class="empty-table-cell">
+                    <td colspan="4" class="empty-table-cell">
                         <c:choose>
-                            <c:when test="${not empty filterBrandId}">
+                            <c:when test="${not empty selectedCountry}">
                                 Không tìm thấy hãng xe phù hợp.
                                 <a href="${pageContext.request.contextPath}/brand-admin">Xem tất cả</a>
                             </c:when>
