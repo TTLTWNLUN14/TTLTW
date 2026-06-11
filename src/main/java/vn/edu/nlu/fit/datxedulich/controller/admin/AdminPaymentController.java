@@ -1,4 +1,4 @@
-package vn.edu.nlu.fit.datxedulich.controller;
+package vn.edu.nlu.fit.datxedulich.controller.admin;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;

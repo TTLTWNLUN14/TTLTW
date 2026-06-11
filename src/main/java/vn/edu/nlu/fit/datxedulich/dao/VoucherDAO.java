@@ -43,11 +43,11 @@ public class VoucherDAO extends BaseDao {
         );
     }
 
-    public List<Voucher> getVouchersByTier(String minTier) {
+    public List<Voucher> getVouchersByTier(String tier) {
         return get().withHandle(handle ->
                 handle.createQuery("SELECT * FROM voucher WHERE min_tier = :minTier AND is_active = TRUE " +
                                 "ORDER BY voucher_id DESC")
-                        .bind("minTier", minTier)
+                        .bind("Tier", tier)
                         .mapToBean(Voucher.class)
                         .list()
         );
