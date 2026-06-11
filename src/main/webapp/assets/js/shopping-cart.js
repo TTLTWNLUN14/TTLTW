@@ -26,3 +26,49 @@ cancelModal.addEventListener('click', function(e) {
 });
 
 document.getElementById('cancelModalClose').addEventListener('click', closeCancelModal);
+
+function updateSelectedTotal() {
+    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+    let total = 0;
+    checkboxes.forEach(cb => {
+        total += parseFloat(cb.dataset.total) || 0;
+    });
+
+    document.getElementById('selectedCount').textContent = checkboxes.length;
+    document.getElementById('selectedTotal').textContent =
+        total.toLocaleString('vi-VN') + ' VND';
+
+    // enable/disable nút thanh toán
+    document.getElementById('btnPayment').disabled = checkboxes.length === 0;
+
+    // chọn all
+    const all = document.querySelectorAll('.item-checkbox');
+    document.getElementById('selectAll').checked =
+        all.length > 0 && checkboxes.length === all.length;
+}
+
+function toggleSelectAll(selectAllCb) {
+    document.querySelectorAll('.item-checkbox').forEach(cb => {
+        cb.checked = selectAllCb.checked;
+    });
+    updateSelectedTotal();
+}
+
+function submitPayment() {
+    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+    if (checkboxes.length === 0) return;
+
+    const form = document.getElementById('paymentForm');
+    
+    form.querySelectorAll('input[name="selectedItems"]').forEach(i => i.remove());
+
+    checkboxes.forEach(cb => {
+        const input = document.createElement('input');
+        input.type   = 'hidden';
+        input.name   = 'selectedItems';
+        input.value  = cb.value;
+        form.appendChild(input);
+    });
+
+    form.submit();
+}

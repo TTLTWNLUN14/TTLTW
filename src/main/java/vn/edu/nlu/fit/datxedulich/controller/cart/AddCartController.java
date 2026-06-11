@@ -52,11 +52,22 @@ public class AddCartController extends HttpServlet {
                 }
             }
 
-            if ("detail".equals(from) && typeIdStr != null) {
-                response.sendRedirect(request.getContextPath()
-                        + "/list-product/product?typeId=" + typeIdStr + "&added=1");
+            // check ajax request
+            boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+
+            if (isAjax) {
+                // tra json về -> lấy tổng sl trong gio
+                int cartSize = (cart != null) ? cart.getTotalQuantity() : 0;
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{\"success\": true, \"cartCount\": " + cartSize + "}");
             } else {
-                response.sendRedirect(request.getContextPath() + "/list-product");
+                if ("detail".equals(from) && typeIdStr != null) {
+                    response.sendRedirect(request.getContextPath()
+                            + "/list-product/product?typeId=" + typeIdStr + "&added=1");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/list-product");
+                }
             }
 
         } catch (NumberFormatException e) {

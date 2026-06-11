@@ -37,6 +37,19 @@
 
 <div class="main-content">
 
+    <c:if test="${param.msg == 'delete_ok'}">
+        <div class="toast-success" id="toastMsg">Đã xóa xe thành công.</div>
+    </c:if>
+    <c:if test="${param.msg == 'delete_fail'}">
+        <div class="toast-error" id="toastMsg">Xóa thất bại. Vui lòng thử lại.</div>
+    </c:if>
+    <c:if test="${param.msg == 'add_ok'}">
+        <div class="toast-success" id="toastMsg">Thêm xe mới thành công.</div>
+    </c:if>
+    <c:if test="${param.msg == 'edit_ok'}">
+        <div class="toast-success" id="toastMsg">Cập nhật xe thành công.</div>
+    </c:if>
+
     <div class="page-header">
         <h1 class="page-title">Quản lý loại xe</h1>
         <a href="${pageContext.request.contextPath}/cars-admin/add<c:if test='${selectedBrandId != null}'>?brandId=${selectedBrandId}</c:if>"
@@ -78,6 +91,15 @@
                 <option value="16" <c:if test="${selectedSeat == 16}">selected</c:if>>16 chỗ</option>
             </select>
 
+            <label>Nhiên liệu:</label>
+            <select name="fuel">
+                <option value="">-- Tất cả --</option>
+                <option value="Xăng"   <c:if test="${selectedFuel == 'Xăng'}">selected</c:if>>Xăng</option>
+                <option value="Điện"   <c:if test="${selectedFuel == 'Điện'}">selected</c:if>>Điện</option>
+                <option value="Hybrid" <c:if test="${selectedFuel == 'Hybrid'}">selected</c:if>>Hybrid</option>
+                <option value="Diesel" <c:if test="${selectedFuel == 'Diesel'}">selected</c:if>>Diesel</option>
+            </select>
+
             <button type="submit" class="btn-filter">Lọc</button>
         </form>
         <a href="${pageContext.request.contextPath}/cars-admin" class="btn-reset-filter">✕ Xóa lọc</a>
@@ -96,7 +118,6 @@
                 <th>Giá/km</th>
                 <th>Giá/ngày</th>
                 <th>Xe có sẵn</th>
-                <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
             </thead>
@@ -126,17 +147,6 @@
                     <td class="text-orange">${ct.priceKm}đ</td>
                     <td class="text-orange">${ct.priceDay}đ</td>
                     <td><span class="badge-count">${ct.count}</span></td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${ct.isActive}">
-                                <span class="status-badge">Hoạt động</span>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="status-badge"
-                                      style="background:#fee2e2; color:#dc2626;">Ngừng</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
                     <td class="action-buttons">
                         <a href="${pageContext.request.contextPath}/cars-admin/edit?typeId=${ct.typeId}"
                            class="btn-edit">&#x270E; Sửa</a>
@@ -148,7 +158,7 @@
 
             <c:if test="${empty listCarType}">
                 <tr>
-                    <td colspan="11" style="text-align:center; padding:40px; color:#94a3b8;">
+                    <td colspan="10" style="text-align:center; padding:40px; color:#94a3b8;">
                         Không có loại xe nào phù hợp với bộ lọc.
                     </td>
                 </tr>

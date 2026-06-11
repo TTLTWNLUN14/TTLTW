@@ -127,15 +127,6 @@
                 <textarea name="descriptionType">${carType.descriptionType}</textarea>
             </div>
 
-            <div class="form-group">
-                <label>Trạng thái</label>
-                <div class="form-check">
-                    <input type="checkbox" name="isActive" id="isActive"
-                           value="true" <c:if test="${carType.active}">checked</c:if>>
-                    <label for="isActive">Đang hoạt động</label>
-                </div>
-            </div>
-
             <div class="form-footer">
                 <a href="${pageContext.request.contextPath}/cars-admin" class="btn-cancel">Hủy</a>
                 <button type="submit" class="btn-save">Cập nhật</button>

@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserDAO userDAO = new UserDAO();
-    private String hashPassword(String password) {
+
+    public String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(password.getBytes());
@@ -63,6 +64,7 @@ public class UserService {
             result.put("success", true);
             result.put("message", "Đăng nhập thành công");
             result.put("user", user);
+            result.put("hashedPassword", hashedPassword);
         } catch (Exception e) {
             result.put("success", false);
             result.put("message", "Lỗi hệ thống: " + e.getMessage());
@@ -71,6 +73,49 @@ public class UserService {
 
         return result;
     }
+    public Map<String, Object> authenticateWithHash(String username, String hashedPassword) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            if (username == null || username.isEmpty() || hashedPassword == null || hashedPassword.isEmpty()) {
+                result.put("success", false);
+                result.put("message", "Thông tin không hợp lệ");
+                return result;
+            }
+
+            User user = userDAO.findByUsername(username);
+
+            if (user == null) {
+                result.put("success", false);
+                result.put("message", "Tên đăng nhập không tồn tại");
+                return result;
+            }
+
+            if (!user.isIs_active()) {
+                result.put("success", false);
+                result.put("message", "Tài khoản đã bị vô hiệu hóa");
+                return result;
+            }
+
+            if (!user.getPassword_hash().equals(hashedPassword)) {
+                result.put("success", false);
+                result.put("message", "Hash password không khớp");
+                return result;
+            }
+
+            userDAO.updateLastLogin(user.getAccount_id());
+            result.put("success", true);
+            result.put("message", "Đăng nhập thành công");
+            result.put("user", user);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "Lỗi hệ thống: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     public Map<String, Object> register(String username, String password, String confirmPassword,
                                         String email, String phone, String fullName) {
         Map<String, Object> result = new HashMap<>();
@@ -133,6 +178,11 @@ public class UserService {
             }
 
             String hashedPassword = hashPassword(password);
+            if (hashedPassword == null) {
+                result.put("success", false);
+                result.put("message", "Lỗi khi hash password");
+                return result;
+            }
 
             User newUser = new User(email, hashedPassword, 2, fullName, username, phone);
             newUser.setIs_active(true);
@@ -221,7 +271,6 @@ public class UserService {
 
         return result;
     }
-
 
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";

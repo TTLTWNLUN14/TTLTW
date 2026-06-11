@@ -56,11 +56,15 @@ public class EditCarAdminController extends HttpServlet {
 
         CarType ct = buildCarTypeFromRequest(request);
         ct.setTypeId(Integer.parseInt(request.getParameter("typeId")));
-        ct.setIsActive("true".equals(request.getParameter("isActive")));
 
         carTypeService.updateCarType(ct);
 
-        response.sendRedirect(request.getContextPath() + "/cars-admin");
+        String brandIdStr = request.getParameter("brandId");
+        String redirect = request.getContextPath() + "/cars-admin?msg=edit_ok";
+        if (brandIdStr != null && !brandIdStr.isEmpty()) {
+            redirect += "&brandId=" + brandIdStr;
+        }
+        response.sendRedirect(redirect);
     }
 
     private CarType buildCarTypeFromRequest(HttpServletRequest request) {

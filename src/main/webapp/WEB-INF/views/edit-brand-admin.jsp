@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+  <title>Title</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/edit-brand-admin.css">
 </head>
 <body>
@@ -60,14 +60,6 @@
       <div class="form-group">
         <label>Mô tả</label>
         <textarea name="descriptionBrand">${brand.descriptionBrand}</textarea>
-      </div>
-      <div class="form-group">
-        <label>Trạng thái</label>
-        <div class="form-check">
-          <input type="checkbox" name="isActive" id="isActive" value="true"
-                 <c:if test="${brand.isActive == 'true'}">checked</c:if>>
-          <label for="isActive">Đang hoạt động</label>
-        </div>
       </div>
               <%-- huy thi quay lai trang brand-admin  --%>
       <div class="form-footer">

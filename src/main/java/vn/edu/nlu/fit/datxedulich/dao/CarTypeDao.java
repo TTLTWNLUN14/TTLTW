@@ -22,8 +22,8 @@ public class CarTypeDao extends BaseDao {
     public void insertProduct(List<CarType> products) {
         get().useHandle(handle -> {
             PreparedBatch batch = handle.prepareBatch(
-                    "INSERT INTO car_types (brand_id, type_name, category, seating_plan, fuel, price_dirver, price_km, price_day, img, description_type, count, is_active) " +
-                            "VALUES (:brandId, :typeName, :category, :seatingPlan, :fuel, :priceDirver, :priceKm, :priceDay, :img, :descriptionType, :count, :isActive)"
+                    "INSERT INTO car_types (brand_id, type_name, category, seating_plan, fuel, price_km, price_day, img, description_type, count) " +
+                            "VALUES (:brandId, :typeName, :category, :seatingPlan, :fuel, :priceKm, :priceDay, :img, :descriptionType, :count)"
             );
             products.forEach(product -> batch.bindBean(product).add());
             batch.execute();
@@ -37,52 +37,28 @@ public class CarTypeDao extends BaseDao {
 
     public void insertCarType(CarType ct) {
         get().useHandle(h -> h.createUpdate(
-                        "INSERT INTO car_types (brand_id, type_name, category, seating_plan, fuel, price_km, price_day, img, description_type, count, is_active) " +
-                                "VALUES (:brandId, :typeName, :category, :seatingPlan, :fuel, :priceKm, :priceDay, :img, :descriptionType, :count, :isActive)")
+                        "INSERT INTO car_types (brand_id, type_name, category, seating_plan, fuel, price_km, price_day, img, description_type, count) " +
+                                "VALUES (:brandId, :typeName, :category, :seatingPlan, :fuel, :priceKm, :priceDay, :img, :descriptionType, :count)")
                 .bindBean(ct).execute());
     }
 
     public void updateCarType(CarType ct) {
         get().useHandle(h -> h.createUpdate(
                         "UPDATE car_types SET brand_id = :brandId, type_name = :typeName, category = :category, " +
-                                "seating_plan = :seatingPlan, fuel = :fuel, price_dirver = :priceDirver, price_km = :priceKm, " +
-                                "price_day = :priceDay, img = :img, description_type = :descriptionType, count = :count, " +
-                                "is_active = :isActive WHERE type_id = :typeId")
+                                "seating_plan = :seatingPlan, fuel = :fuel, price_km = :priceKm, " +
+                                "price_day = :priceDay, img = :img, description_type = :descriptionType, count = :count " +
+                                "WHERE type_id = :typeId")
                 .bindBean(ct).execute());
     }
 
-    // Tránh lỗi foreign key khi xe đã có booking/cart liên quan
-    public boolean softDeleteCarType(int typeId) {
-        int rows = get().withHandle(h -> h.createUpdate(
-                        "UPDATE car_types SET is_active = 0 WHERE type_id = :typeId")
-                .bind("typeId", typeId).execute());
-        return rows > 0;
-    }
-
-    // FIX: Xóa cứng chỉ dùng khi xe CHƯA có booking nào
     public boolean deleteCarType(int typeId) {
         try {
-            // Kiểm tra xem xe có liên quan đến booking chưa
-            boolean hasBooking = get().withHandle(h ->
-                    h.createQuery("SELECT COUNT(*) FROM bookings WHERE type_id = :typeId")
-                            .bind("typeId", typeId)
-                            .mapTo(Integer.class)
-                            .one()
-            ) > 0;
-
-            if (hasBooking) {
-                // Có booking → chỉ ẩn đi, không xóa
-                return softDeleteCarType(typeId);
-            }
-
-            // Chưa có booking → xóa cứng được
             get().useHandle(h -> h.createUpdate(
                             "DELETE FROM car_types WHERE type_id = :typeId")
                     .bind("typeId", typeId).execute());
             return true;
         } catch (Exception e) {
-            // Nếu vẫn lỗi FK (bảng khác) → fallback soft delete
-            return softDeleteCarType(typeId);
+            return false;
         }
     }
 
