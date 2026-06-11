@@ -7,6 +7,7 @@ public class Payment implements Serializable {
     private int paymentId;
     private int bookingId;
     private int accountId;
+    private int voucherId;
     private int price;
     private String method;
     private String payType;
@@ -63,6 +64,14 @@ public class Payment implements Serializable {
     }
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getVoucherId() {
+        return voucherId;
+    }
+
+    public void setVoucherId(int voucherId) {
+        this.voucherId = voucherId;
     }
 
     public Date getPaidAt() {

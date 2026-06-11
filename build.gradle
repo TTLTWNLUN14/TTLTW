@@ -9,9 +9,9 @@ apply plugin: 'org.hidetake.ssh'
 
 remotes {
     host {
-        host = 'trgnhan291.id.vn'
-        user = 'nhan'
-        password = '292004nhan'
+        host = 'xuandao77.id.vn'
+        user = 'xuandao'
+        password = 'xuandao2508'
     }
 }
 
@@ -26,7 +26,7 @@ task docker_app_start {
             session(remotes.host) {
                 execute 'docker stop tomcat10', ignoreError: true
 
-                execute 'docker run -it --rm -d --name tomcat10 -v /usr/deploy:/usr/local/tomcat/webapps -p 80:8080 tomcat:10.1&'
+                execute 'docker run -it --rm -d --name tomcat10 -v /usr/deploy:/usr/local/tomcat/webapps -p 80:8080 tomcat:10.1'
             }
         }
     }
@@ -38,7 +38,7 @@ task docker_upload_file_to_server {
         ssh.run {
             session(remotes.host) {
                 execute 'rm -f /usr/deploy/lab.war'
-                put from: "${project.projectDir}/build/libs/DatXeDuLich.war",
+                put from: "${project.projectDir}/build/libs/TTLTW.war",
                         into: "/usr/deploy/lab.war"
             }
         }
