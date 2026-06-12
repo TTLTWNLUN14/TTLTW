@@ -3,70 +3,275 @@ package vn.edu.nlu.fit.datxedulich.controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import vn.edu.nlu.fit.datxedulich.dao.BookingDao;
+import vn.edu.nlu.fit.datxedulich.dao.CartDAO;
+import vn.edu.nlu.fit.datxedulich.dao.MemberDAO;
+import vn.edu.nlu.fit.datxedulich.model.Booking;
 import vn.edu.nlu.fit.datxedulich.model.Brand;
 import vn.edu.nlu.fit.datxedulich.model.CarType;
-import vn.edu.nlu.fit.datxedulich.model.Province;
+import vn.edu.nlu.fit.datxedulich.model.Member;
+import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
+import vn.edu.nlu.fit.datxedulich.model.cart.CartItem;
 import vn.edu.nlu.fit.datxedulich.services.BrandService;
 import vn.edu.nlu.fit.datxedulich.services.CarTypeService;
 import vn.edu.nlu.fit.datxedulich.services.ProvinceService;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "BookingController", value = "/booking")
 public class BookingController extends HttpServlet {
 
-    private final BrandService    brandService    = new BrandService();
-    private final CarTypeService  carTypeService  = new CarTypeService();
+    private final BookingDao bookingDAO = new BookingDao();
+    private final CartDAO cartDAO = new CartDAO();
+    private final MemberDAO memberDAO = new MemberDAO();
+    private final CarTypeService carTypeService = new CarTypeService();
+    private final BrandService brandService = new BrandService();
     private final ProvinceService provinceService = new ProvinceService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int     selBrandId  = parseIntParam(request, "brandId",  0);
-        int     selTypeId   = parseIntParam(request, "typeId",   0);
-        boolean selIsDriver = !"false".equalsIgnoreCase(
-                request.getParameter("isDriver"));
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("account_id") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
 
-        List<Brand>    brands    = brandService.getListBrand();
-        List<Province> provinces = provinceService.getAllProvinces();
+        @SuppressWarnings("unchecked")
+        List<String> selectedTypeIds = (List<String>) session.getAttribute("selectedTypeIds");
+
+        if (selectedTypeIds == null || selectedTypeIds.isEmpty()) {
+            // không có đơn nào được chọn từ giỏ hàng -> hiển thị trang chọn xe để đặt 1 đơn nhập tay
+            showCarSelectionForm(request, response);
+            return;
+        }
+
+        Cart cart = (Cart) session.getAttribute("cart");
+        List<CartItem> selectedItems = new ArrayList<>();
+
+        if (cart != null) {
+            for (String idStr : selectedTypeIds) {
+                try {
+                    CartItem ci = cart.get(Integer.parseInt(idStr));
+                    if (ci != null) selectedItems.add(ci);
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+
+        if (selectedItems.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+            return;
+        }
+
+        int accountId = (Integer) session.getAttribute("account_id");
+        Member member = memberDAO.getMemberById(accountId);
+
+        int grandTotal = selectedItems.stream().mapToInt(CartItem::getTotal).sum();
+
+        request.setAttribute("selectedItems", selectedItems);
+        request.setAttribute("grandTotal", grandTotal);
+        request.setAttribute("member", member);
+
+        request.getRequestDispatcher("/WEB-INF/views/booking-confirm.jsp")
+                .forward(request, response);
+    }
+
+    // trang chọn xe để đặt 1 đơn nhập tay (không qua giỏ hàng) -> forward booking.jsp
+    private void showCarSelectionForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        Integer selBrandId = parseIntParam(request, "brandId");
+        Integer selTypeId = parseIntParam(request, "typeId");
+
+        List<Brand> brands = brandService.getListBrand();
 
         Map<Integer, List<CarType>> carsMap = new HashMap<>();
-        for (Brand b : brands) {
-            List<CarType> cars = carTypeService.getCarTypesByBrandId(b.getBrandId());
-            if (!cars.isEmpty()) {
-                carsMap.put(b.getBrandId(), cars);
-            }
+        if (selBrandId != null && selBrandId > 0) {
+            carsMap.put(selBrandId, carTypeService.getCarTypesByBrandId(selBrandId));
         }
 
         CarType selCar = null;
-        if (selTypeId > 0) {
+        if (selTypeId != null && selTypeId > 0) {
             selCar = carTypeService.getCarTypeById(selTypeId);
-
-            if (selCar != null) {
-                if (selBrandId == 0) selBrandId = selCar.getBrandId();
+            // nếu chưa có brandId nhưng đã có typeId -> tự suy ra brand để hiển thị select
+            if (selCar != null && selBrandId == null) {
+                int brandId = selCar.getBrandId();
+                if (brandId > 0) {
+                    selBrandId = brandId;
+                    carsMap.put(selBrandId, carTypeService.getCarTypesByBrandId(selBrandId));
+                }
             }
         }
 
-        request.setAttribute("brands",      brands);
-        request.setAttribute("carsMap",     carsMap);
-        request.setAttribute("provinces",   provinces);
-        request.setAttribute("selBrandId",  selBrandId);
-        request.setAttribute("selTypeId",   selTypeId);
-        request.setAttribute("selCar",      selCar);
-        request.setAttribute("selIsDriver", selIsDriver);
+        request.setAttribute("brands", brands);
+        request.setAttribute("provinces", provinceService.getAllProvinces());
+        request.setAttribute("carsMap", carsMap);
+        request.setAttribute("selBrandId", selBrandId != null ? selBrandId : 0);
+        request.setAttribute("selTypeId", selTypeId != null ? selTypeId : 0);
+        request.setAttribute("selCar", selCar);
 
         request.getRequestDispatcher("/WEB-INF/views/booking.jsp")
                 .forward(request, response);
     }
 
-    private int parseIntParam(HttpServletRequest req, String name, int def) {
-        String v = req.getParameter(name);
-        if (v == null || v.isBlank()) return def;
-        try { return Integer.parseInt(v.trim()); } catch (NumberFormatException e) { return def; }
+    private Integer parseIntParam(HttpServletRequest request, String name) {
+        String v = request.getParameter(name);
+        if (v == null || v.isBlank()) return null;
+        try {
+            return Integer.parseInt(v.trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("account_id") == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        String step = request.getParameter("step");
+        if ("2".equals(step)) {
+            handleStep2(request, response, session);
+        } else {
+            handleStep1(request, response, session);
+        }
+    }
+
+    //  nhận selectedItems từ giỏ hàng → lưu session → redirect GET
+    private void handleStep1(HttpServletRequest request, HttpServletResponse response,
+                             HttpSession session) throws IOException {
+
+        String[] items = request.getParameterValues("selectedItems");
+        if (items == null || items.length == 0) {
+            response.sendRedirect(request.getContextPath()
+                    + "/my-shopping-cart?error=no_item_selected");
+            return;
+        }
+
+        session.setAttribute("selectedTypeIds", Arrays.asList(items));
+        response.sendRedirect(request.getContextPath() + "/booking");
+    }
+
+    // validate form → INSERT bookings → xóa cart items → redirect thanh toán
+    private void handleStep2(HttpServletRequest request, HttpServletResponse response,
+                             HttpSession session) throws ServletException, IOException {
+
+        String bookerName = request.getParameter("bookerName");
+        String bookerPhone = request.getParameter("bookerPhone");
+        String bookerAddress = request.getParameter("bookerAddress");
+        String note = request.getParameter("note");
+
+        // validate
+        if (bookerName == null || bookerName.isBlank()
+                || bookerPhone == null || bookerPhone.isBlank()
+                || bookerAddress == null || bookerAddress.isBlank()) {
+            request.setAttribute("errorMsg", "Vui lòng điền đầy đủ Họ tên, SĐT và Địa chỉ đón.");
+            doGet(request, response);
+            return;
+        }
+
+        if (!bookerPhone.trim().matches("\\d{10}")) {
+            request.setAttribute("errorMsg", "Số điện thoại không hợp lệ (cần đúng 10 chữ số).");
+            doGet(request, response);
+            return;
+        }
+
+        int accountId = (Integer) session.getAttribute("account_id");
+
+        @SuppressWarnings("unchecked")
+        List<String> selectedTypeIds = (List<String>) session.getAttribute("selectedTypeIds");
+
+        if (selectedTypeIds == null || selectedTypeIds.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+            return;
+        }
+
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null) {
+            response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+            return;
+        }
+
+        int customerId = getCustomerId(accountId);
+        if (customerId == -1) {
+            request.setAttribute("errorMsg", "Không tìm thấy thông tin khách hàng. Vui lòng đăng nhập lại.");
+            doGet(request, response);
+            return;
+        }
+
+        List<Integer> newBookingIds = new ArrayList<>();
+        List<Integer> bookedTypeIds = new ArrayList<>();
+
+        for (String idStr : selectedTypeIds) {
+            try {
+                int typeId = Integer.parseInt(idStr);
+                CartItem ci = cart.get(typeId);
+                if (ci == null) continue;
+
+                Booking booking = new Booking();
+                booking.setCustomerId(customerId);
+                booking.setTypeId(ci.getSelectedTypeId());
+                booking.setPickupProvince(
+                        ci.getFromProvinceName() != null ? ci.getFromProvinceName() : "");
+                booking.setDropoffProvince(
+                        ci.getToProvinceName() != null ? ci.getToProvinceName() : "");
+                booking.setPickupTime(ci.getPickupTime());
+                booking.setReturnTime(ci.getReturnTime());
+                booking.setKm(ci.getKm());
+                booking.setTotalPrice(ci.getTotal());
+                booking.setBookerName(bookerName.trim());
+                booking.setBookerPhone(bookerPhone.trim());
+                booking.setBookerAddress(bookerAddress.trim());
+                booking.setNote(note != null ? note.trim() : "");
+
+                int newId = bookingDAO.insertBooking(booking);
+                newBookingIds.add(newId);
+                bookedTypeIds.add(typeId);
+
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        if (newBookingIds.isEmpty()) {
+            request.setAttribute("errorMsg", "Đã có lỗi khi tạo đơn. Vui lòng thử lại.");
+            doGet(request, response);
+            return;
+        }
+
+        for (int typeId : bookedTypeIds) {
+            cart.removeItem(typeId);
+        }
+        session.setAttribute("cart", cart);
+        cartDAO.removeBookedItems(accountId, bookedTypeIds);
+
+        // clean session
+        session.removeAttribute("selectedTypeIds");
+
+        // redirect sang trang thanh toán
+        String bookingIdsParam = newBookingIds.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+
+        response.sendRedirect(request.getContextPath()
+                + "/payments?bookingIds=" + bookingIdsParam);
+    }
+
+    private int getCustomerId(int accountId) {
+        return memberDAO.getCustomerIdByAccountId(accountId);
     }
 }

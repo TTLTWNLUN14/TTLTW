@@ -41,7 +41,7 @@ function updateSelectedTotal() {
     // enable/disable nút thanh toán
     document.getElementById('btnPayment').disabled = checkboxes.length === 0;
 
-    // chọn all
+    // chọn all
     const all = document.querySelectorAll('.item-checkbox');
     document.getElementById('selectAll').checked =
         all.length > 0 && checkboxes.length === all.length;
@@ -59,7 +59,7 @@ function submitPayment() {
     if (checkboxes.length === 0) return;
 
     const form = document.getElementById('paymentForm');
-    
+
     form.querySelectorAll('input[name="selectedItems"]').forEach(i => i.remove());
 
     checkboxes.forEach(cb => {
@@ -72,3 +72,41 @@ function submitPayment() {
 
     form.submit();
 }
+
+function submitBooking() {
+    const checked = document.querySelectorAll('.item-checkbox:checked');
+    if (checked.length === 0) return;
+
+    const form = document.getElementById('bookingForm');
+    if (form) {
+        form.querySelectorAll('input[name="selectedItems"]').forEach(el => el.remove());
+
+        checked.forEach(cb => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'selectedItems';
+            input.value = cb.value;
+            form.appendChild(input);
+        });
+
+        form.submit();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const originalUpdateSelectedTotal = updateSelectedTotal;
+
+    updateSelectedTotal = function() {
+        originalUpdateSelectedTotal();
+        const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+        const btnBooking = document.getElementById('btnBooking');
+        if (btnBooking) {
+            btnBooking.disabled = checkboxes.length === 0;
+        }
+    };
+
+    const checkBoxesExist = document.querySelectorAll('.item-checkbox');
+    if (checkBoxesExist.length > 0) {
+        updateSelectedTotal();
+    }
+});

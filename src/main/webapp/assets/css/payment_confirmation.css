@@ -5,31 +5,31 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fb;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
 }
 
 .global-nav {
-    background-color: #0b1a30;
-    height: 70px;
+    background: #1e50a0;
+    padding: 0 24px;
+    height: 56px;
     display: flex;
     align-items: center;
 }
 
 .nav-inner {
-    width: 100%;
-    padding: 0 5%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .nav-logo {
-    color: #f9a01b;
-    font-size: 24px;
+    color: #fff;
     font-weight: bold;
+    font-size: 20px;
     text-decoration: none;
-    font-family: "Times New Roman", Times, serif;
-    letter-spacing: 1px;
 }
 
 .nav-links {
@@ -38,6 +38,13 @@ body {
     gap: 35px;
     margin-left: auto;
     margin-right: 40px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
 }
 
 .nav-link {
@@ -87,12 +94,9 @@ body {
 }
 
 .confirm-page {
-    background-color: #eaeff4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: calc(100vh - 70px);
-    font-family: Arial, sans-serif;
+    max-width: 660px;
+    margin: 40px auto;
+    padding: 0 16px;
 }
 
 .confirm-container {
@@ -104,15 +108,14 @@ body {
     background: #fff;
     border-radius: 12px;
 }
-.confirm-container {
-    text-align: center;
-}
+
 .confirm-container h1 {
     font-size: 22px;
     color: #1e3a8a;
     font-weight: 600;
     margin-bottom: 10px;
 }
+
 .confirm-container .sub-msg {
     font-size: 15px;
     color: #6b7280;
@@ -134,13 +137,9 @@ body {
 }
 
 .confirm-actions {
-    margin-top: auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
-    padding: 20px;
-    width: 100%;
+    gap: 12px;
+    margin-top: 4px;
 }
 
 .confirm-actions a {
@@ -183,7 +182,6 @@ body {
     background-color: #172554;
 }
 
-
 .price-tag {
     display: inline-block;
     margin: 16px 0 24px;
@@ -191,6 +189,7 @@ body {
     font-weight: 700;
     color: #ef4444;
 }
+
 .info-note {
     margin: 0 auto 24px;
     max-width: 420px;
@@ -201,4 +200,211 @@ body {
     font-size: 13px;
     color: #92400e;
     text-align: left;
+}
+
+.success-banner {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+    padding: 36px 32px 28px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.success-icon {
+    font-size: 56px;
+    animation: popIn .4s ease;
+    display: block;
+    margin-bottom: 12px;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(.3);
+        opacity: 0;
+    }
+    80% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 8px;
+}
+
+.success-sub {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.method-note {
+    border-radius: 8px;
+    padding: 13px 18px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.method-note.cash {
+    background: #fff8e1;
+    border-left: 4px solid #ffc107;
+    color: #795500;
+}
+
+.method-note.transfer {
+    background: #e8f4fd;
+    border-left: 4px solid #1e50a0;
+    color: #0d3a7a;
+}
+
+.order-detail-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 13px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+}
+
+.booking-row {
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.booking-row:last-child {
+    border-bottom: none;
+}
+
+.booking-name {
+    font-weight: bold;
+    color: #1e50a0;
+    margin-bottom: 6px;
+    font-size: 15px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+    font-size: 13px;
+}
+
+.info-item .lbl {
+    color: #888;
+    margin-bottom: 2px;
+    font-size: 12px;
+}
+
+.info-item .val {
+    color: #333;
+    font-weight: 500;
+}
+
+.booking-amount {
+    text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+    color: #e63946;
+    margin-top: 8px;
+}
+
+.grand-total-bar {
+    background: #fff8e1;
+    border-top: 2px solid #ffc107;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grand-total-bar .lbl {
+    font-size: 15px;
+    color: #555;
+}
+
+.grand-total-bar .total {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e63946;
+}
+
+.btn-home {
+    flex: 1;
+    padding: 13px;
+    background: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.btn-home:hover {
+    background: #e0e0e0;
+}
+
+.btn-orders {
+    flex: 1;
+    padding: 13px;
+    background: #1e50a0;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.btn-orders:hover {
+    background: #174080;
+}
+
+.btn-book-more {
+    flex: 1;
+    padding: 13px;
+    background: #f9a01b;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.btn-book-more:hover {
+    background: #e08c00;
+}
+
+@media (max-width: 540px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .confirm-actions {
+        flex-direction: column;
+    }
 }

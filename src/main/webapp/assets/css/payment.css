@@ -1,328 +1,315 @@
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7fb;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
 }
 
 .global-nav {
-    background-color: #0b1a30;
-    height: 70px;
+    background: #1e50a0;
+    padding: 0 24px;
+    height: 56px;
     display: flex;
     align-items: center;
 }
 
 .nav-inner {
-    width: 100%;
-    padding: 0 5%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .nav-logo {
-    color: #f9a01b;
-    font-size: 24px;
+    color: #fff;
     font-weight: bold;
+    font-size: 20px;
     text-decoration: none;
-    font-family: "Times New Roman", Times, serif;
-    letter-spacing: 1px;
 }
 
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 35px;
-    margin-left: auto;
-    margin-right: 40px;
-}
-
-.nav-link {
-    color: #ffffff;
+.nav-links a {
+    color: #fff;
     text-decoration: none;
-    font-size: 15px;
-    position: relative;
-    padding: 5px 0;
-    transition: color 0.2s ease;
+    margin-left: 20px;
+    font-size: 14px;
 }
 
-.nav-link:hover, .nav-link.active {
-    color: #f9a01b;
+.page-header {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 16px 24px;
 }
 
-.nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #f9a01b;
-    border-radius: 2px;
+.page-header h2 {
+    font-size: 20px;
+    color: #1e50a0;
 }
 
-.nav-actions {
-    display: flex;
-    align-items: center;
+.breadcrumb {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
 }
 
-.btn-login {
-    background-color: #1a56db;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 8px 24px;
-    border-radius: 20px;
-    font-size: 15px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn-login:hover {
-    background-color: #1e40af;
-}
-
-.payment-page {
-    padding: 30px 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.breadcrumb span {
+    color: #1e50a0;
 }
 
 .payment-layout {
-    max-width: 900px;
-    margin: 40px auto;
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.checkout-header {
-    padding: 20px;
-    background-color: #334155;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.checkout-header h2 {
-    margin: 0;
+    max-width: 700px;
+    margin: 24px auto;
+    padding: 0 16px;
 }
 
 .checkout-section {
-    padding: 20px 30px;
-    border-bottom: 1px solid #f1f5f9;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .1);
+    margin-bottom: 16px;
+    overflow: hidden;
 }
 
-.info-section h3,
-.discount-section h3,
-.payment-methods-section h3 {
+.section-title {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 13px 18px;
     font-size: 14px;
     font-weight: bold;
-    color: #475569;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
+    color: #444;
+    margin: 0;
 }
 
-.section-title .red-dot {
-    width: 8px;
-    height: 8px;
-    margin-right: 8px;
-    background-color: #ef4444;
-    border-radius: 50%;
+.trip-card {
+    padding: 14px 18px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.info-grid {
-    display: grid;
-    gap: 12px;
-    background-color: #f8fafc;
-    border: 1px dashed #cbd5e1;
-    padding: 15px;
-    border-radius: 8px;
+.trip-card:last-child {
+    border-bottom: none;
 }
 
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #475569;
-}
-
-.info-row span {
-    color: #6b7280;
-}
-
-.info-row strong {
-    color: #1f2937;
-}
-
-.discount-section {
-    padding-top: 0;
-}
-
-.coupon-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.coupon-item {
+.trip-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background-color: #f8fafc;
-    font-size: 14px;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.coupon-item:hover {
-    background-color: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.coupon-info strong {
-    font-size: 14px;
-    color: #1f2937;
-}
-
-.coupon-percent {
     font-weight: bold;
-    color: #ef4444;
-    font-size: 18px;
+    margin-bottom: 8px;
+    color: #1e50a0;
 }
 
-.discount-input-row {
+.trip-card-total {
+    color: #e63946;
+    font-size: 15px;
+}
+
+.trip-row {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 3px 0;
+    color: #555;
 }
 
-.discount-input-row input {
-    border: 1px solid #d1d5db;
-    padding: 10px;
-    border-radius: 6px;
-    flex: 1;
-    outline: none;
+.trip-row .label {
+    color: #888;
 }
 
-.discount-input-row button {
-    appearance: none;
-    border: 1px solid #0f766e;
-    padding: 8px 12px;
-    background-color: #10b981;
-    border-radius: 6px;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
+.trip-row .value {
+    font-weight: 500;
+    color: #333;
+    text-align: right;
 }
 
-.discount-input-row button:hover {
-    background-color: #047857;
-}
-
+/* ── Phương thức thanh toán ── */
 .payment-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    grid-template-columns:1fr 1fr;
+    gap: 12px;
+    padding: 16px 18px;
 }
 
 .payment-card {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 14px 12px;
+    cursor: pointer;
+    transition: all .2s;
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 1px solid #d1d5db;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #f8fafc;
-    font-weight: 500;
+    gap: 10px;
+}
+
+.payment-card:has(input:checked) {
+    border-color: #1e50a0;
+    background: #f0f5ff;
+}
+
+.payment-card input[type=radio] {
+    accent-color: #1e50a0;
+    width: 16px;
+    height: 16px;
+}
+
+.payment-name {
     font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.payment-desc {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.voucher-section {
+    padding: 14px 18px;
+}
+
+.voucher-input {
+    display: flex;
+    gap: 8px;
+}
+
+.voucher-input input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.voucher-input input:focus {
+    outline: none;
+    border-color: #1e50a0;
+}
+
+.btn-apply-voucher {
+    padding: 9px 16px;
+    background: #f9a01b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.payment-card.active {
-    background-color: #eef2ff;
-    border-color: #6366f1;
+.voucher-msg {
+    font-size: 12px;
+    margin-top: 6px;
 }
 
-.payment-card:hover {
-    border-color: #90cdf4;
-    background-color: #e0f2fe;
+.voucher-ok {
+    color: #28a745;
+}
+
+.voucher-err {
+    color: #e63946;
 }
 
 .total-summary {
-    background-color: #f9fafb;
-    padding: 20px 30px;
-    border-top: 1px solid #e2e8f0;
+    padding: 14px 18px;
+    border-top: 1px solid #f0f0f0;
 }
 
 .summary-line {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    margin-bottom: 10px;
+    padding: 4px 0;
+    color: #555;
 }
 
-.final-total {
-    margin-top: 15px;
+.summary-line.discount {
+    color: #28a745;
+}
+
+.summary-line.final-total {
     font-size: 18px;
-    font-weight: 700;
-    color: #ef4444;
+    font-weight: bold;
+    color: #e63946;
+    border-top: 1px solid #ddd;
+    margin-top: 8px;
+    padding-top: 10px;
+}
+
+.terms-section {
+    padding: 14px 18px;
+}
+
+.terms-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+}
+
+.terms-label a {
+    color: #1e50a0;
+}
+
+.terms-error {
+    color: #e63946;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.error-msg {
+    background: #ffe0e0;
+    border: 1px solid #e63946;
+    color: #c62828;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 13px;
+    margin: 0 0 12px;
 }
 
 .action-buttons {
     display: flex;
-    justify-content: space-between;
-    padding: 20px 30px;
-    background-color: #f9f9f9;
-    border-top: 1px dashed #e5e7eb;
-}
-
-.btn-back,
-.btn-next {
-    font-size: 14px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    gap: 10px;
+    padding: 16px 18px;
 }
 
 .btn-back {
-    background-color: transparent;
-    border: 1px solid #d1d5db;
-    color: #374151;
-}
-
-.btn-back:hover {
-    background-color: #f3f4f6;
+    flex: 1;
+    padding: 12px;
+    background: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
 }
 
 .btn-next {
-    transition: opacity 0.3s;
-    background-color: #1e3a8a;
-    color: white;
+    flex: 2;
+    padding: 12px;
+    background: #1e50a0;
+    color: #fff;
     border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
 }
 
-.btn-next:hover {
-    background-color: #172554;
+.btn-next:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+.btn-next:not(:disabled):hover {
+    background: #174080;
 }

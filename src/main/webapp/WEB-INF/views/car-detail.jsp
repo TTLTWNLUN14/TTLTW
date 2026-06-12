@@ -108,19 +108,6 @@
                             <span class="spec-label">Số xe có sẵn</span>
                             <span class="spec-value">${product.count}</span>
                         </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Trạng thái</span>
-                            <span class="spec-value">
-                                <c:choose>
-                                    <c:when test="${product.isActive}">
-                                        <span class="badge-active">Đang hoạt động</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="badge-inactive">Ngừng hoạt động</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </span>
-                        </div>
                     </div>
 
                     <c:if test="${not empty product.descriptionType}">
@@ -181,7 +168,7 @@
                         </c:if>
                     </div>
 
-                    <a href="${pageContext.request.contextPath}/booking?typeId=${product.typeId}&isDriver=true"
+                    <a href="${pageContext.request.contextPath}/booking?typeId=${product.typeId}"
                        class="btn-primary w-100">Đặt xe ngay
                     </a>
 

@@ -2,6 +2,7 @@ package vn.edu.nlu.fit.datxedulich.dao;
 
 import vn.edu.nlu.fit.datxedulich.model.Member;
 import vn.edu.nlu.fit.datxedulich.model.Booking;
+
 import java.util.List;
 
 public class MemberDAO extends BaseDao {
@@ -24,6 +25,21 @@ public class MemberDAO extends BaseDao {
                         .findFirst()
                         .orElse(null)
         );
+    }
+
+    public int getCustomerIdByAccountId(int accountId) {
+        try {
+            return get().withHandle(h ->
+                    h.createQuery("SELECT customer_id FROM customers WHERE account_id = :accountId")
+                            .bind("accountId", accountId)
+                            .mapTo(Integer.class)
+                            .findFirst()
+                            .orElse(-1)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public boolean updateMember(Member member) {

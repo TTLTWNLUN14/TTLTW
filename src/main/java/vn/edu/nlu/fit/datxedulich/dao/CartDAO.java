@@ -7,6 +7,7 @@ import vn.edu.nlu.fit.datxedulich.services.ProductService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CartDAO extends BaseDao {
 
@@ -39,21 +40,20 @@ public class CartDAO extends BaseDao {
             for (CartItem item : cart.getItems()) {
                 h.createUpdate(
                                 "INSERT INTO cart_items " +
-                                        "(cart_id, type_id, quantity, is_driver, from_province, to_province, " +
+                                        "(cart_id, type_id, quantity, from_province, to_province, " +
                                         " km, pickup_time, return_time, email, phone) " +
-                                        "VALUES (:cartId, :typeId, :qty, :isDriver, :from, :to, " +
+                                        "VALUES (:cartId, :typeId, :qty, :from, :to, " +
                                         "        :km, :pickup, :ret, :email, :phone)")
-                        .bind("cartId",   cartId)
-                        .bind("typeId",   item.getProduct().getTypeId())
-                        .bind("qty",      item.getQuantity())
-                        .bind("isDriver", item.isDriver())
-                        .bind("from",     item.getFromProvinceId() > 0 ? item.getFromProvinceId() : null)
-                        .bind("to",       item.getToProvinceId() > 0 ? item.getToProvinceId() : null)
-                        .bind("km",       item.getKm())
-                        .bind("pickup",   item.getPickupTime())
-                        .bind("ret",      item.getReturnTime())
-                        .bind("email",    item.getEmail())
-                        .bind("phone",    item.getPhone())
+                        .bind("cartId", cartId)
+                        .bind("typeId", item.getProduct().getTypeId())
+                        .bind("qty", item.getQuantity())
+                        .bind("from", item.getFromProvinceId() > 0 ? item.getFromProvinceId() : null)
+                        .bind("to", item.getToProvinceId() > 0 ? item.getToProvinceId() : null)
+                        .bind("km", item.getKm())
+                        .bind("pickup", item.getPickupTime())
+                        .bind("ret", item.getReturnTime())
+                        .bind("email", item.getEmail())
+                        .bind("phone", item.getPhone())
                         .execute();
             }
         });
@@ -87,19 +87,18 @@ public class CartDAO extends BaseDao {
             CarType carType = ps.getCarTypeById(typeId);
             if (carType == null) continue;
 
-            int  qty      = (int) row.get("quantity");
-            boolean driver = ((Number) row.get("is_driver")).intValue() == 1;
+            int qty = (int) row.get("quantity");
 
-            CartItem item = new CartItem(qty, driver, carType);
+            CartItem item = new CartItem(qty, carType);
             item.setKm(row.get("km") != null ? (int) row.get("km") : 0);
             if (row.get("from_province") != null) item.setFromProvinceId((int) row.get("from_province"));
-            if (row.get("to_province") != null)   item.setToProvinceId((int) row.get("to_province"));
-            if (row.get("pickup_time") != null)   item.setPickupTime((String) row.get("pickup_time"));
-            if (row.get("return_time") != null)   item.setReturnTime((String) row.get("return_time"));
-            if (row.get("email") != null)         item.setEmail((String) row.get("email"));
-            if (row.get("phone") != null)         item.setPhone((String) row.get("phone"));
+            if (row.get("to_province") != null) item.setToProvinceId((int) row.get("to_province"));
+            if (row.get("pickup_time") != null) item.setPickupTime((String) row.get("pickup_time"));
+            if (row.get("return_time") != null) item.setReturnTime((String) row.get("return_time"));
+            if (row.get("email") != null) item.setEmail((String) row.get("email"));
+            if (row.get("phone") != null) item.setPhone((String) row.get("phone"));
 
-            cart.addItem(carType, qty, driver);
+            cart.addItem(carType, qty);
             cart.getItems().stream()
                     .filter(i -> i.getProduct().getTypeId() == typeId)
                     .findFirst()
@@ -124,6 +123,34 @@ public class CartDAO extends BaseDao {
                 h.createUpdate("DELETE FROM cart_items WHERE cart_id = :cartId")
                         .bind("cartId", cartId).execute();
             }
+        });
+    }
+
+    public void removeBookedItems(int accountId, List<Integer> typeIds) {
+        if (typeIds == null || typeIds.isEmpty()) return;
+
+        get().useHandle(h -> {
+            Integer cartId = h.createQuery(
+                            "SELECT cart_id FROM cart WHERE account_id = :accountId")
+                    .bind("accountId", accountId)
+                    .mapTo(Integer.class)
+                    .findFirst()
+                    .orElse(null);
+
+            if (cartId == null) return;
+
+            String placeholders = typeIds.stream()
+                    .map(i -> "?")
+                    .collect(Collectors.joining(", "));
+
+            var update = h.createUpdate(
+                    "DELETE FROM cart_items WHERE cart_id = ? AND type_id IN (" + placeholders + ")"
+            ).bind(0, cartId);
+
+            for (int i = 0; i < typeIds.size(); i++) {
+                update = update.bind(i + 1, typeIds.get(i));
+            }
+            update.execute();
         });
     }
 }

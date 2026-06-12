@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <fmt:setLocale value="vi_VN"/>
@@ -38,24 +38,9 @@
                 <input type="hidden" name="productId" value="${selTypeId}">
 
                 <div class="form-group">
-                    <label>Hình thức thuê</label>
-                    <div class="rental-types" style="margin-top: 10px;">
-                        <label>
-                            <input type="radio" name="isDriver" value="false" ${not selIsDriver ? 'checked' : ''}
-                                   onchange="this.form.action='${pageContext.request.contextPath}/booking'; this.form.submit();">
-                            Tự lái
-                        </label>
-                        <label>
-                            <input type="radio" name="isDriver" value="true" ${selIsDriver ? 'checked' : ''}
-                                   onchange="this.form.action='${pageContext.request.contextPath}/booking'; this.form.submit();">
-                            Có tài xế
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label>Hãng xe</label>
-                    <select name="brandId" class="form-control" onchange="this.form.action='${pageContext.request.contextPath}/booking'; this.form.submit();">
+                    <select name="brandId" class="form-control"
+                            onchange="this.form.action='${pageContext.request.contextPath}/booking'; this.form.submit();">
                         <option value="0">-- Chọn hãng xe --</option>
                         <c:forEach items="${brands}" var="b">
                             <option value="${b.brandId}" ${selBrandId == b.brandId ? 'selected' : ''}>${b.brandName}</option>
@@ -65,7 +50,8 @@
 
                 <div class="form-group">
                     <label>Tên xe</label>
-                    <select name="typeId" class="form-control" onchange="this.form.action='${pageContext.request.contextPath}/booking'; this.form.submit();">
+                    <select name="typeId" class="form-control"
+                            onchange="this.form.action='${pageContext.request.contextPath}/booking'; this.form.submit();">
                         <option value="0">-- Chọn xe --</option>
                         <c:if test="${selBrandId > 0}">
                             <c:forEach items="${carsMap[selBrandId]}" var="ct">
@@ -80,6 +66,38 @@
                     <input type="number" name="quantity" class="form-control" value="1" min="1">
                 </div>
 
+                <div class="form-group">
+                    <label>Tỉnh / Thành đón</label>
+                    <select name="fromProvinceId" class="form-control" id="fromProvinceSelect">
+                        <option value="">-- Điểm đón --</option>
+                        <c:forEach items="${provinces}" var="p">
+                            <option value="${p.provinceId}" data-name="${p.provinceName}">${p.provinceName}</option>
+                        </c:forEach>
+                    </select>
+                    <input type="hidden" name="fromProvinceName" id="fromProvinceName">
+                </div>
+
+                <div class="form-group">
+                    <label>Tỉnh / Thành trả</label>
+                    <select name="toProvinceId" class="form-control" id="toProvinceSelect">
+                        <option value="">-- Điểm trả --</option>
+                        <c:forEach items="${provinces}" var="p">
+                            <option value="${p.provinceId}" data-name="${p.provinceName}">${p.provinceName}</option>
+                        </c:forEach>
+                    </select>
+                    <input type="hidden" name="toProvinceName" id="toProvinceName">
+                </div>
+
+                <div class="form-group">
+                    <label>Ngày đón</label>
+                    <input type="date" name="pickupTime" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Ngày trả</label>
+                    <input type="date" name="returnTime" class="form-control">
+                </div>
+
                 <div class="form-actions" style="margin-top: 25px;">
                     <button type="submit" class="btn-submit" ${selTypeId <= 0 ? 'disabled' : ''}>
                         Thêm vào giỏ hàng
@@ -87,6 +105,7 @@
                 </div>
             </form>
         </div>
+
 
         <div class="booking-right">
             <c:choose>
@@ -121,5 +140,6 @@
     </div>
 </div>
 
+<script src="${pageContext.request.contextPath}/assets/js/booking.js"></script>
 </body>
 </html>

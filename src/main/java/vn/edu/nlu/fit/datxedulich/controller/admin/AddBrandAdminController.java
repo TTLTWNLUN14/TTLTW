@@ -27,7 +27,6 @@ public class AddBrandAdminController extends HttpServlet {
         brand.setLogo(request.getParameter("logo"));
         brand.setCountry(request.getParameter("country"));
         brand.setDescriptionBrand(request.getParameter("descriptionBrand"));
-        brand.setIsActive(true);
 
         BrandService brandService = new BrandService();
         brandService.insertBrand(brand);
