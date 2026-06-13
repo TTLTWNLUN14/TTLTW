@@ -40,4 +40,15 @@ public class VoucherService {
         return voucherDAO.reduceVoucherUsage(voucherId);
     }
 
+    public List<Voucher> searchVouchers(String keyword) {
+            return voucherDAO.searchVouchers(keyword);
+    }
+
+    public List<Voucher> getVouchersByStatus(boolean isActive) {
+        return voucherDAO.getVouchersByStatus(isActive);
+    }
+
+    public List<Voucher> getVouchersByTier(String tier) {
+        return voucherDAO.getVouchersByTier(tier);
+    }
 }
