@@ -7,31 +7,16 @@
     <title>${product.typeName} - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/list-cars.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/car-detail.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
     <script>
         const CONTEXT_PATH = '${pageContext.request.contextPath}';
     </script>
 </head>
 <body>
 
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
-        <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
-            <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/cars-brand">Hãng xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/booking">Đặt xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/my-shopping-cart">
-                Giỏ hàng (<span class="cart-count"><c:out value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/></span>)
-            </a>
-        </div>
-        <div class="nav-actions">
-            <a href="#" class="btn-login">Đăng nhập</a>
-            <a href="#" class="btn-login ml-20">Đăng ký</a>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+  <jsp:param name="activePage" value="cars"/>
+</jsp:include>
 <div class="page-main">
     <div class="page-wrap-lg">
 

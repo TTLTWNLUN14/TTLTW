@@ -1,0 +1,349 @@
+.global-nav {
+    background: #0d1b2e;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+}
+
+.nav-inner {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.nav-logo {
+    color: #ffa500;
+    font-weight: bold;
+    font-size: 1.3rem;
+    letter-spacing: .05em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.nav-logo:hover {
+    color: #fff;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    flex: 1;
+    margin-left: 40px;
+    align-items: center;
+}
+
+.nav-link {
+    color: #cbd5e1;
+    font-size: .95rem;
+    padding: 6px 0;
+    transition: color .2s;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: #fff;
+}
+
+.nav-link.active {
+    color: #ffa500;
+}
+
+.nav-link.admin-link {
+    color: #f5b82e;
+    font-weight: 700;
+    border: 1.5px solid rgba(245, 184, 46, .4);
+    border-radius: 6px;
+    padding: 4px 14px;
+    font-size: .82rem;
+}
+
+.nav-link.admin-link:hover {
+    background: rgba(245, 184, 46, .12);
+}
+
+.nav-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+/* ---------- AUTH BUTTONS ---------- */
+.btn-login,
+.btn-register {
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: .9rem;
+    transition: all .2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-login {
+    color: #fff;
+    background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, .4);
+}
+
+.btn-login:hover {
+    background: rgba(255, 255, 255, .1);
+}
+
+.btn-register {
+    background: #ffa500;
+    color: #0d1b2e;
+    border: none;
+}
+
+.btn-register:hover {
+    background: #e69500;
+}
+
+/* ---------- USER DROPDOWN ---------- */
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #ffa500;
+    color: #0d1b2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.user-name {
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 500;
+    max-width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.dropdown-toggle:hover .user-name {
+    color: #ffa500;
+}
+
+.dropdown-caret {
+    color: #ffa500;
+    font-size: .7rem;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: #fff;
+    border-radius: 10px;
+    min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
+    overflow: hidden;
+    z-index: 200;
+}
+
+.dropdown-menu.open {
+    display: block;
+}
+
+.dropdown-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dropdown-header-name {
+    font-weight: 700;
+    font-size: .9rem;
+    color: #0f172a;
+}
+
+.dropdown-header-role {
+    font-size: .75rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.dropdown-item {
+    padding: 11px 16px;
+    color: #334155;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .88rem;
+    transition: background .15s;
+}
+
+.dropdown-item:hover {
+    background: #f8fafc;
+}
+
+.dropdown-item.admin {
+    color: #92400e;
+    font-weight: 600;
+    background: #fffbeb;
+}
+
+.dropdown-item.admin:hover {
+    background: #fef3c7;
+}
+
+.dropdown-item.logout {
+    color: #dc2626;
+    border-top: 1px solid #f1f5f9;
+}
+
+.dropdown-item.logout:hover {
+    background: #fef2f2;
+}
+
+/* ---------- NOTIFICATION BELL ---------- */
+.notif-wrap {
+    position: relative;
+    cursor: pointer;
+    color: #94a3b8;
+    font-size: 1.15rem;
+    text-decoration: none;
+}
+
+.notif-wrap:hover {
+    color: #fff;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -6px;
+    background: #ef4444;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: .68rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Badge số lượng trên link Giỏ hàng */
+.nav-link {
+    position: relative;
+}
+
+.nav-cart-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ef4444;
+    color: #fff;
+    font-size: .62rem;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    padding: 0 4px;
+    margin-left: 4px;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+    background: #0d1b2e;
+    padding: 60px 0 30px;
+    color: #fff;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-grid > div {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-grid > div:first-child {
+    flex: 1.5;
+}
+
+.footer-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.footer-link {
+    display: block;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #ffa500;
+}
+
+.footer-brand-desc {
+    font-size: .82rem;
+    line-height: 1.7;
+    color: #94a3b8;
+    max-width: 280px;
+}
+
+.footer-contact-info {
+    font-size: .83rem;
+    color: #94a3b8;
+    line-height: 2.1;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #64748b;
+    font-size: 0.8rem;
+}

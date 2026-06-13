@@ -8,25 +8,13 @@
 <head>
     <title>Đặt xe - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/booking.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
 <body>
 
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
-        <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/cars-brand">Hãng xe</a>
-            <a class="nav-link active" href="${pageContext.request.contextPath}/booking">Đặt xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/my-shopping-cart">
-                Giỏ hàng (${not empty sessionScope.cart ? sessionScope.cart.totalQuantity : 0})
-                <%-- ch lm reload trang bang ajax --%>
-            </a>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+  <jsp:param name="activePage" value="booking"/>
+</jsp:include>
 <div class="booking-page">
     <div class="booking-container">
 
@@ -99,14 +87,18 @@
                 </div>
 
                 <div class="form-actions" style="margin-top: 25px; display:flex; gap:12px; flex-wrap:wrap;">
-                    <button type="submit" class="btn-submit" ${selTypeId <= 0 ? 'disabled' : ''}>
-                        🛒 Thêm vào giỏ hàng
+                    <%-- Nút Thêm vào giỏ: sync province name rồi submit tới /add-cart --%>
+                    <button type="button" class="btn-submit"
+                    ${selTypeId <= 0 ? 'disabled' : ''}
+                            onclick="submitAddCart()">
+                        &#128722; Thêm vào giỏ hàng
                     </button>
-                    <button type="button" class="btn-submit btn-book-now"
+                    <%-- Nút Đặt ngay: submit thẳng tới /booking với bookNow=1 --%>
+                    <button type="button" class="btn-submit"
                             style="background:#e53935;"
-                            onclick="submitBookNow()"
-                    ${selTypeId <= 0 ? 'disabled' : ''}>
-                        ⚡ Đặt ngay
+                    ${selTypeId <= 0 ? 'disabled' : ''}
+                            onclick="submitBookNow()">
+                        &#9889; Đặt ngay
                     </button>
                 </div>
             </form>
@@ -146,6 +138,9 @@
     </div>
 </div>
 
+<script>
+    const CONTEXT_PATH = '${pageContext.request.contextPath}';
+</script>
 <script src="${pageContext.request.contextPath}/assets/js/booking.js"></script>
 </body>
 </html>

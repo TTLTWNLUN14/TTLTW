@@ -61,6 +61,4 @@ public class Brand implements Serializable {
         this.descriptionBrand = descriptionBrand;
     }
 
-    public void setIsActive(boolean b) {
-    }
 }

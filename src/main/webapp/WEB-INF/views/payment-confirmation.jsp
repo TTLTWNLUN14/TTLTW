@@ -9,19 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đặt xe thành công - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/payment_confirmation.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
 <body>
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
-        <div class="nav-links">
-            <a href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
-            <a href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a href="${pageContext.request.contextPath}/my-shopping-cart">Giỏ hàng</a>
-        </div>
-    </div>
-</nav>
 
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+</jsp:include>
 <div class="confirm-page">
     <div class="success-banner">
         <span class="success-icon"></span>
