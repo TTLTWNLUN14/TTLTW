@@ -1,23 +1,31 @@
 package vn.edu.nlu.fit.datxedulich.dao;
 
 import vn.edu.nlu.fit.datxedulich.model.Notification;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class NotificationDAO extends BaseDao {
 
     public List<Notification> getNotificationsByAccountId(int accountId) {
-        return get().withHandle(h -> h.createQuery("SELECT notif_id as notificationId, account_id as accountId, " + "type, title, content, booking_id as bookingCode, " + "DATE(created_at) as createdAt, is_read as isRead " + "FROM notifications " + "WHERE account_id = :accountId " + "ORDER BY created_at DESC " + "LIMIT 50").bind("accountId", accountId).mapToBean(Notification.class).list()
-        );
+        return get().withHandle(h -> h.createQuery(
+                "SELECT notif_id as notificationId, account_id as accountId, type, title, content, " +
+                        "booking_id as bookingCode, created_at as createdAt, is_read as isRead, icon, action_url as actionUrl " +
+                        "FROM notifications WHERE account_id = :accountId ORDER BY created_at DESC LIMIT 50"
+        ).bind("accountId", accountId).mapToBean(Notification.class).list());
     }
 
     public int getUnreadCount(int accountId) {
-        return get().withHandle(h -> h.createQuery("SELECT COUNT(*) FROM notifications WHERE account_id = :accountId AND is_read = 0").bind("accountId", accountId).mapTo(Integer.class).findFirst().orElse(0)
-        );
+        Integer count = get().withHandle(h -> h.createQuery(
+                "SELECT COUNT(*) FROM notifications WHERE account_id = :accountId AND is_read = 0"
+        ).bind("accountId", accountId).mapTo(Integer.class).findFirst().orElse(0));
+        return count != null ? count : 0;
     }
 
     public void markAsRead(int notificationId) {
         try {
-            get().useHandle(h ->h.createUpdate("UPDATE notifications SET is_read = 1 WHERE notif_id = :id").bind("id", notificationId).execute());
+            get().useHandle(h -> h.createUpdate(
+                    "UPDATE notifications SET is_read = 1 WHERE notif_id = :id"
+            ).bind("id", notificationId).execute());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +33,9 @@ public class NotificationDAO extends BaseDao {
 
     public void markAllAsRead(int accountId) {
         try {
-            get().useHandle(h -> h.createUpdate("UPDATE notifications SET is_read = 1 WHERE account_id = :accountId").bind("accountId", accountId).execute());
+            get().useHandle(h -> h.createUpdate(
+                    "UPDATE notifications SET is_read = 1 WHERE account_id = :accountId"
+            ).bind("accountId", accountId).execute());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,6 +55,16 @@ public class NotificationDAO extends BaseDao {
                     .bind("icon", icon)
                     .bind("actionUrl", actionUrl)
                     .execute());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteOldNotifications(int daysOld) {
+        try {
+            get().useHandle(h -> h.createUpdate(
+                    "DELETE FROM notifications WHERE created_at < DATE_SUB(NOW(), INTERVAL :days DAY)"
+            ).bind("days", daysOld).execute());
         } catch (Exception e) {
             e.printStackTrace();
         }

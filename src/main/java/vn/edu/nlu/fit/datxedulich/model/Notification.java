@@ -45,34 +45,83 @@ public class Notification implements Serializable {
         public static final String PROFILE_UPDATE = "PROFILE_UPDATE";
     }
 
-    // Getters and Setters
-    public int getNotificationId() { return notificationId; }
-    public void setNotificationId(int notificationId) { this.notificationId = notificationId; }
+    public int getNotificationId() {
+        return notificationId;
+    }
 
-    public int getAccountId() { return accountId; }
-    public void setAccountId(int accountId) { this.accountId = accountId; }
+    public void setNotificationId(int notificationId) {
+        this.notificationId = notificationId;
+    }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public int getAccountId() {
+        return accountId;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public String getType() {
+        return type;
+    }
 
-    public String getBookingCode() { return bookingCode; }
-    public void setBookingCode(String bookingCode) { this.bookingCode = bookingCode; }
+    public void setType(String type) {
+        this.type = type;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getTitle() {
+        return title;
+    }
 
-    public boolean isRead() { return isRead; }
-    public void setRead(boolean read) { isRead = read; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public String getIcon() { return icon; }
-    public void setIcon(String icon) { this.icon = icon; }
+    public String getContent() {
+        return content;
+    }
 
-    public String getActionUrl() { return actionUrl; }
-    public void setActionUrl(String actionUrl) { this.actionUrl = actionUrl; }
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getBookingCode() {
+        return bookingCode;
+    }
+
+    public void setBookingCode(String bookingCode) {
+        this.bookingCode = bookingCode;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getActionUrl() {
+        return actionUrl;
+    }
+
+    public void setActionUrl(String actionUrl) {
+        this.actionUrl = actionUrl;
+    }
 }
