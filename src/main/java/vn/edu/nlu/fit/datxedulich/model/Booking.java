@@ -221,4 +221,8 @@ public class Booking implements Serializable {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public String getStatus() {
+        return null;
+    }
 }
