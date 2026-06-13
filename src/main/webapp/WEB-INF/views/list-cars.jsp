@@ -177,7 +177,7 @@
                                 </div>
 
                                 <div class="car-action-wrap">
-                                    <a href="${pageContext.request.contextPath}/booking?typeId=${p.typeId}&isDriver=true"
+                                    <a href="${pageContext.request.contextPath}/booking?typeId=${p.typeId}"
                                        class="btn-book-now">Đặt ngay</a>
                                     <button class="btn-add-cart"
                                             onclick="addToCart(${p.typeId}, 1, true, '${p.typeName}', this)">
@@ -275,7 +275,9 @@
             Có lỗi xảy ra trong quá trình thêm giỏ hàng. Vui lòng thử lại!
         </div>
         <div class="modal-actions">
-            <button class="modal-btn btn-continue" style="width: 100%; flex: none;" onclick="closeModal('errorModal')">Đóng</button>
+            <button class="modal-btn btn-continue" style="width: 100%; flex: none;" onclick="closeModal('errorModal')">
+                Đóng
+            </button>
         </div>
     </div>
 </div>

@@ -19,13 +19,28 @@ function updateProv(selectEl, hiddenId) {
     }
 }
 
-cancelModal.addEventListener('click', function(e) {
-    if (e.target === cancelModal) {
-        closeCancelModal();
-    }
-});
+if (cancelModal) {
+    cancelModal.addEventListener('click', function(e) {
+        if (e.target === cancelModal) {
+            closeCancelModal();
+        }
+    });
+}
 
-document.getElementById('cancelModalClose').addEventListener('click', closeCancelModal);
+var cancelModalClose = document.getElementById('cancelModalClose');
+if (cancelModalClose) {
+    cancelModalClose.addEventListener('click', closeCancelModal);
+}
+
+function openCancelModal(bookingId) {
+    document.getElementById('cancelBookingIdInput').value = bookingId;
+    document.getElementById('cancelModalLabel').textContent = '#' + bookingId;
+    if (cancelModal) cancelModal.style.display = 'flex';
+}
+
+function closeCancelModal() {
+    if (cancelModal) cancelModal.style.display = 'none';
+}
 
 function updateSelectedTotal() {
     const checkboxes = document.querySelectorAll('.item-checkbox:checked');
@@ -34,17 +49,20 @@ function updateSelectedTotal() {
         total += parseFloat(cb.dataset.total) || 0;
     });
 
-    document.getElementById('selectedCount').textContent = checkboxes.length;
-    document.getElementById('selectedTotal').textContent =
-        total.toLocaleString('vi-VN') + ' VND';
+    const countEl = document.getElementById('selectedCount');
+    const totalEl = document.getElementById('selectedTotal');
+    if (countEl) countEl.textContent = checkboxes.length;
+    if (totalEl) totalEl.textContent = total.toLocaleString('vi-VN') + ' VND';
 
-    // enable/disable nút thanh toán
-    document.getElementById('btnPayment').disabled = checkboxes.length === 0;
+    const btnBooking = document.getElementById('btnBooking');
+    if (btnBooking) btnBooking.disabled = checkboxes.length === 0;
 
-    // chọn all
+    // chọn all
     const all = document.querySelectorAll('.item-checkbox');
-    document.getElementById('selectAll').checked =
-        all.length > 0 && checkboxes.length === all.length;
+    const selectAll = document.getElementById('selectAll');
+    if (selectAll) {
+        selectAll.checked = all.length > 0 && checkboxes.length === all.length;
+    }
 }
 
 function toggleSelectAll(selectAllCb) {
@@ -54,21 +72,24 @@ function toggleSelectAll(selectAllCb) {
     updateSelectedTotal();
 }
 
-function submitPayment() {
-    const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-    if (checkboxes.length === 0) return;
+function submitBooking() {
+    const checked = document.querySelectorAll('.item-checkbox:checked');
+    if (checked.length === 0) return;
 
-    const form = document.getElementById('paymentForm');
-    
-    form.querySelectorAll('input[name="selectedItems"]').forEach(i => i.remove());
-
-    checkboxes.forEach(cb => {
-        const input = document.createElement('input');
-        input.type   = 'hidden';
-        input.name   = 'selectedItems';
-        input.value  = cb.value;
-        form.appendChild(input);
-    });
-
-    form.submit();
+    const form = document.getElementById('bookingForm');
+    if (form) {
+        form.querySelectorAll('input[name="selectedItems"]').forEach(el => el.remove());
+        checked.forEach(cb => {
+            const input = document.createElement('input');
+            input.type  = 'hidden';
+            input.name  = 'selectedItems';
+            input.value = cb.value;
+            form.appendChild(input);
+        });
+        form.submit();
+    }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    updateSelectedTotal();
+});

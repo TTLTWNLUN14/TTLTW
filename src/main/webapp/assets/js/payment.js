@@ -38,4 +38,47 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    //////
+    const SUBTOTAL = 500000;
+
+    function toggleSubmitBtn() {
+        const chk = document.getElementById('agree-terms') || document.getElementById('termsChk');
+        const btnSubmit = document.getElementById('btnSubmit') || document.querySelector('.btn-next');
+        const termsError = document.getElementById('termsError');
+
+        if (chk && btnSubmit) {
+            btnSubmit.disabled = !chk.checked;
+        }
+        if (chk && chk.checked && termsError) {
+            termsError.style.display = 'none';
+        }
+    }
+
+    function validateForm() {
+        const chk = document.getElementById('agree-terms') || document.getElementById('termsChk');
+        const termsError = document.getElementById('termsError');
+
+        if (chk && !chk.checked) {
+            if (termsError) termsError.style.display = 'block';
+            return false;
+        }
+        return true;
+    }
+
+    function updateTotal() {
+        const discount = 0;
+        const total = SUBTOTAL - discount;
+        const grandTotalEl = document.getElementById('grandTotal');
+        if (grandTotalEl) {
+            grandTotalEl.textContent = total.toLocaleString('vi-VN') + 'đ';
+        }
+    }
+
+    const agreeTermsChk = document.getElementById('agree-terms') || document.getElementById('termsChk');
+    if (agreeTermsChk) {
+        agreeTermsChk.addEventListener('change', toggleSubmitBtn);
+    }
+
+    updateTotal();
+
 });

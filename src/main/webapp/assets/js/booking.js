@@ -1,4 +1,3 @@
-
 document.querySelectorAll('.rt-card').forEach(card => {
     card.addEventListener('click', function() {
         document.querySelectorAll('.rt-card').forEach(el => el.classList.remove('active'));
@@ -12,3 +11,36 @@ document.querySelectorAll('.cc-card').forEach(card => {
         this.classList.add('active');
     });
 });
+
+function syncProvinceName(selectId, hiddenId) {
+    const select = document.getElementById(selectId);
+    const hidden = document.getElementById(hiddenId);
+    if (!select || !hidden) return;
+    const opt = select.options[select.selectedIndex];
+    hidden.value = opt ? (opt.getAttribute('data-name') || '') : '';
+}
+
+['fromProvinceSelect', 'toProvinceSelect'].forEach(id => {
+    const hiddenId = id === 'fromProvinceSelect' ? 'fromProvinceName' : 'toProvinceName';
+    const select = document.getElementById(id);
+    if (select) {
+        select.addEventListener('change', () => syncProvinceName(id, hiddenId));
+        syncProvinceName(id, hiddenId);
+    }
+});
+
+function submitBookNow() {
+    const form = document.getElementById('bookingForm');
+    if (!form) return;
+    ['fromProvince', 'toProvince'].forEach(prefix =>
+        syncProvinceName(`${prefix}Select`, `${prefix}Name`)
+    );
+
+    if (!form.querySelector('input[name="bookNow"]')) {
+        form.insertAdjacentHTML('beforeend', '<input type="hidden" name="bookNow" value="1">');
+    }
+
+    form.action = form.action.replace('/add-cart', '') + '${pageContext.request.contextPath}/booking';
+    form.method = 'get';
+    form.submit();
+}
