@@ -305,7 +305,6 @@
     <c:if test="${not empty registerError}">setTab('register');</c:if>
     <c:if test="${not empty registerSuccess}">setTab('login');</c:if>
 
-    }
 </script>
 </body>
 </html>
