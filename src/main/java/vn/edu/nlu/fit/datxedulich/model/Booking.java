@@ -8,10 +8,10 @@ public class Booking implements Serializable {
     private int bookingId;
     private int customerId;
     private int typeId;
-    private String carName;          // join từ car_types.type_name
+    private String carName;
     private String route;
-    private String pickupProvince;   // tên tỉnh đón
-    private String dropoffProvince;  // tên tỉnh đến
+    private String pickupProvince;
+    private String dropoffProvince;
     private int km;
     private String pickupTime;
     private String returnTime;
@@ -20,10 +20,10 @@ public class Booking implements Serializable {
     private String bookerPhone;
     private String bookerAddress;
     private String note;
-    private String status;           // Chờ xác nhận | Đang diễn ra | Hoàn thành | Đã hủy
-    private String paymentStatus;    // PENDING | PAID | CANCELLED
-    private LocalDate bookingDate;   // DATE(pickup_date) – dùng cho lịch sử
-    private LocalDateTime createdAt; // thời điểm INSERT
+    private String status;
+    private String paymentStatus;
+    private LocalDate bookingDate;
+    private LocalDateTime createdAt;
     private int voucherId;
     private int days;
     private int basePrice;
@@ -188,7 +188,6 @@ public class Booking implements Serializable {
         this.createdAt = createdAt;
     }
 
-    // --- Getter và Setter CHO CÁC TRƯỜNG MỚI THÊM VÀO ---
     public int getVoucherId() {
         return voucherId;
     }

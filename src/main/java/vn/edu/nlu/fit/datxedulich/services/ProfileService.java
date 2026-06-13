@@ -14,6 +14,9 @@ public class ProfileService {
     private final UserDAO userDAO = new UserDAO();
     private final NotificationService notificationService = new NotificationService();
 
+    /**
+     * Update user profile information
+     */
     public boolean updateProfile(int accountId, Member memberData) throws Exception {
         Member member = memberService.getMemberInfo(accountId);
         if (member == null) {
@@ -37,5 +40,64 @@ public class ProfileService {
         }
 
         return updated;
+    }
+
+    public boolean updateSettings(int accountId, UserPreference preferenceData) throws Exception {
+        preferenceData.setAccountId(accountId);
+        return preferenceService.updatePreference(preferenceData);
+    }
+
+    public boolean changePassword(int accountId, String oldPassword, String newPassword) throws Exception {
+        if (oldPassword == null || oldPassword.trim().isEmpty()) {
+            throw new Exception("Vui lòng nhập mật khẩu hiện tại!");
+        }
+        if (newPassword == null || newPassword.length() < 6) {
+            throw new Exception("Mật khẩu mới phải có ít nhất 6 ký tự!");
+        }
+
+        User currentUser = userDAO.findById(accountId);
+        if (currentUser == null) {
+            throw new Exception("Không tìm thấy tài khoản!");
+        }
+
+        String hashedOldPassword = hashPassword(oldPassword);
+        if (!hashedOldPassword.equals(currentUser.getPassword_hash())) {
+            throw new Exception("Mật khẩu hiện tại không đúng!");
+        }
+
+        String hashedNewPassword = hashPassword(newPassword);
+        boolean success = userDAO.updatePassword(accountId, hashedNewPassword);
+
+        if (success) {
+            notificationService.sendNotification(accountId, Notification.Type.PROFILE_UPDATE,
+                    "Đổi mật khẩu thành công",
+                    "Mật khẩu của bạn đã được thay đổi",
+                    null, "", "/profile");
+        }
+
+        return success;
+    }
+
+    public Member getMemberProfile(int accountId) throws Exception {
+        Member member = memberService.getMemberInfo(accountId);
+        if (member == null) {
+            throw new Exception("Không tìm thấy thông tin thành viên!");
+        }
+        return member;
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : messageDigest) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
