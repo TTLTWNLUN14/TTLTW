@@ -22,4 +22,9 @@ public class NotificationService {
     public void markAllAsRead(int accountId) {
         notificationDAO.markAllAsRead(accountId);
     }
+
+    public void sendNotification(int accountId, String type, String title, String content,
+                                 String bookingCode, String icon, String actionUrl) {
+        notificationDAO.createNotification(accountId, type, title, content, bookingCode, icon, actionUrl);
+    }
 }
