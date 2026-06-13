@@ -30,4 +30,23 @@ public class NotificationDAO extends BaseDao {
             e.printStackTrace();
         }
     }
+    public void createNotification(int accountId, String type, String title, String content,
+                                   String bookingCode, String icon, String actionUrl) {
+        try {
+            get().useHandle(h -> h.createUpdate(
+                            "INSERT INTO notifications (account_id, type, title, content, booking_id, icon, action_url, created_at, is_read) " +
+                                    "VALUES (:accountId, :type, :title, :content, :bookingCode, :icon, :actionUrl, NOW(), 0)"
+                    )
+                    .bind("accountId", accountId)
+                    .bind("type", type)
+                    .bind("title", title)
+                    .bind("content", content)
+                    .bind("bookingCode", bookingCode)
+                    .bind("icon", icon)
+                    .bind("actionUrl", actionUrl)
+                    .execute());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
