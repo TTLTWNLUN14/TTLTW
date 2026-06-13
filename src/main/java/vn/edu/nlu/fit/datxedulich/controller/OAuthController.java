@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.edu.nlu.fit.datxedulich.model.User;
 import vn.edu.nlu.fit.datxedulich.services.UserService;
+import vn.edu.nlu.fit.datxedulich.dao.CartDAO;
+import vn.edu.nlu.fit.datxedulich.model.cart.Cart;
+import vn.edu.nlu.fit.datxedulich.controller.ConfigLoader;
 
 import java.io.*;
 import java.net.*;
@@ -20,21 +23,17 @@ import java.util.regex.*;
                 "/oauth/facebook", "/oauth/facebook/callback"})
 public class OAuthController extends HttpServlet {
 
-    private static final String GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
-    private static final String GOOGLE_CLIENT_SECRET = "YOUR_GOOGLE_CLIENT_SECRET";
-    private static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/AutoCars/oauth/google/callback";
     private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final String GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
     private static final String GOOGLE_USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 
-    private static final String FACEBOOK_APP_ID = "YOUR_FACEBOOK_APP_ID";
-    private static final String FACEBOOK_APP_SECRET = "YOUR_FACEBOOK_APP_SECRET";
-    private static final String FACEBOOK_REDIRECT_URI = "http://localhost:8080/AutoCars/oauth/facebook/callback";
     private static final String FACEBOOK_AUTH_URL = "https://www.facebook.com/v19.0/dialog/oauth";
     private static final String FACEBOOK_TOKEN_URL = "https://graph.facebook.com/v19.0/oauth/access_token";
     private static final String FACEBOOK_USER_INFO_URL = "https://graph.facebook.com/me?fields=id,name,email";
 
     private final UserService userService = new UserService();
+    private final CartDAO cartDAO = new CartDAO();
+    private static final int SESSION_TIMEOUT = 48 * 60;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -50,13 +49,19 @@ public class OAuthController extends HttpServlet {
         } else if ("/oauth/facebook/callback".equals(path)) {
             handleFacebookCallback(request, response);
         }
+        System.out.println("🔍 User dir: " + System.getProperty("user.dir"));
+        System.out.println("🔍 Project root: " + new File(".").getAbsolutePath());
+        ConfigLoader.printLoadedKeys();
     }
 
     private void handleGoogleAuth(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        if (GOOGLE_CLIENT_ID.startsWith("YOUR_")) {
-            redirectWithError(request, response,
-                    "Google OAuth chưa được cấu hình. Vui lòng cập nhật GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET trong OAuthController.java");
+        String googleClientId = ConfigLoader.get("GOOGLE_CLIENT_ID");
+        String googleRedirectUri = ConfigLoader.get("GOOGLE_REDIRECT_URI");
+
+        if (googleClientId == null || googleClientId.startsWith("YOUR_")) {
+            redirectWithError(request, response, "error",
+                    "Google chưa được cấu hình");
             return;
         }
 
@@ -64,8 +69,8 @@ public class OAuthController extends HttpServlet {
         request.getSession().setAttribute("google_oauth_state", state);
 
         String authUrl = GOOGLE_AUTH_URL
-                + "?client_id=" + encode(GOOGLE_CLIENT_ID)
-                + "&redirect_uri=" + encode(GOOGLE_REDIRECT_URI)
+                + "?client_id=" + encode(googleClientId)
+                + "&redirect_uri=" + encode(googleRedirectUri)
                 + "&response_type=code"
                 + "&scope=" + encode("openid email profile")
                 + "&state=" + state
@@ -81,64 +86,67 @@ public class OAuthController extends HttpServlet {
         String state = request.getParameter("state");
 
         if (request.getParameter("error") != null) {
-            redirectWithError(request, response, "Đăng nhập Google bị huỷ.");
+            redirectWithError(request, response, "oauthError",
+                    "Google OAuth Error: " + request.getParameter("error_description"));
             return;
         }
 
-        HttpSession session = request.getSession();
-        String savedState = (String) session.getAttribute("google_oauth_state");
+        String savedState = (String) request.getSession().getAttribute("google_oauth_state");
         if (savedState == null || !savedState.equals(state)) {
-            redirectWithError(request, response, "Yêu cầu không hợp lệ (state mismatch).");
+            redirectWithError(request, response, "oauthError", "State không khớp (có thể là tấn công CSRF)");
             return;
         }
-        session.removeAttribute("google_oauth_state");
 
         try {
-            String tokenResponse = postRequest(GOOGLE_TOKEN_URL,
-                    "code=" + encode(code)
-                            + "&client_id=" + encode(GOOGLE_CLIENT_ID)
-                            + "&client_secret=" + encode(GOOGLE_CLIENT_SECRET)
-                            + "&redirect_uri=" + encode(GOOGLE_REDIRECT_URI)
-                            + "&grant_type=authorization_code");
+            String googleClientId = ConfigLoader.get("GOOGLE_CLIENT_ID");
+            String googleClientSecret = ConfigLoader.get("GOOGLE_CLIENT_SECRET");
+            String googleRedirectUri = ConfigLoader.get("GOOGLE_REDIRECT_URI");
 
-            String accessToken = extractField(tokenResponse, "access_token");
+            String tokenResponse = sendPost(GOOGLE_TOKEN_URL, ""
+                    + "code=" + encode(code)
+                    + "&client_id=" + encode(googleClientId)
+                    + "&client_secret=" + encode(googleClientSecret)
+                    + "&redirect_uri=" + encode(googleRedirectUri)
+                    + "&grant_type=authorization_code");
+
+            String accessToken = extractJsonValue(tokenResponse, "access_token");
             if (accessToken == null || accessToken.isEmpty()) {
-                redirectWithError(request, response, "Không lấy được access_token từ Google.");
+                redirectWithError(request, response, "oauthError", "Không thể lấy access token từ Google");
                 return;
             }
 
-            String userInfo = getRequestWithBearer(GOOGLE_USER_INFO_URL, accessToken);
-            String googleId = extractField(userInfo, "sub");
-            String email = extractField(userInfo, "email");
-            String name = extractField(userInfo, "name");
+            String userInfoResponse = sendGet(GOOGLE_USER_INFO_URL + "?access_token=" + accessToken);
+            String email = extractJsonValue(userInfoResponse, "email");
+            String name = extractJsonValue(userInfoResponse, "name");
+            String googleId = extractJsonValue(userInfoResponse, "sub");
 
             if (email == null || email.isEmpty()) {
-                redirectWithError(request, response,
-                        "Google không trả về email. Kiểm tra lại phạm vi quyền.");
+                redirectWithError(request, response, "oauthError", "Không thể lấy email từ Google");
                 return;
             }
 
-            Map<String, Object> result = userService.loginOrRegisterOAuth(
-                    "google", googleId != null ? googleId : "", email, name);
-
-            if (!(Boolean) result.get("success")) {
-                redirectWithError(request, response, (String) result.get("message"));
-                return;
+            var result = userService.loginOrRegisterOAuth("google", googleId, email, name);
+            if ((Boolean) result.get("success")) {
+                User user = (User) result.get("user");
+                setSessionAndRedirect(request, response, user);
+            } else {
+                redirectWithError(request, response, "oauthError", (String) result.get("message"));
             }
-            applySession(session, (User) result.get("user"));
-            response.sendRedirect(request.getContextPath() + "/index");
 
         } catch (Exception e) {
             e.printStackTrace();
-            redirectWithError(request, response, "Lỗi đăng nhập Google: " + e.getMessage());
+            redirectWithError(request, response, "oauthError", "Lỗi hệ thống: " + e.getMessage());
         }
     }
 
     private void handleFacebookAuth(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        if (FACEBOOK_APP_ID.startsWith("YOUR_")) {
-            redirectWithError(request, response,
-                    "Facebook OAuth chưa được cấu hình");
+        String facebookAppId = ConfigLoader.get("FACEBOOK_APP_ID");
+        String facebookRedirectUri = ConfigLoader.get("FACEBOOK_REDIRECT_URI");
+
+        if (facebookAppId == null || facebookAppId.startsWith("YOUR_")) {
+            redirectWithError(request, response, "error",
+                    "Facebook OAuth chưa được cấu hình. Vui lòng thiết lập FACEBOOK_APP_ID trong .env");
             return;
         }
 
@@ -146,10 +154,10 @@ public class OAuthController extends HttpServlet {
         request.getSession().setAttribute("facebook_oauth_state", state);
 
         String authUrl = FACEBOOK_AUTH_URL
-                + "?client_id=" + encode(FACEBOOK_APP_ID)
-                + "&redirect_uri=" + encode(FACEBOOK_REDIRECT_URI)
-                + "&scope=" + encode("email,public_profile")
+                + "?client_id=" + encode(facebookAppId)
+                + "&redirect_uri=" + encode(facebookRedirectUri)
                 + "&state=" + state
+                + "&scope=" + encode("email public_profile")
                 + "&response_type=code";
 
         response.sendRedirect(authUrl);
@@ -161,141 +169,152 @@ public class OAuthController extends HttpServlet {
         String state = request.getParameter("state");
 
         if (request.getParameter("error") != null) {
-            redirectWithError(request, response, "Đăng nhập Facebook bị huỷ.");
+            redirectWithError(request, response, "oauthError",
+                    "Facebook OAuth Error: " + request.getParameter("error_description"));
             return;
         }
 
-        HttpSession session = request.getSession();
-        String savedState = (String) session.getAttribute("facebook_oauth_state");
+        String savedState = (String) request.getSession().getAttribute("facebook_oauth_state");
         if (savedState == null || !savedState.equals(state)) {
-            redirectWithError(request, response, "Yêu cầu không hợp lệ (state mismatch).");
+            redirectWithError(request, response, "oauthError", "State không khớp (có thể là tấn công CSRF)");
             return;
         }
-        session.removeAttribute("facebook_oauth_state");
 
         try {
-            String tokenResponse = getRequest(FACEBOOK_TOKEN_URL
-                    + "?client_id=" + encode(FACEBOOK_APP_ID)
-                    + "&client_secret=" + encode(FACEBOOK_APP_SECRET)
-                    + "&redirect_uri=" + encode(FACEBOOK_REDIRECT_URI)
+            String facebookAppId = ConfigLoader.get("FACEBOOK_APP_ID");
+            String facebookAppSecret = ConfigLoader.get("FACEBOOK_APP_SECRET");
+            String facebookRedirectUri = ConfigLoader.get("FACEBOOK_REDIRECT_URI");
+
+            String tokenResponse = sendGet(""
+                    + FACEBOOK_TOKEN_URL
+                    + "?client_id=" + encode(facebookAppId)
+                    + "&client_secret=" + encode(facebookAppSecret)
+                    + "&redirect_uri=" + encode(facebookRedirectUri)
                     + "&code=" + encode(code));
 
-            String accessToken = extractField(tokenResponse, "access_token");
+            String accessToken = extractJsonValue(tokenResponse, "access_token");
             if (accessToken == null || accessToken.isEmpty()) {
-                redirectWithError(request, response, "Không lấy được token từ Facebook.");
+                redirectWithError(request, response, "oauthError", "Không thể lấy access token từ Facebook");
                 return;
             }
 
-            String userInfo = getRequest(FACEBOOK_USER_INFO_URL + "&access_token=" + encode(accessToken));
-            String facebookId = extractField(userInfo, "id");
-            String email = extractField(userInfo, "email");
-            String name = extractField(userInfo, "name");
+            String userInfoResponse = sendGet(FACEBOOK_USER_INFO_URL
+                    + "&access_token=" + encode(accessToken));
+            String facebookId = extractJsonValue(userInfoResponse, "id");
+            String email = extractJsonValue(userInfoResponse, "email");
+            String name = extractJsonValue(userInfoResponse, "name");
+
+            if (facebookId == null || facebookId.isEmpty()) {
+                redirectWithError(request, response, "oauthError", "Không thể lấy Facebook ID");
+                return;
+            }
 
             if (email == null || email.isEmpty()) {
-                email = "fb_" + facebookId + "@facebook-noemail.com";
+                email = "facebook_" + facebookId + "@autocars.vn";
             }
 
-            Map<String, Object> result = userService.loginOrRegisterOAuth(
-                    "facebook", facebookId != null ? facebookId : "", email, name);
-
-            if (!(Boolean) result.get("success")) {
-                redirectWithError(request, response, (String) result.get("message"));
-                return;
+            var result = userService.loginOrRegisterOAuth("facebook", facebookId, email, name);
+            if ((Boolean) result.get("success")) {
+                User user = (User) result.get("user");
+                setSessionAndRedirect(request, response, user);
+            } else {
+                redirectWithError(request, response, "oauthError", (String) result.get("message"));
             }
-
-            applySession(session, (User) result.get("user"));
-            response.sendRedirect(request.getContextPath() + "/index");
 
         } catch (Exception e) {
             e.printStackTrace();
-            redirectWithError(request, response, "Lỗi đăng nhập Facebook: " + e.getMessage());
+            redirectWithError(request, response, "oauthError", "Lỗi hệ thống: " + e.getMessage());
         }
     }
 
-    private String getRequest(String url) throws IOException {
+    private String sendGet(String url) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod("GET");
-        conn.setConnectTimeout(10000);
-        conn.setReadTimeout(10000);
-        return readResponse(conn);
+        conn.setRequestProperty("Accept", "application/json");
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            return response.toString();
+        }
     }
 
-    private String getRequestWithBearer(String url, String token) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-        conn.setRequestMethod("GET");
-        conn.setConnectTimeout(10000);
-        conn.setReadTimeout(10000);
-        conn.setRequestProperty("Authorization", "Bearer " + token);
-        return readResponse(conn);
-    }
-
-    private String postRequest(String url, String body) throws IOException {
+    private String sendPost(String url, String data) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setRequestMethod("POST");
-        conn.setDoOutput(true);
-        conn.setConnectTimeout(10000);
-        conn.setReadTimeout(10000);
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setDoOutput(true);
 
         try (OutputStream os = conn.getOutputStream()) {
-            os.write(body.getBytes(StandardCharsets.UTF_8));
+            os.write(data.getBytes(StandardCharsets.UTF_8));
         }
-        return readResponse(conn);
-    }
 
-    private String readResponse(HttpURLConnection conn) throws IOException {
-        int code = conn.getResponseCode();
-        InputStream is = (code >= 200 && code < 300) ? conn.getInputStream() : conn.getErrorStream();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-            StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+            StringBuilder response = new StringBuilder();
             String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
             }
-            return sb.toString();
+            return response.toString();
         }
     }
 
-    private String extractField(String json, String fieldName) {
-        if (json == null || fieldName == null) return null;
-
-        try {
-            Pattern pattern = Pattern.compile("\"" + Pattern.quote(fieldName) + "\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
-            Matcher matcher = pattern.matcher(json);
-
-            if (matcher.find()) {
-                String value = matcher.group(1);
-                return value.replace("\\\"", "\"")
-                        .replace("\\\\", "\\")
-                        .replace("\\/", "/")
-                        .replace("\\n", "\n")
-                        .replace("\\r", "\r")
-                        .replace("\\t", "\t");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    private String extractJsonValue(String json, String key) {
+        Pattern pattern = Pattern.compile("\"" + key + "\"\\s*:\\s*\"([^\"]*)\"");
+        Matcher matcher = pattern.matcher(json);
+        if (matcher.find()) {
+            return matcher.group(1);
         }
-
         return null;
     }
 
-    private String encode(String str) throws UnsupportedEncodingException {
-        return URLEncoder.encode(str, "UTF-8");
+    private String encode(String value) throws UnsupportedEncodingException {
+        return URLEncoder.encode(value, "UTF-8");
     }
 
-    private void applySession(HttpSession session, User user) {
+    private void redirectWithError(HttpServletRequest request, HttpServletResponse response,
+                                   String paramName, String errorMessage) throws IOException {
+        try {
+            response.sendRedirect(request.getContextPath() + "/login?"
+                    + paramName + "=" + URLEncoder.encode(errorMessage, "UTF-8"));
+        } catch (Exception e) {
+            response.sendRedirect(request.getContextPath() + "/login");
+        }
+    }
+
+    private void setSessionAndRedirect(HttpServletRequest request, HttpServletResponse response, User user)
+            throws IOException {
+        HttpSession session = request.getSession();
         session.setAttribute("account_id", user.getAccount_id());
         session.setAttribute("username", user.getUsername());
         session.setAttribute("email", user.getEmail());
         session.setAttribute("full_name", user.getFull_name());
         session.setAttribute("role_id", user.getRole_id());
-        session.setMaxInactiveInterval(48 * 60 * 60);
-    }
+        session.setMaxInactiveInterval(SESSION_TIMEOUT * 60);
 
-    private void redirectWithError(HttpServletRequest request, HttpServletResponse response, String message)
-            throws IOException {
-        request.getSession().setAttribute("oauthError", message);
-        response.sendRedirect(request.getContextPath() + "/login");
+        try {
+            Cart dbCart = cartDAO.loadCart(user.getAccount_id());
+            if (dbCart != null && !dbCart.getItems().isEmpty()) {
+                Cart sessionCart = (Cart) session.getAttribute("cart");
+                if (sessionCart != null && !sessionCart.getItems().isEmpty()) {
+                    for (var item : sessionCart.getItems()) {
+                        dbCart.addItem(item.getProduct(), item.getQuantity());
+                    }
+                    cartDAO.saveCart(user.getAccount_id(), dbCart);
+                }
+                session.setAttribute("cart", dbCart);
+            }
+        } catch (Exception e) {
+            System.err.println("Không thể load cart từ DB: " + e.getMessage());
+        }
+
+        System.out.println(" Đăng nhập thành công " + user.getUsername());
+        response.sendRedirect(request.getContextPath() + "/index");
     }
 }

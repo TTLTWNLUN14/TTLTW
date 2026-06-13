@@ -18,7 +18,6 @@ import vn.edu.nlu.fit.datxedulich.services.ProvinceService;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +43,20 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        @SuppressWarnings("unchecked")
-        List<String> selectedTypeIds = (List<String>) session.getAttribute("selectedTypeIds");
+        String[] selectedTypeIds = (String[]) session.getAttribute("selectedTypeIds");
+        CartItem singleBookingItem = (CartItem) session.getAttribute("singleBookingItem");
 
-        if (selectedTypeIds == null || selectedTypeIds.isEmpty()) {
+        if ("1".equals(request.getParameter("bookNow"))) {
+            createSingleBookingItem(request, session);
+            renderSingleBookingConfirm(request, response, session);
+            return;
+        }
+        if (singleBookingItem != null) {
+            renderSingleBookingConfirm(request, response, session);
+            return;
+        }
+
+        if (selectedTypeIds == null || selectedTypeIds.length == 0) {
             // không có đơn nào được chọn từ giỏ hàng -> hiển thị trang chọn xe để đặt 1 đơn nhập tay
             showCarSelectionForm(request, response);
             return;
@@ -132,6 +141,67 @@ public class BookingController extends HttpServlet {
         }
     }
 
+    private void createSingleBookingItem(HttpServletRequest request, HttpSession session)
+            throws IOException {
+
+        Integer typeId = parseIntParam(request, "productId");
+        if (typeId == null) typeId = parseIntParam(request, "typeId");
+
+        if (typeId == null || typeId <= 0) return;
+
+        CarType product = carTypeService.getCarTypeById(typeId);
+        if (product == null) return;
+
+        Integer quantity = parseIntParam(request, "quantity");
+        CartItem item = new CartItem(quantity != null && quantity > 0 ? quantity : 1, product);
+
+        Integer fromProvinceId = parseIntParam(request, "fromProvinceId");
+        Integer toProvinceId = parseIntParam(request, "toProvinceId");
+        String fromProvinceName = request.getParameter("fromProvinceName");
+        String toProvinceName = request.getParameter("toProvinceName");
+        String pickupTime = request.getParameter("pickupTime");
+        String returnTime = request.getParameter("returnTime");
+
+        if (fromProvinceId != null && fromProvinceId > 0) item.setFromProvinceId(fromProvinceId);
+        if (toProvinceId != null && toProvinceId > 0) item.setToProvinceId(toProvinceId);
+        if (fromProvinceName != null && !fromProvinceName.isBlank()) item.setFromProvinceName(fromProvinceName);
+        if (toProvinceName != null && !toProvinceName.isBlank()) item.setToProvinceName(toProvinceName);
+        if (pickupTime != null && !pickupTime.isBlank()) item.setPickupTime(pickupTime);
+        if (returnTime != null && !returnTime.isBlank()) item.setReturnTime(returnTime);
+
+        if (item.getFromProvinceId() > 0 && item.getToProvinceId() > 0
+                && item.getFromProvinceId() != item.getToProvinceId()) {
+            item.setKm(provinceService.getDistance(item.getFromProvinceId(), item.getToProvinceId()));
+        }
+
+        session.setAttribute("singleBookingItem", item);
+        session.removeAttribute("selectedTypeIds");
+    }
+
+    private void renderSingleBookingConfirm(HttpServletRequest request, HttpServletResponse response,
+                                            HttpSession session)
+            throws ServletException, IOException {
+
+        CartItem item = (CartItem) session.getAttribute("singleBookingItem");
+        if (item == null) {
+            response.sendRedirect(request.getContextPath() + "/booking");
+            return;
+        }
+
+        int accountId = (Integer) session.getAttribute("account_id");
+        Member member = memberDAO.getMemberById(accountId);
+
+        List<CartItem> selectedItems = new ArrayList<>();
+        selectedItems.add(item);
+
+        request.setAttribute("selectedItems", selectedItems);
+        request.setAttribute("grandTotal", item.getTotal());
+        request.setAttribute("member", member);
+
+        request.getRequestDispatcher("/WEB-INF/views/booking-confirm.jsp")
+                .forward(request, response);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -163,7 +233,7 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        session.setAttribute("selectedTypeIds", Arrays.asList(items));
+        session.setAttribute("selectedTypeIds", items);
         response.sendRedirect(request.getContextPath() + "/booking");
     }
 
@@ -193,10 +263,29 @@ public class BookingController extends HttpServlet {
 
         int accountId = (Integer) session.getAttribute("account_id");
 
-        @SuppressWarnings("unchecked")
-        List<String> selectedTypeIds = (List<String>) session.getAttribute("selectedTypeIds");
+        int customerId = getCustomerId(accountId);
+        if (customerId == -1) {
+            request.setAttribute("errorMsg", "Không tìm thấy thông tin khách hàng. Vui lòng đăng nhập lại.");
+            doGet(request, response);
+            return;
+        }
 
-        if (selectedTypeIds == null || selectedTypeIds.isEmpty()) {
+        CartItem singleItem = (CartItem) session.getAttribute("singleBookingItem");
+
+        if (singleItem != null) {
+            Booking booking = buildBooking(singleItem, customerId, bookerName, bookerPhone, bookerAddress, note);
+            int newId = bookingDAO.insertBooking(booking);
+
+            session.removeAttribute("singleBookingItem");
+
+            response.sendRedirect(request.getContextPath()
+                    + "/payments?bookingIds=" + newId);
+            return;
+        }
+
+        String[] selectedTypeIds = (String[]) session.getAttribute("selectedTypeIds");
+
+        if (selectedTypeIds == null || selectedTypeIds.length == 0) {
             response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
             return;
         }
@@ -207,13 +296,7 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        int customerId = getCustomerId(accountId);
-        if (customerId == -1) {
-            request.setAttribute("errorMsg", "Không tìm thấy thông tin khách hàng. Vui lòng đăng nhập lại.");
-            doGet(request, response);
-            return;
-        }
-
+        // INSERT từng CartItem thành 1 Booking row
         List<Integer> newBookingIds = new ArrayList<>();
         List<Integer> bookedTypeIds = new ArrayList<>();
 
@@ -223,21 +306,7 @@ public class BookingController extends HttpServlet {
                 CartItem ci = cart.get(typeId);
                 if (ci == null) continue;
 
-                Booking booking = new Booking();
-                booking.setCustomerId(customerId);
-                booking.setTypeId(ci.getSelectedTypeId());
-                booking.setPickupProvince(
-                        ci.getFromProvinceName() != null ? ci.getFromProvinceName() : "");
-                booking.setDropoffProvince(
-                        ci.getToProvinceName() != null ? ci.getToProvinceName() : "");
-                booking.setPickupTime(ci.getPickupTime());
-                booking.setReturnTime(ci.getReturnTime());
-                booking.setKm(ci.getKm());
-                booking.setTotalPrice(ci.getTotal());
-                booking.setBookerName(bookerName.trim());
-                booking.setBookerPhone(bookerPhone.trim());
-                booking.setBookerAddress(bookerAddress.trim());
-                booking.setNote(note != null ? note.trim() : "");
+                Booking booking = buildBooking(ci, customerId, bookerName, bookerPhone, bookerAddress, note);
 
                 int newId = bookingDAO.insertBooking(booking);
                 newBookingIds.add(newId);
@@ -273,5 +342,25 @@ public class BookingController extends HttpServlet {
 
     private int getCustomerId(int accountId) {
         return memberDAO.getCustomerIdByAccountId(accountId);
+    }
+
+    private Booking buildBooking(CartItem ci, int customerId, String bookerName,
+                                 String bookerPhone, String bookerAddress, String note) {
+        Booking booking = new Booking();
+        booking.setCustomerId(customerId);
+        booking.setTypeId(ci.getSelectedTypeId());
+        booking.setPickupProvince(
+                ci.getFromProvinceName() != null ? ci.getFromProvinceName() : "");
+        booking.setDropoffProvince(
+                ci.getToProvinceName() != null ? ci.getToProvinceName() : "");
+        booking.setPickupTime(ci.getPickupTime());
+        booking.setReturnTime(ci.getReturnTime());
+        booking.setKm(ci.getKm());
+        booking.setTotalPrice(ci.getTotal());
+        booking.setBookerName(bookerName.trim());
+        booking.setBookerPhone(bookerPhone.trim());
+        booking.setBookerAddress(bookerAddress.trim());
+        booking.setNote(note != null ? note.trim() : "");
+        return booking;
     }
 }

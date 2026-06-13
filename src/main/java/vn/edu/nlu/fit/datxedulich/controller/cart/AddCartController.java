@@ -88,7 +88,12 @@ public class AddCartController extends HttpServlet {
                 session.setAttribute("cart", cart);
                 Integer accountId = (Integer) session.getAttribute("account_id");
                 if (accountId != null) {
-                    cartDAO.saveCart(accountId, cart);
+                    try {
+                        cartDAO.saveCart(accountId, cart);
+                    } catch (Exception e) {
+                        System.err.println("Lỗi lưu giỏ hàng vào DB: " + e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
 

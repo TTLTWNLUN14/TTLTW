@@ -16,10 +16,50 @@ public class VoucherDAO extends BaseDao {
     public List<Voucher> getActiveVouchers(double orderPrice) {
         return get().withHandle(handle ->
                 handle.createQuery("SELECT * FROM voucher WHERE is_active = TRUE AND uses_left > 0 " +
-                                "AND expires_at >= NOW() AND min_order <= :orderPrice")
+                                "AND expires_at >= NOW() AND min_order <= :orderPrice " +
+                                "ORDER BY expires_at ASC")
                         .bind("orderPrice", orderPrice)
                         .mapToBean(Voucher.class)
                         .list()
+        );
+    }
+
+    public List<Voucher> searchVouchers(String keyword) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT * FROM voucher WHERE code LIKE :keyword OR name_voucher LIKE :keyword " +
+                                "ORDER BY voucher_id DESC")
+                        .bind("keyword", "%" + keyword + "%")
+                        .mapToBean(Voucher.class)
+                        .list()
+        );
+    }
+
+    public List<Voucher> getVouchersByStatus(boolean isActive) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT * FROM voucher WHERE is_active = :isActive ORDER BY voucher_id DESC")
+                        .bind("isActive", isActive)
+                        .mapToBean(Voucher.class)
+                        .list()
+        );
+    }
+
+    public List<Voucher> getVouchersByTier(String tier) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT * FROM voucher WHERE min_tier = :minTier AND is_active = TRUE " +
+                                "ORDER BY voucher_id DESC")
+                        .bind("Tier", tier)
+                        .mapToBean(Voucher.class)
+                        .list()
+        );
+    }
+
+    public Voucher getVoucherByCode(String code) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT * FROM voucher WHERE code = :code")
+                        .bind("code", code)
+                        .mapToBean(Voucher.class)
+                        .findFirst()
+                        .orElse(null)
         );
     }
 
@@ -28,6 +68,17 @@ public class VoucherDAO extends BaseDao {
                 handle.createQuery("SELECT COUNT(*) FROM voucher WHERE voucher_id = :voucherId " +
                                 "AND is_active = TRUE AND uses_left > 0 AND expires_at >= NOW() AND min_order <= :orderPrice")
                         .bind("voucherId", voucherId)
+                        .bind("orderPrice", orderPrice)
+                        .mapTo(Integer.class)
+                        .one() > 0
+        );
+    }
+
+    public boolean validateVoucherByCode(String code, double orderPrice) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT COUNT(*) FROM voucher WHERE code = :code " +
+                                "AND is_active = TRUE AND uses_left > 0 AND expires_at >= NOW() AND min_order <= :orderPrice")
+                        .bind("code", code)
                         .bind("orderPrice", orderPrice)
                         .mapTo(Integer.class)
                         .one() > 0
@@ -84,4 +135,22 @@ public class VoucherDAO extends BaseDao {
         );
     }
 
+    public boolean isCodeExists(String code) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT COUNT(*) FROM voucher WHERE code = :code")
+                        .bind("code", code)
+                        .mapTo(Integer.class)
+                        .one() > 0
+        );
+    }
+
+    public boolean isCodeExistsExcept(String code, int voucherId) {
+        return get().withHandle(handle ->
+                handle.createQuery("SELECT COUNT(*) FROM voucher WHERE code = :code AND voucher_id != :voucherId")
+                        .bind("code", code)
+                        .bind("voucherId", voucherId)
+                        .mapTo(Integer.class)
+                        .one() > 0
+        );
+    }
 }

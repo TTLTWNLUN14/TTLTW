@@ -111,4 +111,13 @@ public class Voucher implements Serializable {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    public boolean isExpired() {
+        Date today = new Date(System.currentTimeMillis());
+        return expiresAt != null && expiresAt.before(today);
+    }
+
+    public boolean isUsable() {
+        return isActive && !isExpired() && usesLeft > 0;
+    }
 }

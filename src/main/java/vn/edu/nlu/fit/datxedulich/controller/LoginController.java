@@ -117,18 +117,20 @@ public class LoginController extends HttpServlet {
 
         try {
             Cart dbCart = cartDAO.loadCart(user.getAccount_id());
-            if (dbCart != null && !dbCart.getItems().isEmpty()) {
-                Cart sessionCart = (Cart) session.getAttribute("cart");
-                if (sessionCart != null && !sessionCart.getItems().isEmpty()) {
-                    for (var item : sessionCart.getItems()) {
-                        dbCart.addItem(item.getProduct(), item.getQuantity());
-                    }
-                    cartDAO.saveCart(user.getAccount_id(), dbCart);
+            if (dbCart == null) dbCart = new Cart();
+
+            Cart sessionCart = (Cart) session.getAttribute("cart");
+            if (sessionCart != null && !sessionCart.getItems().isEmpty()) {
+                for (var item : sessionCart.getItems()) {
+                    dbCart.addItem(item.getProduct(), item.getQuantity());
                 }
-                session.setAttribute("cart", dbCart);
+                cartDAO.saveCart(user.getAccount_id(), dbCart);
             }
+            session.setAttribute("cart", dbCart);
+            System.out.println("✓ Đã load giỏ hàng từ DB, số item: " + dbCart.getItems().size());
         } catch (Exception e) {
             System.err.println("Không thể load cart từ DB: " + e.getMessage());
+            e.printStackTrace();
         }
 
         System.out.println("✓ Đăng nhập thành công! User: " + user.getUsername());

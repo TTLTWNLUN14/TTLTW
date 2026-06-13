@@ -12,28 +12,37 @@ public class BookingDao extends BaseDao {
         return get().withHandle(h ->
                 h.createUpdate(
                                 "INSERT INTO bookings " +
-                                        "(customer_id, type_id, pickup_province, dropoff_province, " +
-                                        " pickup_date, return_date, km, total_price, " +
+                                        "(customer_id, type_id, voucher_id, pickup_province, dropoff_province, " +
+                                        " pickup_date, return_date, km, days, base_price, member_discount, " +
+                                        " voucher_discount, is_voucher_code, pay_type, total_price, " +
                                         " booker_name, booker_phone, booker_address, note, " +
-                                        " status, payment_status, created_at) " +
+                                        " status, payment_status, created_at, updated_at) " +
                                         "VALUES " +
-                                        "(:customerId, :typeId, :pickupProvince, :dropoffProvince, " +
-                                        " :pickupTime, :returnTime, :km, :totalPrice, " +
+                                        "(:customerId, :typeId, :voucherId, :pickupProvince, :dropoffProvince, " +
+                                        " :pickupTime, :returnTime, :km, :days, :basePrice, :memberDiscount, " +
+                                        " :voucherDiscount, :isVoucherCode, :payType, :totalPrice, " +
                                         " :bookerName, :bookerPhone, :bookerAddress, :note, " +
-                                        " 'Chờ xác nhận', 'PENDING', NOW())"
+                                        " 'Chờ xác nhận', 'PENDING', NOW(), NOW())"
                         )
-                        .bind("customerId", b.getCustomerId())
-                        .bind("typeId", b.getTypeId())
-                        .bind("pickupProvince", b.getPickupProvince())
+                        .bind("customerId",      b.getCustomerId())
+                        .bind("typeId",          b.getTypeId())
+                        .bind("voucherId",       b.getVoucherId())
+                        .bind("pickupProvince",  b.getPickupProvince())
                         .bind("dropoffProvince", b.getDropoffProvince())
-                        .bind("pickupTime", b.getPickupTime())
-                        .bind("returnTime", b.getReturnTime())
-                        .bind("km", b.getKm())
-                        .bind("totalPrice", b.getTotalPrice())
-                        .bind("bookerName", b.getBookerName())
-                        .bind("bookerPhone", b.getBookerPhone())
-                        .bind("bookerAddress", b.getBookerAddress())
-                        .bind("note", b.getNote())
+                        .bind("pickupTime",      b.getPickupTime())
+                        .bind("returnTime",      b.getReturnTime())
+                        .bind("km",              b.getKm())
+                        .bind("days",            b.getDays())
+                        .bind("basePrice",       b.getBasePrice())
+                        .bind("memberDiscount",  b.getMemberDiscount())
+                        .bind("voucherDiscount", b.getVoucherDiscount())
+                        .bind("isVoucherCode",   b.getIsVoucherCode())
+                        .bind("payType",         b.getPayType())
+                        .bind("totalPrice",      b.getTotalPrice())
+                        .bind("bookerName",      b.getBookerName())
+                        .bind("bookerPhone",     b.getBookerPhone())
+                        .bind("bookerAddress",   b.getBookerAddress())
+                        .bind("note",            b.getNote())
                         .executeAndReturnGeneratedKeys("booking_id")
                         .mapTo(Integer.class)
                         .one()
@@ -51,15 +60,18 @@ public class BookingDao extends BaseDao {
         return get().withHandle(h -> {
             var q = h.createQuery(
                     "SELECT b.booking_id as bookingId, b.customer_id as customerId, b.type_id as typeId, " +
+                            "       b.voucher_id as voucherId, " +
                             "       ct.type_name as carName, " +
                             "       b.pickup_province as pickupProvince, b.dropoff_province as dropoffProvince, " +
                             "       CONCAT(b.pickup_province, ' → ', b.dropoff_province) as route, " +
-                            "       b.km, b.pickup_date as pickupTime, b.return_date as returnTime, " +
+                            "       b.km, b.days, b.base_price as basePrice, b.member_discount as memberDiscount, " +
+                            "       b.voucher_discount as voucherDiscount, b.is_voucher_code as isVoucherCode, " +
+                            "       b.pay_type as payType, b.pickup_date as pickupTime, b.return_date as returnTime, " +
                             "       b.total_price as totalPrice, " +
                             "       b.booker_name as bookerName, b.booker_phone as bookerPhone, " +
                             "       b.booker_address as bookerAddress, b.note, " +
                             "       b.status, b.payment_status as paymentStatus, " +
-                            "       DATE(b.pickup_date) as bookingDate, b.created_at as createdAt " +
+                            "       DATE(b.pickup_date) as bookingDate, b.created_at as createdAt, b.updated_at as updatedAt " +
                             "FROM bookings b " +
                             "INNER JOIN car_types ct ON b.type_id = ct.type_id " +
                             "WHERE b.booking_id IN (" + placeholders + ")"
@@ -81,7 +93,7 @@ public class BookingDao extends BaseDao {
 
         get().useHandle(h -> {
             var u = h.createUpdate(
-                    "UPDATE bookings SET payment_status = ? WHERE booking_id IN (" + placeholders + ")"
+                    "UPDATE bookings SET payment_status = ?, updated_at = NOW() WHERE booking_id IN (" + placeholders + ")"
             ).bind(0, paymentStatus);
 
             for (int i = 0; i < bookingIds.size(); i++) {
@@ -89,5 +101,150 @@ public class BookingDao extends BaseDao {
             }
             u.execute();
         });
+    }
+
+    // lấy 1 booking theo id
+    public Booking getBookingById(int bookingId) {
+        return get().withHandle(h ->
+                h.createQuery(
+                                "SELECT b.booking_id as bookingId, b.customer_id as customerId, b.type_id as typeId, " +
+                                        "       b.voucher_id as voucherId, " +
+                                        "       ct.type_name as carName, " +
+                                        "       b.pickup_province as pickupProvince, b.dropoff_province as dropoffProvince, " +
+                                        "       CONCAT(b.pickup_province, ' → ', b.dropoff_province) as route, " +
+                                        "       b.km, b.days, b.base_price as basePrice, b.member_discount as memberDiscount, " +
+                                        "       b.voucher_discount as voucherDiscount, b.is_voucher_code as isVoucherCode, " +
+                                        "       b.pay_type as payType, b.pickup_date as pickupTime, b.return_date as returnTime, " +
+                                        "       b.total_price as totalPrice, " +
+                                        "       b.booker_name as bookerName, b.booker_phone as bookerPhone, " +
+                                        "       b.booker_address as bookerAddress, b.note, " +
+                                        "       b.status, b.payment_status as paymentStatus, " +
+                                        "       DATE(b.pickup_date) as bookingDate, b.created_at as createdAt, b.updated_at as updatedAt " +
+                                        "FROM bookings b " +
+                                        "INNER JOIN car_types ct ON b.type_id = ct.type_id " +
+                                        "WHERE b.booking_id = :id")
+                        .bind("id", bookingId)
+                        .mapToBean(Booking.class)
+                        .findFirst()
+                        .orElse(null)
+        );
+    }
+
+    // lấy danh sách booking của 1 khách hàng, mới nhất trước
+    public List<Booking> getBookingsByCustomerId(int customerId) {
+        return get().withHandle(h ->
+                h.createQuery(
+                                "SELECT b.booking_id as bookingId, b.customer_id as customerId, b.type_id as typeId, " +
+                                        "       b.voucher_id as voucherId, " +
+                                        "       ct.type_name as carName, " +
+                                        "       b.pickup_province as pickupProvince, b.dropoff_province as dropoffProvince, " +
+                                        "       CONCAT(b.pickup_province, ' → ', b.dropoff_province) as route, " +
+                                        "       b.km, b.days, b.base_price as basePrice, b.member_discount as memberDiscount, " +
+                                        "       b.voucher_discount as voucherDiscount, b.is_voucher_code as isVoucherCode, " +
+                                        "       b.pay_type as payType, b.pickup_date as pickupTime, b.return_date as returnTime, " +
+                                        "       b.total_price as totalPrice, " +
+                                        "       b.booker_name as bookerName, b.booker_phone as bookerPhone, " +
+                                        "       b.booker_address as bookerAddress, b.note, " +
+                                        "       b.status, b.payment_status as paymentStatus, " +
+                                        "       DATE(b.pickup_date) as bookingDate, b.created_at as createdAt, b.updated_at as updatedAt " +
+                                        "FROM bookings b " +
+                                        "INNER JOIN car_types ct ON b.type_id = ct.type_id " +
+                                        "WHERE b.customer_id = :customerId " +
+                                        "ORDER BY b.created_at DESC")
+                        .bind("customerId", customerId)
+                        .mapToBean(Booking.class)
+                        .list()
+        );
+    }
+
+    // lấy tất cả booking (dùng cho trang admin)
+    public List<Booking> getAllBookings() {
+        return get().withHandle(h ->
+                h.createQuery(
+                                "SELECT b.booking_id as bookingId, b.customer_id as customerId, b.type_id as typeId, " +
+                                        "       b.voucher_id as voucherId, " +
+                                        "       ct.type_name as carName, " +
+                                        "       b.pickup_province as pickupProvince, b.dropoff_province as dropoffProvince, " +
+                                        "       CONCAT(b.pickup_province, ' → ', b.dropoff_province) as route, " +
+                                        "       b.km, b.days, b.base_price as basePrice, b.member_discount as memberDiscount, " +
+                                        "       b.voucher_discount as voucherDiscount, b.is_voucher_code as isVoucherCode, " +
+                                        "       b.pay_type as payType, b.pickup_date as pickupTime, b.return_date as returnTime, " +
+                                        "       b.total_price as totalPrice, " +
+                                        "       b.booker_name as bookerName, b.booker_phone as bookerPhone, " +
+                                        "       b.booker_address as bookerAddress, b.note, " +
+                                        "       b.status, b.payment_status as paymentStatus, " +
+                                        "       DATE(b.pickup_date) as bookingDate, b.created_at as createdAt, b.updated_at as updatedAt " +
+                                        "FROM bookings b " +
+                                        "INNER JOIN car_types ct ON b.type_id = ct.type_id " +
+                                        "ORDER BY b.created_at DESC")
+                        .mapToBean(Booking.class)
+                        .list()
+        );
+    }
+
+    // tạo booking mới, trả về true nếu thành công
+    public boolean createBooking(Booking b) {
+        return insertBooking(b) > 0;
+    }
+
+    // cập nhật thông tin 1 booking
+    public boolean updateBooking(Booking b) {
+        int rows = get().withHandle(h ->
+                h.createUpdate(
+                                "UPDATE bookings SET " +
+                                        "voucher_id = :voucherId, " +
+                                        "pickup_province = :pickupProvince, " +
+                                        "dropoff_province = :dropoffProvince, " +
+                                        "pickup_date = :pickupTime, " +
+                                        "return_date = :returnTime, " +
+                                        "km = :km, " +
+                                        "days = :days, " +
+                                        "base_price = :basePrice, " +
+                                        "member_discount = :memberDiscount, " +
+                                        "voucher_discount = :voucherDiscount, " +
+                                        "is_voucher_code = :isVoucherCode, " +
+                                        "pay_type = :payType, " +
+                                        "total_price = :totalPrice, " +
+                                        "booker_name = :bookerName, " +
+                                        "booker_phone = :bookerPhone, " +
+                                        "booker_address = :bookerAddress, " +
+                                        "note = :note, " +
+                                        "status = :status, " +
+                                        "payment_status = :paymentStatus, " +
+                                        "updated_at = NOW() " +
+                                        "WHERE booking_id = :bookingId")
+                        .bind("voucherId",       b.getVoucherId())
+                        .bind("pickupProvince",  b.getPickupProvince())
+                        .bind("dropoffProvince", b.getDropoffProvince())
+                        .bind("pickupTime",      b.getPickupTime())
+                        .bind("returnTime",      b.getReturnTime())
+                        .bind("km",              b.getKm())
+                        .bind("days",            b.getDays())
+                        .bind("basePrice",       b.getBasePrice())
+                        .bind("memberDiscount",  b.getMemberDiscount())
+                        .bind("voucherDiscount", b.getVoucherDiscount())
+                        .bind("isVoucherCode",   b.getIsVoucherCode())
+                        .bind("payType",         b.getPayType())
+                        .bind("totalPrice",      b.getTotalPrice())
+                        .bind("bookerName",      b.getBookerName())
+                        .bind("bookerPhone",     b.getBookerPhone())
+                        .bind("bookerAddress",   b.getBookerAddress())
+                        .bind("note",            b.getNote())
+                        .bind("status",          b.getStatus())
+                        .bind("paymentStatus",   b.getPaymentStatus())
+                        .bind("bookingId",       b.getBookingId())
+                        .execute()
+        );
+        return rows > 0;
+    }
+
+    // xóa 1 booking theo id, trả về true nếu thành công
+    public boolean deleteBooking(int bookingId) {
+        int rows = get().withHandle(h ->
+                h.createUpdate("DELETE FROM bookings WHERE booking_id = :id")
+                        .bind("id", bookingId)
+                        .execute()
+        );
+        return rows > 0;
     }
 }

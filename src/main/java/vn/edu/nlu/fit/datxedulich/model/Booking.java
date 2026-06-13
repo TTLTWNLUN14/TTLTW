@@ -22,8 +22,17 @@ public class Booking implements Serializable {
     private String note;
     private String status;           // Chờ xác nhận | Đang diễn ra | Hoàn thành | Đã hủy
     private String paymentStatus;    // PENDING | PAID | CANCELLED
-    private LocalDate bookingDate;  // DATE(pickup_date) – dùng cho lịch sử
-    private LocalDateTime createdAt;    // thời điểm INSERT
+    private LocalDate bookingDate;   // DATE(pickup_date) – dùng cho lịch sử
+    private LocalDateTime createdAt; // thời điểm INSERT
+    private int voucherId;
+    private int days;
+    private int basePrice;
+    private float memberDiscount;
+    private float voucherDiscount;
+    private String isVoucherCode;
+    private String payType;
+    private LocalDateTime updatedAt;
+
     public Booking() {
     }
 
@@ -41,6 +50,14 @@ public class Booking implements Serializable {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public String getCarName() {
@@ -167,15 +184,72 @@ public class Booking implements Serializable {
         return createdAt;
     }
 
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    // --- Getter và Setter CHO CÁC TRƯỜNG MỚI THÊM VÀO ---
+    public int getVoucherId() {
+        return voucherId;
+    }
+
+    public void setVoucherId(int voucherId) {
+        this.voucherId = voucherId;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public int getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(int basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public float getMemberDiscount() {
+        return memberDiscount;
+    }
+
+    public void setMemberDiscount(float memberDiscount) {
+        this.memberDiscount = memberDiscount;
+    }
+
+    public float getVoucherDiscount() {
+        return voucherDiscount;
+    }
+
+    public void setVoucherDiscount(float voucherDiscount) {
+        this.voucherDiscount = voucherDiscount;
+    }
+
+    public String getIsVoucherCode() {
+        return isVoucherCode;
+    }
+
+    public void setIsVoucherCode(String isVoucherCode) {
+        this.isVoucherCode = isVoucherCode;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
