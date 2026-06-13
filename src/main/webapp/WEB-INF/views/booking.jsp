@@ -98,9 +98,15 @@
                     <input type="date" name="returnTime" class="form-control">
                 </div>
 
-                <div class="form-actions" style="margin-top: 25px;">
+                <div class="form-actions" style="margin-top: 25px; display:flex; gap:12px; flex-wrap:wrap;">
                     <button type="submit" class="btn-submit" ${selTypeId <= 0 ? 'disabled' : ''}>
-                        Thêm vào giỏ hàng
+                        🛒 Thêm vào giỏ hàng
+                    </button>
+                    <button type="button" class="btn-submit btn-book-now"
+                            style="background:#e53935;"
+                            onclick="submitBookNow()"
+                    ${selTypeId <= 0 ? 'disabled' : ''}>
+                        ⚡ Đặt ngay
                     </button>
                 </div>
             </form>

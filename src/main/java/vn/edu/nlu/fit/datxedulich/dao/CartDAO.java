@@ -69,10 +69,20 @@ public class CartDAO extends BaseDao {
         );
         if (cartId == null) return new Cart();
 
+        // FIX: dùng alias tường minh, không SELECT *
         List<Map<String, Object>> rows = get().withHandle(h ->
                 h.createQuery(
-                                "SELECT ci.*, ct.* FROM cart_items ci " +
-                                        "JOIN car_types ct ON ci.type_id = ct.type_id " +
+                                "SELECT " +
+                                        "  ci.type_id    AS ci_type_id, " +
+                                        "  ci.quantity   AS ci_quantity, " +
+                                        "  ci.from_province, " +
+                                        "  ci.to_province, " +
+                                        "  ci.km, " +
+                                        "  ci.pickup_time, " +
+                                        "  ci.return_time, " +
+                                        "  ci.email, " +
+                                        "  ci.phone " +
+                                        "FROM cart_items ci " +
                                         "WHERE ci.cart_id = :cartId")
                         .bind("cartId", cartId)
                         .mapToMap()
@@ -83,34 +93,37 @@ public class CartDAO extends BaseDao {
         ProductService ps = new ProductService();
 
         for (Map<String, Object> row : rows) {
-            int typeId = (int) row.get("type_id");
+            Object typeIdObj = row.get("ci_type_id");
+            if (typeIdObj == null) continue;
+            int typeId = ((Number) typeIdObj).intValue();
+
             CarType carType = ps.getCarTypeById(typeId);
             if (carType == null) continue;
 
-            int qty = (int) row.get("quantity");
+            Object qtyObj = row.get("ci_quantity");
+            int qty = qtyObj != null ? ((Number) qtyObj).intValue() : 1;
 
-            CartItem item = new CartItem(qty, carType);
-            item.setKm(row.get("km") != null ? (int) row.get("km") : 0);
-            if (row.get("from_province") != null) item.setFromProvinceId((int) row.get("from_province"));
-            if (row.get("to_province") != null) item.setToProvinceId((int) row.get("to_province"));
-            if (row.get("pickup_time") != null) item.setPickupTime((String) row.get("pickup_time"));
-            if (row.get("return_time") != null) item.setReturnTime((String) row.get("return_time"));
-            if (row.get("email") != null) item.setEmail((String) row.get("email"));
-            if (row.get("phone") != null) item.setPhone((String) row.get("phone"));
-
+            // addItem thêm item vào cart map
             cart.addItem(carType, qty);
-            cart.getItems().stream()
-                    .filter(i -> i.getProduct().getTypeId() == typeId)
-                    .findFirst()
-                    .ifPresent(i -> {
-                        i.setKm(item.getKm());
-                        i.setFromProvinceId(item.getFromProvinceId());
-                        i.setToProvinceId(item.getToProvinceId());
-                        i.setPickupTime(item.getPickupTime());
-                        i.setReturnTime(item.getReturnTime());
-                        i.setEmail(item.getEmail());
-                        i.setPhone(item.getPhone());
-                    });
+
+            // gán lại route / time data (tìm item vừa add)
+            CartItem item = cart.get(typeId);
+            if (item == null) continue;
+
+            if (row.get("km") != null)
+                item.setKm(((Number) row.get("km")).intValue());
+            if (row.get("from_province") != null)
+                item.setFromProvinceId(((Number) row.get("from_province")).intValue());
+            if (row.get("to_province") != null)
+                item.setToProvinceId(((Number) row.get("to_province")).intValue());
+            if (row.get("pickup_time") != null)
+                item.setPickupTime(row.get("pickup_time").toString());
+            if (row.get("return_time") != null)
+                item.setReturnTime(row.get("return_time").toString());
+            if (row.get("email") != null)
+                item.setEmail(row.get("email").toString());
+            if (row.get("phone") != null)
+                item.setPhone(row.get("phone").toString());
         }
         return cart;
     }

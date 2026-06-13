@@ -28,3 +28,19 @@ function syncProvinceName(selectId, hiddenId) {
         syncProvinceName(id, hiddenId);
     }
 });
+
+function submitBookNow() {
+    const form = document.getElementById('bookingForm');
+    if (!form) return;
+    ['fromProvince', 'toProvince'].forEach(prefix =>
+        syncProvinceName(`${prefix}Select`, `${prefix}Name`)
+    );
+
+    if (!form.querySelector('input[name="bookNow"]')) {
+        form.insertAdjacentHTML('beforeend', '<input type="hidden" name="bookNow" value="1">');
+    }
+
+    form.action = form.action.replace('/add-cart', '') + '${pageContext.request.contextPath}/booking';
+    form.method = 'get';
+    form.submit();
+}
