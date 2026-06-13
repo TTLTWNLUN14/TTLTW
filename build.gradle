@@ -9,9 +9,9 @@ apply plugin: 'org.hidetake.ssh'
 
 remotes {
     host {
-        host = 'trgnhan291.id.vn'
-        user = 'nhan'
-        password = '292004nhan'
+        host = 'huyxd.id.vn'
+        user = 'huy'
+        password = 'huy120905'
     }
 }
 
@@ -24,9 +24,9 @@ task docker_app_start {
         println 'begin docker_app_start (Tomcat 10)'
         ssh.run {
             session(remotes.host) {
-                execute 'docker stop tomcat10', ignoreError: true
-
-                execute 'docker run -it --rm -d --name tomcat10 -v /usr/deploy:/usr/local/tomcat/webapps -p 80:8080 tomcat:10.1&'
+                execute 'docker stop tomcat10 || true'
+                execute 'docker rm tomcat10 || true'
+                execute 'docker run -d --name tomcat10 -p 80:8080 -v /usr/deploy/lab.war:/usr/local/tomcat/webapps/ROOT.war tomcat:10.1'
             }
         }
     }
@@ -37,20 +37,23 @@ task docker_upload_file_to_server {
         println 'begin docker_upload_file_to_server'
         ssh.run {
             session(remotes.host) {
-                execute 'rm -f /usr/deploy/lab.war'
-                put from: "${project.projectDir}/build/libs/DatXeDuLich.war",
-                        into: "/usr/deploy/lab.war"
+                execute "rm -rf /usr/deploy/lab.war || true"
+                execute "rm -rf /usr/deploy/lab/ || true"
+
+                put from: 'D:\\TTLTW\\build\\libs\\TTLTW.war', into: '/usr/deploy/lab.war'
             }
         }
     }
 }
-
 task docker_deploy {
-    dependsOn build
+    // Đảm bảo chạy upload file lên server trước, sau đó mới start ứng dụng lên
     dependsOn docker_upload_file_to_server
     dependsOn docker_app_start
-    tasks.getByName('docker_app_start').mustRunAfter docker_upload_file_to_server
 }
+
+// Đảm bảo upload file phụ thuộc vào việc đóng gói thành công
+docker_upload_file_to_server.dependsOn build
+docker_app_start.dependsOn docker_upload_file_to_server
 
 repositories {
     mavenCentral()
@@ -58,6 +61,7 @@ repositories {
 
 dependencies {
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
     implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.1'
     runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
