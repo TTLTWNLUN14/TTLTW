@@ -14,14 +14,16 @@ public class Cart implements Serializable {
     Map<Integer, CartItem> data;
     private User user;
 
-    public Cart() { data = new HashMap<>(); }
+    public Cart() {
+        data = new HashMap<>();
+    }
 
-    public void addItem(CarType product, int quantity, boolean isDriver) {
+    public void addItem(CarType product, int quantity) {
         if (quantity <= 0) quantity = 1;
         if (get(product.getTypeId()) != null) {
             data.get(product.getTypeId()).upQuantity(quantity);
         } else {
-            data.put(product.getTypeId(), new CartItem(quantity, isDriver, product));
+            data.put(product.getTypeId(), new CartItem(quantity, product));
         }
     }
 

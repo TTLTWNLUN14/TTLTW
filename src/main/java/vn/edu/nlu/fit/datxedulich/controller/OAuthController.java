@@ -304,7 +304,7 @@ public class OAuthController extends HttpServlet {
                 Cart sessionCart = (Cart) session.getAttribute("cart");
                 if (sessionCart != null && !sessionCart.getItems().isEmpty()) {
                     for (var item : sessionCart.getItems()) {
-                        dbCart.addItem(item.getProduct(), item.getQuantity(), item.isDriver());
+                        dbCart.addItem(item.getProduct(), item.getQuantity());
                     }
                     cartDAO.saveCart(user.getAccount_id(), dbCart);
                 }

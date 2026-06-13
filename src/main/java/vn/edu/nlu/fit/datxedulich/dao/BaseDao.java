@@ -14,7 +14,6 @@ public abstract class BaseDao {
     protected Jdbi get() {
         if (jdbi == null) {
             connect();
-
         }
         return jdbi;
     }

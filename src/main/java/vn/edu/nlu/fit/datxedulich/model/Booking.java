@@ -3,55 +3,37 @@ package vn.edu.nlu.fit.datxedulich.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class Booking implements Serializable {
     private int bookingId;
     private int customerId;
     private int typeId;
-    private int voucherId;
-    private String isDriver;
-    private String pickupProvince;
-    private String dropoffProvince;
-    private LocalDateTime pickupDate;
-    private LocalTime pickupTime;
-    private LocalDateTime returnDate;
+    private String carName;          // join từ car_types.type_name
+    private String route;
+    private String pickupProvince;   // tên tỉnh đón
+    private String dropoffProvince;  // tên tỉnh đến
     private int km;
+    private String pickupTime;
+    private String returnTime;
+    private int totalPrice;
+    private String bookerName;
+    private String bookerPhone;
+    private String bookerAddress;
+    private String note;
+    private String status;           // Chờ xác nhận | Đang diễn ra | Hoàn thành | Đã hủy
+    private String paymentStatus;    // PENDING | PAID | CANCELLED
+    private LocalDate bookingDate;   // DATE(pickup_date) – dùng cho lịch sử
+    private LocalDateTime createdAt; // thời điểm INSERT
+    private int voucherId;
     private int days;
     private int basePrice;
     private float memberDiscount;
     private float voucherDiscount;
-    private int totalPrice;
     private String isVoucherCode;
     private String payType;
-    private String note;
-    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Booking() {}
-
-    public Booking(int bookingId, int customerId, int typeId, int voucherId, String isDriver, String pickupProvince, String dropoffProvince, LocalDateTime pickupDate, LocalTime pickupTime, LocalDateTime returnDate, int km, int days, int basePrice, float memberDiscount, float voucherDiscount, int totalPrice, String isVoucherCode, String payType, String note, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.bookingId = bookingId;
-        this.customerId = customerId;
-        this.typeId = typeId;
-        this.voucherId = voucherId;
-        this.isDriver = isDriver;
-        this.pickupProvince = pickupProvince;
-        this.dropoffProvince = dropoffProvince;
-        this.pickupDate = pickupDate;
-        this.pickupTime = pickupTime;
-        this.returnDate = returnDate;
-        this.km = km;
-        this.days = days;
-        this.basePrice = basePrice;
-        this.memberDiscount = memberDiscount;
-        this.voucherDiscount = voucherDiscount;
-        this.totalPrice = totalPrice;
-        this.isVoucherCode = isVoucherCode;
-        this.payType = payType;
-        this.note = note;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    public Booking() {
     }
 
     public int getBookingId() {
@@ -78,20 +60,20 @@ public class Booking implements Serializable {
         this.typeId = typeId;
     }
 
-    public int getVoucherId() {
-        return voucherId;
+    public String getCarName() {
+        return carName;
     }
 
-    public void setVoucherId(int voucherId) {
-        this.voucherId = voucherId;
+    public void setCarName(String carName) {
+        this.carName = carName;
     }
 
-    public String getIsDriver() {
-        return isDriver;
+    public String getRoute() {
+        return route;
     }
 
-    public void setIsDriver(String isDriver) {
-        this.isDriver = isDriver;
+    public void setRoute(String route) {
+        this.route = route;
     }
 
     public String getPickupProvince() {
@@ -110,36 +92,109 @@ public class Booking implements Serializable {
         this.dropoffProvince = dropoffProvince;
     }
 
-    public LocalDateTime getPickupDate() {
-        return pickupDate;
-    }
-
-    public void setPickupDate(LocalDateTime pickupDate) {
-        this.pickupDate = pickupDate;
-    }
-
-    public LocalTime getPickupTime() {
-        return pickupTime;
-    }
-
-    public void setPickupTime(LocalTime pickupTime) {
-        this.pickupTime = pickupTime;
-    }
-
-    public LocalDateTime getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(LocalDateTime returnDate) {
-        this.returnDate = returnDate;
-    }
-
     public int getKm() {
         return km;
     }
 
     public void setKm(int km) {
         this.km = km;
+    }
+
+    public String getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(String pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
+    public String getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(String returnTime) {
+        this.returnTime = returnTime;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getBookerName() {
+        return bookerName;
+    }
+
+    public void setBookerName(String v) {
+        this.bookerName = v;
+    }
+
+    public String getBookerPhone() {
+        return bookerPhone;
+    }
+
+    public void setBookerPhone(String v) {
+        this.bookerPhone = v;
+    }
+
+    public String getBookerAddress() {
+        return bookerAddress;
+    }
+
+    public void setBookerAddress(String v) {
+        this.bookerAddress = v;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String v) {
+        this.note = v;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    // --- Getter và Setter CHO CÁC TRƯỜNG MỚI THÊM VÀO ---
+    public int getVoucherId() {
+        return voucherId;
+    }
+
+    public void setVoucherId(int voucherId) {
+        this.voucherId = voucherId;
     }
 
     public int getDays() {
@@ -174,14 +229,6 @@ public class Booking implements Serializable {
         this.voucherDiscount = voucherDiscount;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public String getIsVoucherCode() {
         return isVoucherCode;
     }
@@ -196,22 +243,6 @@ public class Booking implements Serializable {
 
     public void setPayType(String payType) {
         this.payType = payType;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {

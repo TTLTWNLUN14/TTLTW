@@ -13,7 +13,8 @@ import java.io.IOException;
         "/add-brand",
         "/edit-brand",
         "/cars-admin",
-        "/cars-admin/*"
+        "/cars-admin/add",
+        "/cars-admin/edit"
 })
 public class AdminFilterController implements Filter {
 
@@ -24,16 +25,23 @@ public class AdminFilterController implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
 
-        // Chưa đăng nhập → về trang login
+        // chưa đăng nhập -> về login
         if (session == null || session.getAttribute("account_id") == null) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
             return;
         }
 
-        // Đã đăng nhập nhưng không phải admin → về trang chủ
-        String role = (String) session.getAttribute("role");
-        if (!"admin".equals(role)) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
+        // check superadmin = 0 admin =1
+        Object roleObj = session.getAttribute("role_id");
+        if (roleObj == null) {
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
+            return;
+        }
+
+        int roleId = (Integer) roleObj;
+        if (roleId > 1) {
+            // không phải admin -> về index
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/index");
             return;
         }
 
