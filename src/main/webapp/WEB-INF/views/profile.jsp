@@ -728,7 +728,6 @@
     </style>
 </head>
 <body>
-<!-- NAVBAR HEADER -->
 <nav class="global-nav">
     <div class="nav-inner">
         <a class="nav-logo" href="${pageContext.request.contextPath}/index">AUTO CARS</a>
@@ -764,7 +763,7 @@
 
                 <c:otherwise>
                     <a class="notif-wrap" href="${pageContext.request.contextPath}/profile">
-                        🔔
+
                         <c:if test="${unreadCount > 0}">
                             <span class="notif-badge">${unreadCount}</span>
                         </c:if>
@@ -817,7 +816,6 @@
     </div>
 </nav>
 
-<!-- MAIN CONTENT -->
 <div class="main-wrapper">
     <div class="profile-container">
         <!-- Messages -->
@@ -832,7 +830,6 @@
             </div>
         </c:if>
 
-        <!-- Profile Header -->
         <div class="profile-header">
             <div class="header-content">
                 <div class="user-info">
@@ -863,21 +860,20 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info">
-                    <i class="fas fa-user-circle"></i> Thông Tin Cá Nhân
+                    <i class=""></i> Thông Tin Cá Nhân
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="bookings-tab" data-bs-toggle="tab" href="#bookings">
-                    <i class="fas fa-calendar-check"></i> Lịch Sử Đặt Xe
+                    <i class=""></i> Lịch Sử Đặt Xe
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="notifications-tab" data-bs-toggle="tab" href="#notifications">
-                    <i class="fas fa-bell"></i> Thông Báo
+                    <i class=""></i> Thông Báo
                     <c:if test="${unreadCount > 0}">
                         <span class="badge bg-danger ms-2">${unreadCount}</span>
                     </c:if>
@@ -885,17 +881,16 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings">
-                    <i class="fas fa-sliders-h"></i> Cài Đặt
+                    <i class=""></i> Cài Đặt
                 </a>
             </li>
         </ul>
 
         <div class="tab-content">
-            <!-- Personal Information Tab -->
             <div class="tab-pane fade show active" id="info">
                 <div class="form-section">
                     <h3 class="form-section-title">
-                        <i class="fas fa-edit"></i> Cập Nhật Thông Tin Cá Nhân
+                        <i class=""></i> Cập Nhật Thông Tin Cá Nhân
                     </h3>
                     <form method="POST" action="${pageContext.request.contextPath}/profile">
                         <input type="hidden" name="action" value="updateProfile">
@@ -954,15 +949,14 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary-custom">
-                            <i class="fas fa-save"></i> Lưu Thay Đổi
+                            <i class=""></i> Lưu Thay Đổi
                         </button>
                     </form>
                 </div>
 
-                <!-- Change Password Section -->
                 <div class="form-section">
                     <h3 class="form-section-title">
-                        <i class="fas fa-lock"></i> Đổi Mật Khẩu
+                        <i class=""></i> Đổi Mật Khẩu
                     </h3>
                     <form method="POST" action="${pageContext.request.contextPath}/profile">
                         <input type="hidden" name="action" value="changePassword">
@@ -985,17 +979,16 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary-custom">
-                            <i class="fas fa-key"></i> Đổi Mật Khẩu
+                            <i class=""></i> Đổi Mật Khẩu
                         </button>
                     </form>
                 </div>
             </div>
 
-            <!-- Booking History Tab -->
             <div class="tab-pane fade" id="bookings">
                 <div class="form-section">
                     <h3 class="form-section-title">
-                        <i class="fas fa-history"></i> Lịch Sử Đặt Xe
+                        <i class=""></i> Lịch Sử Đặt Xe
                     </h3>
 
                     <c:choose>
@@ -1011,7 +1004,7 @@
                                             </p>
                                         </div>
                                         <span class="booking-status completed">
-                                                <i class="fas fa-check-circle"></i> ${booking.status}
+                                                <i class=""></i> ${booking.status}
                                             </span>
                                     </div>
                                     <div style="color: #4b5563; font-size: 0.9rem;">
@@ -1027,7 +1020,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="notification-empty">
-                                <i class="fas fa-inbox" style="font-size: 2.5rem; color: #d1d5db;"></i>
+                                <i class="" style="font-size: 2.5rem; color: #d1d5db;"></i>
                                 <p style="margin-top: 15px;">Bạn chưa có chuyến xe nào</p>
                             </div>
                         </c:otherwise>
@@ -1035,18 +1028,17 @@
                 </div>
             </div>
 
-            <!-- Notifications Tab -->
             <div class="tab-pane fade" id="notifications">
                 <div class="form-section">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <h3 class="form-section-title mb-0">
-                            <i class="fas fa-bell"></i> Thông Báo của Bạn
+                            <i class=""></i> Thông Báo của Bạn
                         </h3>
                         <c:if test="${unreadCount > 0}">
                             <form method="POST" action="${pageContext.request.contextPath}/profile" style="display: inline;">
                                 <input type="hidden" name="action" value="markAllAsRead">
                                 <button type="submit" class="btn btn-outline-custom">
-                                    <i class="fas fa-check-double"></i> Đánh dấu tất cả đã đọc
+                                    <i class=""></i> Đánh dấu tất cả đã đọc
                                 </button>
                             </form>
                         </c:if>
@@ -1072,7 +1064,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="notification-empty">
-                                <i class="fas fa-bell-slash" style="font-size: 2.5rem; color: #d1d5db;"></i>
+                                <i class="" style="font-size: 2.5rem; color: #d1d5db;"></i>
                                 <p style="margin-top: 15px;">Bạn chưa có thông báo nào</p>
                             </div>
                         </c:otherwise>
@@ -1080,11 +1072,10 @@
                 </div>
             </div>
 
-            <!-- Settings Tab -->
             <div class="tab-pane fade" id="settings">
                 <div class="form-section">
                     <h3 class="form-section-title">
-                        <i class="fas fa-cog"></i> Tùy Chỉnh Thông Báo
+                        <i class=""></i> Tùy Chỉnh Thông Báo
                     </h3>
                     <form method="POST" action="${pageContext.request.contextPath}/profile">
                         <input type="hidden" name="action" value="updateSettings">
@@ -1132,7 +1123,6 @@
     </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
     <div class="footer-grid">
         <div>
@@ -1185,7 +1175,6 @@
         if (m) m.classList.remove('open');
     });
 
-    // Auto-hide alerts after 5 seconds
     document.addEventListener('DOMContentLoaded', function() {
         const alerts = document.querySelectorAll('.alert-custom');
         alerts.forEach(alert => {
