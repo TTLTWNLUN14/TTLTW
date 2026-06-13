@@ -6,21 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Thanh Toán - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/payment_pr.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
 <body>
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="index.html">AUTO CARS</a>
-        <div class="nav-links">
-            <a class="nav-link" href="index.html">Trang chủ</a>
-            <a class="nav-link" href="list-cars.html">Xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/cars-brand.jsp">Hãng xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/booking.jsp">Đặt xe</a>
-            <a class="nav-link" href="../../WEB-INF/views/shopping-cart.jsp">Giỏ hàng</a>
-        </div>
-    </div>
-</nav>
 
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+</jsp:include>
 <main class="qr-page">
     <div class="qr-container">
         <h2>Thanh toán qua mã QR</h2>

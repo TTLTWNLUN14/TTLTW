@@ -4,25 +4,13 @@
 <head>
     <title>Giỏ hàng - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cars-brand.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
 <body>
-    <nav class="global-nav">
-        <div class="nav-inner">
-            <a class="nav-logo" href="../../assets/html/index.html">AUTO CARS</a>
-        <div class="nav-links">
-            <a class="nav-link" href="../../assets/html/index.html">Trang chủ</a>
-            <a class="nav-link" href="list-product">Xe</a>
-            <a class="nav-link active" href="brand">Hãng xe</a>
-            <a class="nav-link" href="booking.jsp">Đặt xe</a>
-            <a class="nav-link" href="my-shopping-cart">Giỏ hàng</a>
-        </div>
-        <div class="nav-actions" id="navActions">
-            <a href="#" class="btn-login">Đăng nhập</a>
-            <a href="#" class="btn-login" style="margin-left: 20px">Đăng ký</a>
-        </div>
-        </div>
-    </nav>
 
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+  <jsp:param name="activePage" value="brand"/>
+</jsp:include>
     <div class="brands-hero">
         <h1>Các hãng xe đối tác</h1>
         <p>Khám phá đội xe từ các thương hiệu uy tín hàng đầu thế giới</p>

@@ -7,23 +7,13 @@
 <head>
     <title>Giỏ hàng - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/shopping-cart.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
 <body>
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
-        <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/cars-brand">Hãng xe</a>
-            <a class="nav-link active" href="${pageContext.request.contextPath}/my-shopping-cart">
-                Giỏ hàng (<c:out
-                    value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/>)
-            </a>
-        </div>
-    </div>
-</nav>
 
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+  <jsp:param name="activePage" value="cart"/>
+</jsp:include>
 <c:if test="${param.error == 'no_item_selected'}">
     <div class="toast toast-error" id="errorToast">
         Vui lòng chọn ít nhất 1 đơn để tiến hành đặt xe.

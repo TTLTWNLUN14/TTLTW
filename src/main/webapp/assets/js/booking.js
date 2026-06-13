@@ -1,46 +1,45 @@
-document.querySelectorAll('.rt-card').forEach(card => {
-    card.addEventListener('click', function() {
-        document.querySelectorAll('.rt-card').forEach(el => el.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-
-document.querySelectorAll('.cc-card').forEach(card => {
-    card.addEventListener('click', function() {
-        document.querySelectorAll('.cc-card').forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-
-function syncProvinceName(selectId, hiddenId) {
-    const select = document.getElementById(selectId);
-    const hidden = document.getElementById(hiddenId);
-    if (!select || !hidden) return;
-    const opt = select.options[select.selectedIndex];
-    hidden.value = opt ? (opt.getAttribute('data-name') || '') : '';
-}
-
-['fromProvinceSelect', 'toProvinceSelect'].forEach(id => {
-    const hiddenId = id === 'fromProvinceSelect' ? 'fromProvinceName' : 'toProvinceName';
-    const select = document.getElementById(id);
-    if (select) {
-        select.addEventListener('change', () => syncProvinceName(id, hiddenId));
-        syncProvinceName(id, hiddenId);
-    }
-});
-
-function submitBookNow() {
-    const form = document.getElementById('bookingForm');
-    if (!form) return;
-    ['fromProvince', 'toProvince'].forEach(prefix =>
-        syncProvinceName(`${prefix}Select`, `${prefix}Name`)
-    );
-
-    if (!form.querySelector('input[name="bookNow"]')) {
-        form.insertAdjacentHTML('beforeend', '<input type="hidden" name="bookNow" value="1">');
+    function syncProvinceNames() {
+        var pairs = [
+            ['fromProvinceSelect', 'fromProvinceName'],
+            ['toProvinceSelect', 'toProvinceName']
+        ];
+        pairs.forEach(function (p) {
+            var sel = document.getElementById(p[0]);
+            var hidden = document.getElementById(p[1]);
+            if (!sel || !hidden) return;
+            var opt = sel.options[sel.selectedIndex];
+            hidden.value = opt ? (opt.getAttribute('data-name') || '') : '';
+        });
     }
 
-    form.action = form.action.replace('/add-cart', '') + '${pageContext.request.contextPath}/booking';
-    form.method = 'get';
-    form.submit();
-}
+    /* Thêm vào giỏ hàng */
+    function submitAddCart() {
+        var form = document.getElementById('bookingForm');
+        syncProvinceNames();
+        // Xoá flag bookNow nếu còn sót
+        var old = form.querySelector('input[name="bookNow"]');
+        if (old) old.remove();
+        // Đảm bảo action đúng
+        form.action = CONTEXT_PATH + '/add-cart';
+        form.method = 'get';
+        form.submit();
+    }
+
+    /* Đặt ngay → booking-confirm, không qua giỏ */
+    function submitBookNow() {
+        var form = document.getElementById('bookingForm');
+        syncProvinceNames();
+        // Thêm flag bookNow=1
+        var inp = form.querySelector('input[name="bookNow"]');
+        if (!inp) {
+            inp = document.createElement('input');
+            inp.type = 'hidden';
+            inp.name = 'bookNow';
+            form.appendChild(inp);
+        }
+        inp.value = '1';
+        // Set action thẳng, không dùng replace (tránh double context-path)
+        form.action = CONTEXT_PATH + '/booking';
+        form.method = 'get';
+        form.submit();
+    }

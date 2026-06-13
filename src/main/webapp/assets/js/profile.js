@@ -1,3 +1,15 @@
+/* ── Auto-hide alerts (moved from inline) ── */
+// Auto-hide alerts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const alerts = document.querySelectorAll('.alert-custom');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }, 5000);
+        });
+    });
+
 const sess = Session.ensure('user');
 const customer = DB.customers.find(c => c.customer_id === sess.customer_id) || DB.customers[0];
 const acc = DB.accounts.find(a => a.account_id === sess.account_id) || DB.accounts[2];
