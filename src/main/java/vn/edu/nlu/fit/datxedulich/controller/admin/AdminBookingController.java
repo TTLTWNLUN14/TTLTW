@@ -21,22 +21,22 @@ public class AdminBookingController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String keyword  = trim(request.getParameter("keyword"));
-        String status   = trim(request.getParameter("status"));
+        String keyword = trim(request.getParameter("keyword"));
+        String status = trim(request.getParameter("status"));
         String dateFrom = trim(request.getParameter("dateFrom"));
-        String dateTo   = trim(request.getParameter("dateTo"));
+        String dateTo = trim(request.getParameter("dateTo"));
 
-        List<Booking> allBookings  = bookingDao.getAllBookings();
+        List<Booking> allBookings = bookingDao.getAllBookings();
         List<Booking> listBookings = bookingDao.searchBookings(keyword, status, dateFrom, dateTo);
         List<CarType> listCarTypes = carTypeDao.getListCarType();
 
-        request.setAttribute("allBookings",  allBookings);
+        request.setAttribute("allBookings", allBookings);
         request.setAttribute("listBookings", listBookings);
         request.setAttribute("listCarTypes", listCarTypes);
-        request.setAttribute("filterKeyword",  keyword);
-        request.setAttribute("filterStatus",   status);
+        request.setAttribute("filterKeyword", keyword);
+        request.setAttribute("filterStatus", status);
         request.setAttribute("filterDateFrom", dateFrom);
-        request.setAttribute("filterDateTo",   dateTo);
+        request.setAttribute("filterDateTo", dateTo);
 
         request.getRequestDispatcher("/WEB-INF/views/booking-admin.jsp")
                 .forward(request, response);
@@ -53,7 +53,7 @@ public class AdminBookingController extends HttpServlet {
             switch (action == null ? "" : action) {
 
                 case "updateStatus": {
-                    int    bookingId = Integer.parseInt(request.getParameter("bookingId"));
+                    int bookingId = Integer.parseInt(request.getParameter("bookingId"));
                     String newStatus = request.getParameter("newStatus");
                     bookingDao.updateBookingStatus(bookingId, newStatus);
                     response.sendRedirect(request.getContextPath()
@@ -74,10 +74,10 @@ public class AdminBookingController extends HttpServlet {
                     Booking b = bookingDao.getBookingById(bookingId);
                     if (b == null) break;
 
-                    b.setBookerName(   request.getParameter("bookerName"));
-                    b.setBookerPhone(  request.getParameter("bookerPhone"));
+                    b.setBookerName(request.getParameter("bookerName"));
+                    b.setBookerPhone(request.getParameter("bookerPhone"));
                     b.setBookerAddress(request.getParameter("bookerAddress"));
-                    b.setPickupProvince( request.getParameter("pickupProvince"));
+                    b.setPickupProvince(request.getParameter("pickupProvince"));
                     b.setDropoffProvince(request.getParameter("dropoffProvince"));
                     b.setPickupTime(request.getParameter("pickupTime"));
                     b.setReturnTime(request.getParameter("returnTime"));
@@ -102,18 +102,18 @@ public class AdminBookingController extends HttpServlet {
                     Booking orig = bookingDao.getBookingById(originalId);
                     if (orig == null) break;
 
-                    // Chỉ kiểm tra trạng thái Đã hủy
-                    if (!"Đã hủy".equals(orig.getStatus())) {
+                    // kiểm tra trạng thái là̀ đã hủy và chưa tạo đơn bù thay thế
+                    if (!"Đã hủy".equals(orig.getStatus()) || (orig.getNote() != null && orig.getNote().contains("Đã tạo đơn bù thay thế"))) {
                         response.sendRedirect(request.getContextPath()
                                 + "/booking-admin?msg=replace_err");
                         return;
                     }
 
                     Booking rep = new Booking();
-                    rep.setCustomerId(  orig.getCustomerId());
-                    rep.setTypeId(      orig.getTypeId());
-                    rep.setVoucherId(   null);
-                    rep.setPickupProvince( orig.getPickupProvince());
+                    rep.setCustomerId(orig.getCustomerId());
+                    rep.setTypeId(orig.getTypeId());
+                    rep.setVoucherId(null);
+                    rep.setPickupProvince(orig.getPickupProvince());
                     rep.setDropoffProvince(orig.getDropoffProvince());
                     rep.setPickupTime(orig.getPickupTime());
                     rep.setReturnTime(orig.getReturnTime());
@@ -127,15 +127,23 @@ public class AdminBookingController extends HttpServlet {
                     int discountedPrice = (int) Math.round(orig.getTotalPrice() * 0.8);
                     rep.setTotalPrice(discountedPrice);
 
-                    rep.setBookerName(   orig.getBookerName());
-                    rep.setBookerPhone(  orig.getBookerPhone());
+                    rep.setBookerName(orig.getBookerName());
+                    rep.setBookerPhone(orig.getBookerPhone());
                     rep.setBookerAddress(orig.getBookerAddress());
                     rep.setNote("Đơn bù – thay thế đơn #" + originalId + " (đã hủy). Giảm 20% ưu đãi.");
 
-                    bookingDao.createBooking(rep);
+                    boolean isCreated = bookingDao.createBooking(rep);
 
-                    response.sendRedirect(request.getContextPath()
-                            + "/booking-admin?msg=replace_ok");
+                    if (isCreated) {
+                        // đánh dấu đơn đã tạo đơn bù để tránh tạo thêm đơn
+                        String oldNote = orig.getNote() != null ? orig.getNote() : "";
+                        orig.setNote(oldNote + " [Hệ thống: Đã tạo đơn bù thay thế]");
+                        bookingDao.updateBooking(orig);
+
+                        response.sendRedirect(request.getContextPath() + "/booking-admin?msg=replace_ok");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/booking-admin?msg=error");
+                    }
                     return;
                 }
 
