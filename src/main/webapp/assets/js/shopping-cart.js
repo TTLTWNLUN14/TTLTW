@@ -93,3 +93,33 @@ function submitBooking() {
 document.addEventListener('DOMContentLoaded', function () {
     updateSelectedTotal();
 });
+function switchTab(tabName) {
+    var tabCart = document.getElementById('tabCart');
+    var tabHistory = document.getElementById('tabHistory');
+    var cartSection = document.getElementById('cartSection');
+    var historySection = document.getElementById('historySection');
+    var rightPanel = document.getElementById('rightPanel');
+
+    if (tabName == 'cart') {
+        tabCart.className = "tab active";
+        tabHistory.className = "tab";
+        cartSection.style.display = "block";
+        rightPanel.style.display = "block";
+        historySection.style.display = "none";
+    } else {
+        tabCart.className = "tab";
+        tabHistory.className = "tab active";
+        cartSection.style.display = "none";
+        rightPanel.style.display = "none";
+        historySection.style.display = "block";
+    }
+}
+
+window.addEventListener('load', function () {
+    var currentUrl = window.location.href;
+    if (currentUrl.indexOf("statusFilter") != -1) {
+        switchTab('history');
+    } else {
+        switchTab('cart');
+    }
+});
