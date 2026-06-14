@@ -247,4 +247,66 @@ public class BookingDao extends BaseDao {
         );
         return rows > 0;
     }
+// list search booking
+    public List<Booking> searchBookings(String keyword, String status,
+                                        String dateFrom, String dateTo) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT b.booking_id as bookingId, b.customer_id as customerId, b.type_id as typeId, " +
+                        "       b.voucher_id as voucherId, " +
+                        "       ct.type_name as carName, " +
+                        "       b.pickup_province as pickupProvince, b.dropoff_province as dropoffProvince, " +
+                        "       CONCAT(b.pickup_province, ' → ', b.dropoff_province) as route, " +
+                        "       b.km, b.days, b.base_price as basePrice, b.member_discount as memberDiscount, " +
+                        "       b.voucher_discount as voucherDiscount, b.is_voucher_code as isVoucherCode, " +
+                        "       b.pay_type as payType, b.pickup_date as pickupTime, b.return_date as returnTime, " +
+                        "       b.total_price as totalPrice, " +
+                        "       b.booker_name as bookerName, b.booker_phone as bookerPhone, " +
+                        "       b.booker_address as bookerAddress, b.note, " +
+                        "       b.status, b.payment_status as paymentStatus, " +
+                        "       DATE(b.pickup_date) as bookingDate, b.created_at as createdAt, b.updated_at as updatedAt " +
+                        "FROM bookings b " +
+                        "INNER JOIN car_types ct ON b.type_id = ct.type_id " +
+                        "WHERE 1=1 "
+        );
+
+        if (keyword != null && !keyword.isBlank()) {
+            sql.append("AND (b.booker_name LIKE :kw OR b.booker_phone LIKE :kw " +
+                    "     OR CAST(b.booking_id AS CHAR) LIKE :kw " +
+                    "     OR ct.type_name LIKE :kw) ");
+        }
+        if (status != null && !status.isBlank()) {
+            sql.append("AND b.status = :status ");
+        }
+        if (dateFrom != null && !dateFrom.isBlank()) {
+            sql.append("AND DATE(b.pickup_date) >= :dateFrom ");
+        }
+        if (dateTo != null && !dateTo.isBlank()) {
+            sql.append("AND DATE(b.pickup_date) <= :dateTo ");
+        }
+        sql.append("ORDER BY b.created_at DESC");
+
+        String finalSql = sql.toString();
+        String kwParam  = (keyword != null && !keyword.isBlank()) ? "%" + keyword + "%" : null;
+
+        return get().withHandle(h -> {
+            var q = h.createQuery(finalSql);
+            if (kwParam   != null) q = q.bind("kw",       kwParam);
+            if (status    != null && !status.isBlank())   q = q.bind("status",   status);
+            if (dateFrom  != null && !dateFrom.isBlank()) q = q.bind("dateFrom", dateFrom);
+            if (dateTo    != null && !dateTo.isBlank())   q = q.bind("dateTo",   dateTo);
+            return q.mapToBean(Booking.class).list();
+        });
+    }
+
+// update status
+    public boolean updateBookingStatus(int bookingId, String status) {
+        int rows = get().withHandle(h ->
+                h.createUpdate("UPDATE bookings SET status = :status, updated_at = NOW() " +
+                                "WHERE booking_id = :id")
+                        .bind("status", status)
+                        .bind("id",     bookingId)
+                        .execute()
+        );
+        return rows > 0;
+    }
 }
