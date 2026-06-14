@@ -17,7 +17,7 @@
     <a href="#" class="menu-item">Dashboard</a>
 
     <div class="menu-title">VẬN HÀNH</div>
-    <a href="#" class="menu-item">Quản lý đặt xe</a>
+    <a href="booking-admin" class="menu-item">Quản lý đặt xe</a>
     <a href="#" class="menu-item">Quản lý thanh toán</a>
 
     <div class="menu-title">DANH MỤC</div>
