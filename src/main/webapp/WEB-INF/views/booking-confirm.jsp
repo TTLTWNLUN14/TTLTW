@@ -29,7 +29,7 @@
     <div>
         <div class="summary-card">
             <div class="card-header">
-                <h3>óm tắt đơn đặt xe (${fn:length(selectedItems)} xe)</h3>
+                <h3>Tóm tắt đơn đặt xe (${fn:length(selectedItems)} xe)</h3>
             </div>
 
             <c:forEach items="${selectedItems}" var="ci" varStatus="st">

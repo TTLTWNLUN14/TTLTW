@@ -46,6 +46,38 @@ public class BookingController extends HttpServlet {
         String[] selectedTypeIds = (String[]) session.getAttribute("selectedTypeIds");
         CartItem singleBookingItem = (CartItem) session.getAttribute("singleBookingItem");
 
+        // quay lại giỏ từ booking-confirm
+        if ("backToCart".equals(request.getParameter("action"))) {
+            if (singleBookingItem != null) {
+                int accountId = (Integer) session.getAttribute("account_id");
+                Cart cart = (Cart) session.getAttribute("cart");
+                if (cart == null) cart = new Cart();
+
+                cart.addItem(singleBookingItem.getProduct(), singleBookingItem.getQuantity());
+                CartItem saved = cart.get(singleBookingItem.getSelectedTypeId());
+                if (saved != null) {
+                    saved.setFromProvinceId(singleBookingItem.getFromProvinceId());
+                    saved.setToProvinceId(singleBookingItem.getToProvinceId());
+                    saved.setFromProvinceName(singleBookingItem.getFromProvinceName());
+                    saved.setToProvinceName(singleBookingItem.getToProvinceName());
+                    saved.setPickupTime(singleBookingItem.getPickupTime());
+                    saved.setReturnTime(singleBookingItem.getReturnTime());
+                    saved.setKm(singleBookingItem.getKm());
+                    saved.setSelectedTypeId(singleBookingItem.getSelectedTypeId());
+                    saved.setSelectedTypeName(singleBookingItem.getSelectedTypeName());
+                    saved.setSelectedBrandId(singleBookingItem.getSelectedBrandId());
+                    saved.setSelectedCategory(singleBookingItem.getSelectedCategory());
+                    saved.setSelectedSeatingPlan(singleBookingItem.getSelectedSeatingPlan());
+                }
+
+                session.setAttribute("cart", cart);
+                cartDAO.saveCart(accountId, cart);
+                session.removeAttribute("singleBookingItem");
+            }
+            response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+            return;
+        }
+
         if ("1".equals(request.getParameter("bookNow"))) {
             createSingleBookingItem(request, session);
             renderSingleBookingConfirm(request, response, session);
@@ -341,7 +373,7 @@ public class BookingController extends HttpServlet {
     }
 
     private int getCustomerId(int accountId) {
-        return memberDAO.getCustomerIdByAccountId(accountId);
+        return memberDAO.ensureCustomerExists(accountId);
     }
 
     private Booking buildBooking(CartItem ci, int customerId, String bookerName,
@@ -349,6 +381,7 @@ public class BookingController extends HttpServlet {
         Booking booking = new Booking();
         booking.setCustomerId(customerId);
         booking.setTypeId(ci.getSelectedTypeId());
+        booking.setVoucherId(null);   // không dùng voucher → NULL, tránh lỗi FK
         booking.setPickupProvince(
                 ci.getFromProvinceName() != null ? ci.getFromProvinceName() : "");
         booking.setDropoffProvince(
