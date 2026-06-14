@@ -12,8 +12,9 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/includes/header.jsp">
-  <jsp:param name="activePage" value="cart"/>
+    <jsp:param name="activePage" value="cart"/>
 </jsp:include>
+
 <c:if test="${param.error == 'no_item_selected'}">
     <div class="toast toast-error" id="errorToast">
         Vui lòng chọn ít nhất 1 đơn để tiến hành đặt xe.
@@ -23,78 +24,68 @@
 <div class="container">
     <div class="left-panel">
         <div class="tabs">
-            <div class="tab active">Lịch sử đơn</div>
-            <div class="tab">Chờ thanh toán</div>
-            <div class="tab">Đang xử lý</div>
+            <div class="tab active" id="tabCart" onclick="switchTab('cart')">Giỏ hàng</div>
+            <div class="tab" id="tabHistory" onclick="switchTab('history')">Lịch sử đặt xe</div>
         </div>
 
-        <div class="select-all-bar">
-            <label>
-                <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
-                Chọn tất cả
-            </label>
-        </div>
+        <div id="cartSection">
+            <div class="select-all-bar">
+                <label>
+                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+                    Chọn tất cả
+                </label>
+            </div>
 
-        <div class="order-list">
-            <c:forEach items="${sessionScope.cart.items}" var="ci">
-                <c:set var="itemTypeIdStr">${ci.product.typeId}</c:set>
-                <c:set var="isOpen" value="${param.openDetailId == itemTypeIdStr}"/>
+            <div class="order-list">
+                <c:forEach items="${sessionScope.cart.items}" var="ci">
+                    <c:set var="itemTypeIdStr">${ci.product.typeId}</c:set>
+                    <c:set var="isOpen" value="${param.openDetailId == itemTypeIdStr}"/>
 
-                <div class="order-card">
-                    <input type="checkbox"
-                           class="item-checkbox"
-                           value="${ci.product.typeId}"
-                           data-total="${ci.price * ci.km * ci.quantity}"
-                           onchange="updateSelectedTotal()">
-                    <div class="order-info">
-                        <h4>
-                            <a href="${pageContext.request.contextPath}/list-product/product?typeId=${ci.product.typeId}"
-                               style="text-decoration:none; color:inherit;">
-                                    ${ci.product.typeName}
-                            </a>
-                        </h4>
-                        <p>
-                            <span class="highlight-text">Giá/KM:</span>
-                            <strong><fmt:formatNumber value="${ci.price}" type="number"/></strong> VND/KM
-                            &nbsp;|&nbsp;
-                            <span class="highlight-text">Số KM:</span>
-                            <strong>${ci.km}</strong> km
-                        </p>
+                    <div class="order-card">
+                        <input type="checkbox"
+                               class="item-checkbox"
+                               value="${ci.product.typeId}"
+                               data-total="${ci.price * ci.km * ci.quantity}"
+                               onchange="updateSelectedTotal()">
 
-                        <div style="display:flex; align-items:center; gap:8px; margin-top:5px;">
-                            <span class="highlight-text">Số lượng:</span>
-                            <form action="${pageContext.request.contextPath}/update-cart" method="post"
-                                  style="margin:0">
-                                <input type="hidden" name="productId" value="${ci.product.typeId}">
-                                <input type="hidden" name="quantity" value="${ci.quantity > 1 ? ci.quantity - 1 : 1}">
-                                <button type="submit" class="qty-btn" ${ci.quantity <= 1 ? 'disabled' : ''}>−</button>
-                            </form>
-                            <span class="qty-display">${ci.quantity}</span>
-                            <form action="${pageContext.request.contextPath}/update-cart" method="post"
-                                  style="margin:0">
-                                <input type="hidden" name="productId" value="${ci.product.typeId}">
-                                <input type="hidden" name="quantity" value="${ci.quantity + 1}">
-                                <button type="submit" class="qty-btn">+</button>
-                            </form>
-                        </div>
+                        <div class="order-info">
+                            <h4>
+                                <a href="${pageContext.request.contextPath}/list-product/product?typeId=${ci.product.typeId}"
+                                   class="order-link">
+                                        ${ci.product.typeName}
+                                </a>
+                            </h4>
+                            <p>
+                                <span class="highlight-text">Giá/KM:</span>
+                                <strong><fmt:formatNumber value="${ci.price}" type="number"/></strong> VND/KM
+                                &nbsp;|&nbsp;
+                                <span class="highlight-text">Số KM:</span>
+                                <strong>${ci.km}</strong> km
+                            </p>
 
-                        <p>Thành tiền:
-                            <strong><fmt:formatNumber value="${ci.price * ci.km * ci.quantity}" type="number"/>
-                                VND</strong>
-                        </p>
+                            <div class="qty-wrapper">
+                                <span class="highlight-text">Số lượng:</span>
+                                <form action="${pageContext.request.contextPath}/update-cart" method="post"
+                                      class="qty-form">
+                                    <input type="hidden" name="productId" value="${ci.product.typeId}">
+                                    <input type="hidden" name="quantity"
+                                           value="${ci.quantity > 1 ? ci.quantity - 1 : 1}">
+                                    <button type="submit" class="qty-btn" ${ci.quantity <= 1 ? 'disabled' : ''}>−
+                                    </button>
+                                </form>
+                                <span class="qty-display">${ci.quantity}</span>
+                                <form action="${pageContext.request.contextPath}/update-cart" method="post"
+                                      class="qty-form">
+                                    <input type="hidden" name="productId" value="${ci.product.typeId}">
+                                    <input type="hidden" name="quantity" value="${ci.quantity + 1}">
+                                    <button type="submit" class="qty-btn">+</button>
+                                </form>
+                            </div>
 
-                        <div class="card-actions">
-                            <form action="${pageContext.request.contextPath}/del-item" method="post" style="margin:0">
-                                <input type="hidden" name="productId" value="${ci.product.typeId}">
-                                <button type="submit" class="btn-delete">Xóa</button>
-                            </form>
-                            <button type="button" class="btn-detail"
-                                    onclick="toggleDetail(this, '${ci.product.typeId}')">
-                                <c:choose>
-                                    <c:when test="${isOpen}">Ẩn chi tiết ▴</c:when>
-                                    <c:otherwise>Xem chi tiết ▾</c:otherwise>
-                                </c:choose>
-                            </button>
+                            <p>Thành tiền:
+                                <strong><fmt:formatNumber value="${ci.price * ci.km * ci.quantity}" type="number"/>
+                                    VND</strong>
+                            </p>
 
                             <div class="detail-panel <c:if test='${isOpen}'>open</c:if>"
                                  id="detail-${ci.product.typeId}">
@@ -135,8 +126,7 @@
                                             <select name="fromProvinceId" onchange="this.form.submit()">
                                                 <option value="">-- Điểm đón --</option>
                                                 <c:forEach items="${provinces}" var="p">
-                                                    <option value="${p.provinceId}"
-                                                            data-name="${p.provinceName}"
+                                                    <option value="${p.provinceId}" data-name="${p.provinceName}"
                                                             <c:if test="${p.provinceId == ci.fromProvinceId}">selected</c:if>>
                                                             ${p.provinceName}
                                                     </option>
@@ -149,8 +139,7 @@
                                             <select name="toProvinceId" onchange="this.form.submit()">
                                                 <option value="">-- Điểm đến --</option>
                                                 <c:forEach items="${provinces}" var="p">
-                                                    <option value="${p.provinceId}"
-                                                            data-name="${p.provinceName}"
+                                                    <option value="${p.provinceId}" data-name="${p.provinceName}"
                                                             <c:if test="${p.provinceId == ci.toProvinceId}">selected</c:if>>
                                                             ${p.provinceName}
                                                     </option>
@@ -179,16 +168,32 @@
                                     </div>
                                 </form>
                             </div>
+
+                            <div class="item-actions-wrapper">
+                                <form action="${pageContext.request.contextPath}/del-item" method="post"
+                                      class="form-inline">
+                                    <input type="hidden" name="productId" value="${ci.product.typeId}">
+                                    <button type="submit" class="btn-delete">Xóa</button>
+                                </form>
+
+                                <button type="button" class="btn-detail"
+                                        onclick="toggleDetail(this, '${ci.product.typeId}')">
+                                    <c:choose>
+                                        <c:when test="${isOpen}">Ẩn chi tiết ▴</c:when>
+                                        <c:otherwise>Xem chi tiết ▾</c:otherwise>
+                                    </c:choose>
+                                </button>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-            </c:forEach>
+                </c:forEach>
+            </div>
         </div>
 
-        <div class="booking-history-section">
-            <h3>Lịch sử đặt xe</h3>
+        <div class="booking-history-section" id="historySection">
             <div class="status-tabs">
-                <a href="${pageContext.request.contextPath}/my-shopping-cart"
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=all"
                    class="status-tab ${(statusFilter == null || statusFilter == 'all') ? 'active' : ''}">
                     Tất cả
                 </a>
@@ -272,7 +277,7 @@
         </div>
     </div>
 
-    <div class="right-panel">
+    <div class="right-panel" id="rightPanel">
         <h3>Đơn đã chọn</h3>
         <hr>
         <div class="total-price">
@@ -283,7 +288,7 @@
             <strong id="selectedTotal">0 VND</strong>
         </div>
         <c:forEach items="${sessionScope.cart.items}" var="ci">
-            <div style="font-size:13px; color:#555; margin-bottom:4px;">
+            <div class="selected-item-text">
                     ${ci.product.typeName}:
                 <fmt:formatNumber value="${ci.price}" type="number"/> × ${ci.km} km × ${ci.quantity} =
                 <strong><fmt:formatNumber value="${ci.price * ci.km * ci.quantity}" type="number"/> VND</strong>
@@ -303,8 +308,7 @@
 <div id="cancelModal">
     <div class="modal-box">
         <h3>Xác nhận hủy đơn</h3>
-        <p>Bạn có chắc muốn hủy đơn <strong id="cancelModalLabel"></strong> không?
-            Hành động này không thể hoàn tác.</p>
+        <p>Bạn có chắc muốn hủy đơn <strong id="cancelModalLabel"></strong> không? Hành động này không thể hoàn tác.</p>
         <form id="cancelForm" action="${pageContext.request.contextPath}/cancel-booking" method="post">
             <input type="hidden" name="bookingId" id="cancelBookingIdInput">
             <div class="modal-actions">

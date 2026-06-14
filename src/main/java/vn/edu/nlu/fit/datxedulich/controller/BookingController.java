@@ -386,8 +386,11 @@ public class BookingController extends HttpServlet {
                 ci.getFromProvinceName() != null ? ci.getFromProvinceName() : "");
         booking.setDropoffProvince(
                 ci.getToProvinceName() != null ? ci.getToProvinceName() : "");
-        booking.setPickupTime(ci.getPickupTime());
-        booking.setReturnTime(ci.getReturnTime());
+        // Truyền null thay vì chuỗi rỗng
+        String pickupTime = ci.getPickupTime();
+        String returnTime = ci.getReturnTime();
+        booking.setPickupTime((pickupTime  != null && !pickupTime.isBlank())  ? pickupTime  : null);
+        booking.setReturnTime((returnTime != null && !returnTime.isBlank()) ? returnTime : null);
         booking.setKm(ci.getKm());
         booking.setTotalPrice(ci.getTotal());
         booking.setBookerName(bookerName.trim());
