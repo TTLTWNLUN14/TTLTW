@@ -11,6 +11,7 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/includes/header.jsp">
+    <jsp:param name="activePage" value="payment"/>
 </jsp:include>
 <main class="qr-page">
     <div class="qr-container">

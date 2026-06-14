@@ -24,7 +24,7 @@ public class Booking implements Serializable {
     private String paymentStatus;
     private LocalDate bookingDate;
     private LocalDateTime createdAt;
-    private int voucherId;
+    private Integer voucherId;  // NULL = không dùng voucher
     private int days;
     private int basePrice;
     private float memberDiscount;
@@ -188,11 +188,11 @@ public class Booking implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public int getVoucherId() {
+    public Integer getVoucherId() {
         return voucherId;
     }
 
-    public void setVoucherId(int voucherId) {
+    public void setVoucherId(Integer voucherId) {
         this.voucherId = voucherId;
     }
 

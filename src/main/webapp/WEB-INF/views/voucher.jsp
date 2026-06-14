@@ -13,6 +13,7 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/includes/header.jsp">
+    <jsp:param name="activePage" value="voucher"/>
 </jsp:include>
 <main class="voucher-container">
     <h2>Mã giảm giá dành cho bạn</h2>

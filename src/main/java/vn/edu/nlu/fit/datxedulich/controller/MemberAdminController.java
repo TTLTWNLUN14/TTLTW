@@ -47,7 +47,7 @@ public class MemberAdminController extends HttpServlet {
             } catch (NumberFormatException ignored) {}
         }
 
-        req.getRequestDispatcher("/WEB-INF/views/admin/member-admin.jsp")
+        req.getRequestDispatcher("/WEB-INF/views/member-admin.jsp")
            .forward(req, res);
     }
 
