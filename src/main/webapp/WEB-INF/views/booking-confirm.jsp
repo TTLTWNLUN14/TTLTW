@@ -135,28 +135,25 @@
 
 </div>
 
-<div id="cancelModal" class="modal-overlay">
-    <div class="modal-box">
-        <h3 class="modal-title">Xác nhận hủy đơn</h3>
-        <p class="modal-text">
+<div id="cancelModal" class="cancel-modal-overlay">
+    <div class="cancel-modal-box">
+        <h3> Xác nhận hủy đơn</h3>
+        <p>
             Bạn có chắc muốn hủy tất cả <strong>${fn:length(selectedItems)} xe</strong> trong đơn này không?<br>
             Đơn sẽ được lưu vào <em>Lịch sử → Đã hủy</em> và không thể hoàn tác.
         </p>
-        <form action="${pageContext.request.contextPath}/booking" method="post">
-            <input type="hidden" name="step" value="2">
-            <input type="hidden" name="action" value="cancel">
-            <div class="modal-actions">
-                <button type="button" onclick="closeCancelModal()" class="btn-modal-close">
+        <form action="${pageContext.request.contextPath}/cancel-booking" method="post">
+            <div class="cancel-modal-actions">
+                <button type="button" class="btn-modal-stay" onclick="closeCancelModal()">
                     Không, ở lại
                 </button>
-                <button type="submit" class="btn-modal-submit">
+                <button type="submit" class="btn-modal-confirm-cancel">
                     Có, hủy đơn
                 </button>
             </div>
         </form>
     </div>
 </div>
-
 <script src="${pageContext.request.contextPath}/assets/js/booking-confirm.js"></script>
 </body>
 </html>

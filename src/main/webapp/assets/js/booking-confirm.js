@@ -1,26 +1,16 @@
-
 function openCancelModal() {
-    var modal = document.getElementById('cancelModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    }
+    document.getElementById('cancelModal').classList.add('open');
 }
 
 function closeCancelModal() {
-    var modal = document.getElementById('cancelModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    document.getElementById('cancelModal').classList.remove('open');
 }
 
-//  click ra ngoài vùng trắng để đóng modal tự động
 document.addEventListener('DOMContentLoaded', function () {
     var modal = document.getElementById('cancelModal');
     if (modal) {
         modal.addEventListener('click', function (e) {
-            if (e.target === this) {
-                closeCancelModal();
-            }
+            if (e.target === this) closeCancelModal();
         });
     }
 });
