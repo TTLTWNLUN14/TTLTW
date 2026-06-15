@@ -4,11 +4,21 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import vn.edu.nlu.fit.datxedulich.model.Member;
+import vn.edu.nlu.fit.datxedulich.model.User;
 import vn.edu.nlu.fit.datxedulich.model.UserPreference;
+import vn.edu.nlu.fit.datxedulich.model.Booking;
 import vn.edu.nlu.fit.datxedulich.services.*;
+import vn.edu.nlu.fit.datxedulich.utils.FileUploadUtil;
+
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "ProfileController", value = "/profile")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 10
+)
 public class ProfileController extends HttpServlet {
 
     private final ProfileService profileService = new ProfileService();
@@ -16,6 +26,7 @@ public class ProfileController extends HttpServlet {
     private final UserPreferenceService preferenceService = new UserPreferenceService();
     private final ReviewService reviewService = new ReviewService();
     private final NotificationService notificationService = new NotificationService();
+    private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,13 +40,13 @@ public class ProfileController extends HttpServlet {
         }
 
         try {
-            // Load all profile data
             Member member = memberService.getMemberInfo(accountId);
             UserPreference preference = preferenceService.getPreference(accountId);
             int unreadCount = notificationService.getUnreadCount(accountId);
+            List<Booking> bookingHistory = memberService.getBookingHistory(accountId);
 
             request.setAttribute("member", member);
-            request.setAttribute("bookingHistory", memberService.getBookingHistory(accountId));
+            request.setAttribute("bookingHistory", bookingHistory);
             request.setAttribute("preference", preference);
             request.setAttribute("reviews", reviewService.getReviews(accountId));
             request.setAttribute("notifications", notificationService.getNotifications(accountId));
@@ -66,38 +77,39 @@ public class ProfileController extends HttpServlet {
             return;
         }
 
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
 
         try {
             switch (action) {
                 case "updateProfile":
-                    handleUpdateProfile(request, accountId);
+                    handleUpdateProfile(request, accountId, session);
+                    break;
+                case "updateAvatar":
+                    handleUpdateAvatar(request, accountId, session);
                     break;
                 case "updateSettings":
-                    handleUpdateSettings(request, accountId);
+                    handleUpdateSettings(request, accountId, session);
                     break;
                 case "changePassword":
-                    handleChangePassword(request, accountId);
+                    handleChangePassword(request, accountId, session);
                     break;
                 case "markAllAsRead":
                     notificationService.markAllAsRead(accountId);
-                    request.setAttribute("successMessage", "Đánh dấu tất cả đã đọc!");
+                    session.setAttribute("successMessage", "Đánh dấu tất cả đã đọc!");
                     break;
                 default:
-                    request.setAttribute("errorMessage", "Hành động không hợp lệ!");
+                    session.setAttribute("errorMessage", "Hành động không hợp lệ!");
             }
         } catch (Exception e) {
-            request.setAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
+            session.setAttribute("errorMessage", "Đã xảy ra lỗi: " + e.getMessage());
             e.printStackTrace();
         }
 
-        doGet(request, response);
+        response.sendRedirect(request.getContextPath() + "/profile");
     }
 
-    /**
-     * Handle profile update
-     */
-    private void handleUpdateProfile(HttpServletRequest request, int accountId) throws Exception {
+    private void handleUpdateProfile(HttpServletRequest request, int accountId, HttpSession session) throws Exception {
         Member memberData = new Member();
         memberData.setFullName(request.getParameter("fullName"));
         memberData.setPhone(request.getParameter("phone"));
@@ -107,16 +119,44 @@ public class ProfileController extends HttpServlet {
         memberData.setGender(request.getParameter("gender"));
 
         if (profileService.updateProfile(accountId, memberData)) {
-            request.setAttribute("successMessage", "Cập nhật thông tin thành công!");
+            session.setAttribute("successMessage", "Cập nhật thông tin thành công!");
         } else {
-            request.setAttribute("errorMessage", "Cập nhật thông tin thất bại!");
+            session.setAttribute("errorMessage", "Cập nhật thông tin thất bại!");
         }
     }
+    private void handleUpdateAvatar(HttpServletRequest request, int accountId, HttpSession session) throws Exception {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return;
 
-    /**
-     * Handle notification settings update
-     */
-    private void handleUpdateSettings(HttpServletRequest request, int accountId) throws Exception {
+        try {
+            // 1. Lấy file ảnh từ form
+            Part filePart = request.getPart("avatarFile");
+
+            // 2. Sử dụng hàm saveFile bạn vừa cấu hình
+            String relativePath = FileUploadUtil.saveFile(filePart, request);
+
+            if (relativePath != null && !relativePath.isEmpty()) {
+
+                // 3. Cập nhật vào Database
+                boolean isUpdated = userService.updateAvatar(accountId, relativePath);
+
+                if (isUpdated) {
+                    // 4. Đồng bộ ngay lại Session
+                    user.setAvatar(relativePath);
+                    session.setAttribute("user", user);
+                    session.setAttribute("successMessage", "Cập nhật ảnh đại diện thành công!");
+                } else {
+                    session.setAttribute("errorMessage", "Cập nhật đường dẫn vào cơ sở dữ liệu thất bại!");
+                }
+            } else {
+                session.setAttribute("errorMessage", "Vui lòng chọn một file ảnh hợp lệ!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+        }
+    }
+    private void handleUpdateSettings(HttpServletRequest request, int accountId, HttpSession session) throws Exception {
         UserPreference preference = new UserPreference();
         preference.setNotificationBooking("on".equals(request.getParameter("notificationBooking")));
         preference.setNotificationPromotion("on".equals(request.getParameter("notificationPromotion")));
@@ -124,16 +164,13 @@ public class ProfileController extends HttpServlet {
         preference.setPreferenceLanguage("on".equals(request.getParameter("preferenceLanguage")));
 
         if (profileService.updateSettings(accountId, preference)) {
-            request.setAttribute("successMessage", "Cập nhật cài đặt thành công!");
+            session.setAttribute("successMessage", "Cập nhật cài đặt thành công!");
         } else {
-            request.setAttribute("errorMessage", "Cập nhật cài đặt thất bại!");
+            session.setAttribute("errorMessage", "Cập nhật cài đặt thất bại!");
         }
     }
 
-    /**
-     * Handle password change
-     */
-    private void handleChangePassword(HttpServletRequest request, int accountId) throws Exception {
+    private void handleChangePassword(HttpServletRequest request, int accountId, HttpSession session) throws Exception {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
@@ -143,9 +180,9 @@ public class ProfileController extends HttpServlet {
         }
 
         if (profileService.changePassword(accountId, oldPassword, newPassword)) {
-            request.setAttribute("successMessage", "Đổi mật khẩu thành công!");
+            session.setAttribute("successMessage", "Đổi mật khẩu thành công!");
         } else {
-            request.setAttribute("errorMessage", "Đổi mật khẩu thất bại!");
+            session.setAttribute("errorMessage", "Đổi mật khẩu thất bại!");
         }
     }
 }

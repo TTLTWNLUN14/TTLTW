@@ -112,6 +112,7 @@ public class LoginController extends HttpServlet {
         session.setAttribute("email", user.getEmail());
         session.setAttribute("full_name", user.getFull_name());
         session.setAttribute("role_id", user.getRole_id());
+        session.setAttribute("avatar", user.getAvatar() != null ? user.getAvatar() : "/uploads/avatars/default-avatar.png");
 
         session.setMaxInactiveInterval(SESSION_TIMEOUT * 60);
 
@@ -136,7 +137,6 @@ public class LoginController extends HttpServlet {
         System.out.println("✓ Đăng nhập thành công! User: " + user.getUsername());
         response.sendRedirect(request.getContextPath() + "/index");
     }
-
     private String getCookieValue(HttpServletRequest request, String cookieName) {
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {

@@ -297,4 +297,7 @@ public class UserService {
     public User getUserById(int accountId) {
         return userDAO.findById(accountId);
     }
+    public boolean updateAvatar(int accountId, String avatarPath) {
+        return userDAO.updateAvatar(accountId, avatarPath);
+    }
 }
