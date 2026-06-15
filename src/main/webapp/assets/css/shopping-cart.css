@@ -540,3 +540,43 @@ hr {
 .btn-modal-confirm:hover {
     background: #b91c1c;
 }
+.hist-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 0.84rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    color: #475569;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    user-select: none;
+}
+
+.hist-page-btn:hover:not(.active):not(.disabled) {
+    background: #f1f5f9;
+    border-color: #1e293b;
+    color: #1e293b;
+}
+
+.hist-page-btn.active {
+    background: #1e293b;
+    border-color: #1e293b;
+    color: #fff;
+    font-weight: 700;
+    cursor: default;
+    pointer-events: none;
+}
+
+.hist-page-btn.disabled {
+    color: #cbd5e1;
+    background: #f8fafc;
+    cursor: default;
+    pointer-events: none;
+}

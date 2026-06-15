@@ -58,7 +58,7 @@
                 <option value="">-- Tất cả --</option>
                 <option value="Nhật"  <c:if test="${selectedCountry == 'Nhật'}">selected</c:if>>Nhật</option>
                 <option value="Đức"   <c:if test="${selectedCountry == 'Đức'}">selected</c:if>>Đức</option>
-                <option value="Hàn"   <c:if test="${selectedCountry == 'Hàn'}">selected</c:if>>Hàn</option>
+                <option value="Hàn Quốc"   <c:if test="${selectedCountry == 'Hàn Quốc'}">selected</c:if>>Hàn Quốc</option>
                 <option value="Mỹ"    <c:if test="${selectedCountry == 'Mỹ'}">selected</c:if>>Mỹ</option>
                 <option value="Trung" <c:if test="${selectedCountry == 'Trung'}">selected</c:if>>Trung</option>
             </select>

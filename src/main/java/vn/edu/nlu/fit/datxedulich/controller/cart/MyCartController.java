@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @WebServlet(name = "MyCartController", value = "/my-shopping-cart")
 public class MyCartController extends HttpServlet {
 
+    private static final int PAGE_SIZE = 10;
     private final MemberDAO memberDAO = new MemberDAO();
     private final CartDAO cartDAO = new CartDAO();
 
@@ -67,26 +68,53 @@ public class MyCartController extends HttpServlet {
 
         if (accountId != null) {
             try {
-                List<Booking> bookingHistory = memberDAO.getMemberBookingHistory(accountId);
+                List<Booking> allHistory = memberDAO.getMemberBookingHistory(accountId);
 
                 String statusFilter = request.getParameter("statusFilter");
                 if (statusFilter != null && !statusFilter.isBlank() && !"all".equals(statusFilter)) {
-                    bookingHistory = bookingHistory.stream()
+                    allHistory = allHistory.stream()
                             .filter(b -> statusFilter.equals(b.getStatus()))
                             .collect(Collectors.toList());
                 }
 
-                request.setAttribute("bookingHistory", bookingHistory);
+                // Phân trang
+                int page = 1;
+                String pageStr = request.getParameter("historyPage");
+                if (pageStr != null && !pageStr.isBlank()) {
+                    try {
+                        page = Math.max(1, Integer.parseInt(pageStr));
+                    } catch (NumberFormatException ignored) {
+                    }
+                }
+
+                int totalItems = allHistory.size();
+                int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
+                int from = (page - 1) * PAGE_SIZE;
+                int to = Math.min(from + PAGE_SIZE, totalItems);
+                List<Booking> pageHistory = (from < totalItems)
+                        ? allHistory.subList(from, to)
+                        : List.of();
+
+                request.setAttribute("bookingHistory", pageHistory);
                 request.setAttribute("statusFilter", statusFilter != null ? statusFilter : "all");
+                request.setAttribute("historyTotalItems", totalItems);
+                request.setAttribute("historyTotalPages", totalPages);
+                request.setAttribute("historyPage", page);
 
             } catch (Exception e) {
                 e.printStackTrace();
                 request.setAttribute("bookingHistory", List.of());
                 request.setAttribute("statusFilter", "all");
+                request.setAttribute("historyTotalItems", 0);
+                request.setAttribute("historyTotalPages", 0);
+                request.setAttribute("historyPage", 1);
             }
         } else {
             request.setAttribute("bookingHistory", List.of());
             request.setAttribute("statusFilter", "all");
+            request.setAttribute("historyTotalItems", 0);
+            request.setAttribute("historyTotalPages", 0);
+            request.setAttribute("historyPage", 1);
         }
 
         request.getRequestDispatcher("/WEB-INF/views/shopping-cart.jsp").forward(request, response);
