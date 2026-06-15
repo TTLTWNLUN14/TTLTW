@@ -1,0 +1,134 @@
+/* ===== Bổ sung cho trang Cài đặt hệ thống (Quản lý tài khoản quản trị) =====
+   File này nạp SAU cars-admin.css để tái sử dụng layout sidebar / table / modal / toast
+   chung của khu vực admin, không đổi màu sắc/giao diện tổng thể. */
+
+/* Ô tìm kiếm trong filter-bar (cars-admin.css chưa có style cho input text) */
+.filter-bar input[type="text"] {
+    padding: 7px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    min-width: 220px;
+}
+
+/* Modal có nhiều trường -> cho phép cuộn nếu cao hơn màn hình */
+.modal-box {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Form trong modal (Thêm / Sửa tài khoản) */
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #1d549a;
+}
+
+.form-group input[readonly] {
+    background: #f4f6f9;
+    color: #94a3b8;
+}
+
+/* Badge vai trò */
+.role-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.role-super {
+    background: #fff1e6;
+    color: #d35400;
+}
+
+.role-admin {
+    background: #e8f0fe;
+    color: #1d549a;
+}
+
+/* Trạng thái tài khoản */
+.status-active {
+    color: #16a34a;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.status-locked {
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Nhãn "Bạn" cho tài khoản đang đăng nhập */
+.badge-you {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: #fef3c7;
+    color: #b45309;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+/* Nút Khóa / Mở khóa trong bảng - cùng kiểu pill như btn-edit / btn-delete */
+.btn-lock,
+.btn-unlock {
+    border: 1px solid #cbd5e1;
+    background-color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-lock {
+    color: #dc2626;
+}
+
+.btn-lock:hover {
+    border-color: #dc2626;
+    background-color: #fef2f2;
+}
+
+.btn-unlock {
+    color: #16a34a;
+}
+
+.btn-unlock:hover {
+    border-color: #16a34a;
+    background-color: #f0fdf4;
+}

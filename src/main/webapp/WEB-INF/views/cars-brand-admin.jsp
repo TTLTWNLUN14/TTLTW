@@ -18,12 +18,12 @@
     <a href="#" class="menu-item">Dashboard</a>
 
     <div class="menu-title">VẬN HÀNH</div>
-    <a href="booking-admin" class="menu-item">Quản lý đặt xe</a>
+    <a href="${pageContext.request.contextPath}/booking-admin" class="menu-item">Quản lý đặt xe</a>
     <a href="#" class="menu-item">Quản lý thanh toán</a>
 
     <div class="menu-title">DANH MỤC</div>
-    <a href="brand-admin" class="menu-item active">Hãng xe</a>
-    <a href="cars-admin"  class="menu-item">Loại xe</a>
+    <a href="${pageContext.request.contextPath}/brand-admin" class="menu-item active">Hãng xe</a>
+    <a href="${pageContext.request.contextPath}/cars-admin"  class="menu-item">Loại xe</a>
     <a href="#" class="menu-item">Mã giảm giá</a>
 
     <div class="menu-title">KHÁCH HÀNG</div>
@@ -33,7 +33,7 @@
 
     <div class="menu-title">CÀI ĐẶT</div>
     <a href="#" class="menu-item">Quản lý giá cước</a>
-    <a href="#" class="menu-item">Cài đặt hệ thống</a>
+    <a href="${pageContext.request.contextPath}/admin/settings" class="menu-item">Cài đặt hệ thống</a>
 </div>
 
 <div class="main-content">
