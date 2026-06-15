@@ -87,8 +87,7 @@
                        name="bookerName"
                        maxlength="100"
                        placeholder="Nguyễn Văn A"
-                       value="${not empty param.bookerName ? param.bookerName
-                                : (member != null ? member.fullName : '')}"
+                       value="${not empty param.bookerName ? param.bookerName : (member != null ? member.fullName : '')}"
                        required>
             </div>
 
@@ -99,8 +98,7 @@
                        maxlength="10"
                        pattern="\d{10}"
                        placeholder="0901234567"
-                       value="${not empty param.bookerPhone ? param.bookerPhone
-                                : (member != null ? member.phone : '')}"
+                       value="${not empty param.bookerPhone ? param.bookerPhone : (member != null ? member.phone : '')}"
                        required>
             </div>
 
@@ -125,6 +123,9 @@
                 <a href="${pageContext.request.contextPath}/my-shopping-cart" class="btn-back">
                     ← Quay lại giỏ hàng
                 </a>
+                <button type="button" class="btn-cancel-order" onclick="openCancelModal()">
+                    x Hủy đơn
+                </button>
                 <button type="submit" class="btn-confirm">
                     Xác nhận đặt xe →
                 </button>
@@ -133,5 +134,29 @@
     </div>
 
 </div>
+
+<div id="cancelModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 class="modal-title">Xác nhận hủy đơn</h3>
+        <p class="modal-text">
+            Bạn có chắc muốn hủy tất cả <strong>${fn:length(selectedItems)} xe</strong> trong đơn này không?<br>
+            Đơn sẽ được lưu vào <em>Lịch sử → Đã hủy</em> và không thể hoàn tác.
+        </p>
+        <form action="${pageContext.request.contextPath}/booking" method="post">
+            <input type="hidden" name="step" value="2">
+            <input type="hidden" name="action" value="cancel">
+            <div class="modal-actions">
+                <button type="button" onclick="closeCancelModal()" class="btn-modal-close">
+                    Không, ở lại
+                </button>
+                <button type="submit" class="btn-modal-submit">
+                    Có, hủy đơn
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${pageContext.request.contextPath}/assets/js/booking-confirm.js"></script>
 </body>
 </html>
