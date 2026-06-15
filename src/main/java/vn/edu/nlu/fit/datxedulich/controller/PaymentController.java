@@ -32,8 +32,11 @@ public class PaymentController extends HttpServlet {
 
         String bookingIdsParam = request.getParameter("bookingIds");
         if (bookingIdsParam == null || bookingIdsParam.isBlank()) {
-            response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
-            return;
+            bookingIdsParam = (String) session.getAttribute("pendingBookingIds");
+            if (bookingIdsParam == null || bookingIdsParam.isBlank()) {
+                response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+                return;
+            }
         }
 
         List<Integer> bookingIds = parseIds(bookingIdsParam);
@@ -49,10 +52,26 @@ public class PaymentController extends HttpServlet {
 
         request.setAttribute("bookings", bookings);
         request.setAttribute("subtotal", subtotal);
-        request.setAttribute("grandTotal", subtotal);
+
+        Integer appliedVoucherId = (Integer) session.getAttribute("appliedVoucherId");
+        Double appliedDiscount = (Double) session.getAttribute("appliedDiscount");
+        Long appliedPriceMaxDiscount = (Long) session.getAttribute("appliedPriceMaxDiscount");
+
+        long appliedDiscountAmount = 0;
+        if (appliedVoucherId != null && appliedDiscount != null && appliedPriceMaxDiscount != null) {
+            appliedDiscountAmount = (long) (subtotal * appliedDiscount);
+            if (appliedDiscountAmount > appliedPriceMaxDiscount) {
+                appliedDiscountAmount = appliedPriceMaxDiscount;
+            }
+            request.setAttribute("appliedDiscountAmount", appliedDiscountAmount);
+        }
+
+        int grandTotal = (int) (subtotal - appliedDiscountAmount);
+        request.setAttribute("grandTotal", grandTotal);
 
         request.getRequestDispatcher("/WEB-INF/views/payment.jsp")
                 .forward(request, response);
+
     }
 
     @Override
@@ -73,17 +92,19 @@ public class PaymentController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
             return;
         }
-
         String acceptTerms = request.getParameter("acceptTerms");
+        String method = request.getParameter("method");
+
         if (!"on".equals(acceptTerms)) {
             request.setAttribute("errorMsg", "Vui lòng đồng ý với điều khoản dịch vụ.");
             doGet(request, response);
             return;
         }
-
-        String method = request.getParameter("method");
-        if (method == null || method.isBlank()) method = "CASH";
-
+        if (method == null || method.isBlank()) {
+            request.setAttribute("errorMsg", "Vui lòng chọn phương thức thanh toán.");
+            doGet(request, response);
+            return;
+        }
         List<Integer> bookingIds = parseIds(bookingIdsParam);
         List<Booking> bookings = bookingDAO.getBookingsByIds(bookingIds);
 
@@ -92,11 +113,39 @@ public class PaymentController extends HttpServlet {
             return;
         }
 
+        Integer appliedVoucherId = (Integer) session.getAttribute("appliedVoucherId");
+        Double appliedDiscount = (Double) session.getAttribute("appliedDiscount");
+        Long appliedPriceMaxDiscount = (Long) session.getAttribute("appliedPriceMaxDiscount");
+
+        int subtotal = bookings.stream().mapToInt(Booking::getTotalPrice).sum();
+        long totalDiscountAmount = 0;
+
+        if (appliedVoucherId != null && appliedDiscount != null && appliedPriceMaxDiscount != null) {
+            totalDiscountAmount = (long) (subtotal * appliedDiscount);
+            if (totalDiscountAmount > appliedPriceMaxDiscount) {
+                totalDiscountAmount = appliedPriceMaxDiscount;
+            }
+        }
+
         for (Booking b : bookings) {
             Payment payment = new Payment();
             payment.setBookingId(b.getBookingId());
             payment.setAccountId(accountId);
-            payment.setPrice(b.getTotalPrice());
+
+            int bookingCount = bookings.size();
+            long discountForThisBooking = 0;
+            if (totalDiscountAmount > 0) {
+                discountForThisBooking = totalDiscountAmount / bookingCount;
+                if (bookings.indexOf(b) == bookingCount - 1) {
+                    discountForThisBooking = totalDiscountAmount - (discountForThisBooking * (bookingCount - 1));
+                }
+                payment.setVoucherId(appliedVoucherId);
+            }
+
+            int finalPrice = (int) (b.getTotalPrice() - discountForThisBooking);
+            if (finalPrice < 0) finalPrice = 0;
+
+            payment.setPrice(finalPrice);
             payment.setMethod(method);
             payment.setPayType("FULL");
             payment.setStatus("PENDING");
@@ -106,11 +155,17 @@ public class PaymentController extends HttpServlet {
         }
 
         bookingDAO.updatePaymentStatus(bookingIds, "PENDING");
-        int grandTotal = bookings.stream().mapToInt(Booking::getTotalPrice).sum();
+
         session.setAttribute("paidBookingIds", bookingIdsParam);
         session.setAttribute("paymentMethod", method);
-        session.setAttribute("paymentGrandTotal", grandTotal);
+        session.setAttribute("paymentGrandTotal", subtotal - totalDiscountAmount);
         session.removeAttribute("pendingBookingIds");
+
+        session.removeAttribute("appliedVoucherId");
+        session.removeAttribute("appliedVoucherCode");
+        session.removeAttribute("appliedVoucherName");
+        session.removeAttribute("appliedDiscount");
+        session.removeAttribute("appliedPriceMaxDiscount");
 
         if ("TRANSFER".equalsIgnoreCase(method)) {
             response.sendRedirect(request.getContextPath() + "/payment-qr");
@@ -118,7 +173,6 @@ public class PaymentController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/payment-confirmation");
         }
     }
-
     private List<Integer> parseIds(String param) {
         return Arrays.stream(param.split(","))
                 .map(String::trim)

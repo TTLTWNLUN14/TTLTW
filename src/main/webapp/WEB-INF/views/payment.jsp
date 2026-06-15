@@ -35,7 +35,7 @@
             <input type="hidden" name="bookingIds" value="${bk.bookingId}">
         </c:forEach>
         <input type="hidden" name="payType" value="FULL">
-
+        <input type="hidden" id="voucherId" name="voucherId" value="">
         <div class="checkout-section">
             <h3 class="section-title">THÔNG TIN CHUYẾN ĐI</h3>
             <c:choose>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="checkout-section">
-            <h3 class="section-title">💳 PHƯƠNG THỨC THANH TOÁN</h3>
+            <h3 class="section-title">PHƯƠNG THỨC THANH TOÁN</h3>
             <div class="payment-grid">
                 <label class="payment-card">
                     <input type="radio" name="method" value="CASH" id="methodCash" checked
@@ -103,34 +103,70 @@
                     </div>
                 </label>
             </div>
+            <div class="method-error" id="methodError" style="display: none;"> Vui lòng chọn phương thức thanh toán trước khi thanh toán.
+            </div>
         </div>
+
+        <div class="checkout-section">
+            <h3 class="section-title"> MÃ GIẢM GIÁ</h3>
+            <div class="voucher-section">
+                <div class="voucher-input">
+                    <input type="text" id="voucherCode" placeholder="Nhập mã giảm giá của bạn"
+                           maxlength="20" style="text-transform: uppercase;">
+                    <button type="button" id="btnApplyVoucher" class="btn-apply-voucher"
+                            onclick="applyVoucher()">
+                        Áp dụng
+                    </button>
+                </div>
+                <div>
+                    <a href="${pageContext.request.contextPath}/voucher" class="btn-select-voucher" style="text-decoration: none; display: inline-block; text-align: center;">
+                        Chọn mã giảm giá
+                    </a>
+                </div>
+                <div class="voucher-msg voucher-ok" id="voucherSuccessMsg" style="display: none;">
+                    ✓ <span id="successText"></span>
+                </div>
+                <div class="voucher-msg voucher-err" id="voucherErrorMsg" style="display: none;">
+                    ✗ <span id="errorText"></span>
+                </div>
+            </div>
+        </div>
+
         <div class="checkout-section">
             <h3 class="section-title">TỔNG TIỀN</h3>
             <div class="total-summary">
                 <div class="summary-line">
                     <span>Tiền hàng (${fn:length(bookings)} xe):</span>
-                    <span><fmt:formatNumber value="${subtotal}" type="number"/>đ</span>
+                    <span><fmt:formatNumber value="${subtotal}" type="number"/>VND</span>
                 </div>
-                <div class="summary-line discount" id="discountRow" style="display:none">
-                    <span>Giảm giá (<span id="voucherLabel"></span>):</span>
-                    <span id="discountAmt">-0đ</span>
+                <div class="summary-line discount" id="discountRow"
+                     style="display: ${not empty appliedDiscountAmount ? 'block' : 'none'}">
+                    <span>Giảm giá (<span id="voucherLabel">${appliedVoucherCode}</span>):</span>
+                    <span id="discountAmt">-<fmt:formatNumber value="${appliedDiscountAmount}" type="number"/> VND</span>
                 </div>
                 <div class="summary-line final-total">
                     <span>Tổng thanh toán:</span>
-                    <strong id="grandTotal"><fmt:formatNumber value="${grandTotal}" type="number"/>đ</strong>
+                    <strong id="grandTotal">
+                        <c:choose>
+                            <c:when test="${not empty appliedDiscountAmount}">
+                                <fmt:formatNumber value="${subtotal - appliedDiscountAmount}" type="number"/>VND
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:formatNumber value="${grandTotal}" type="number"/>VND
+                            </c:otherwise>
+                        </c:choose>
+                    </strong>
                 </div>
             </div>
 
             <div class="terms-section">
                 <label class="terms-label">
                     <input type="checkbox" name="acceptTerms" id="termsChk"
-                           onchange="toggleSubmitBtn()">
-                    Tôi đồng ý với
-                    <a href="${pageContext.request.contextPath}/terms" target="_blank">Điều khoản và Dịch vụ</a>
+                           onchange="toggleSubmitBtn()"> Tôi đồng ý với
+                    <a href="${pageContext.request.contextPath}/terms" target="_blank"> Điều khoản và Dịch vụ </a>
                     của AutoCars
                 </label>
-                <div class="terms-error" id="termsError">
-                    ✗ Vui lòng đồng ý điều khoản trước khi thanh toán.
+                <div class="terms-error" id="termsError" style="display: none;"> Vui lòng đồng ý điều khoản trước khi thanh toán.
                 </div>
             </div>
 
@@ -144,8 +180,8 @@
                 </button>
             </div>
         </div>
-
     </form>
+
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/payment.js"></script>
