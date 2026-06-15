@@ -39,9 +39,10 @@ public class PaymentConfirmationController extends HttpServlet {
 
         List<Booking> bookings = bookingDAO.getBookingsByIds(bookingIds);
 
-        Integer paymentGrandTotal = (Integer) session.getAttribute("paymentGrandTotal");
-        int grandTotal = (paymentGrandTotal != null) ? paymentGrandTotal
+        Number paymentGrandTotal = (Number) session.getAttribute("paymentGrandTotal");
+        int grandTotal = (paymentGrandTotal != null) ? paymentGrandTotal.intValue()
                 : bookings.stream().mapToInt(Booking::getTotalPrice).sum();
+
         String method = (String) session.getAttribute("paymentMethod");
 
         request.setAttribute("bookings", bookings);
