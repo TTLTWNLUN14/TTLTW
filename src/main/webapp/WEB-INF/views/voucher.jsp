@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="vi_VN"/>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -15,36 +17,87 @@
 <jsp:include page="/WEB-INF/views/includes/header.jsp">
     <jsp:param name="activePage" value="voucher"/>
 </jsp:include>
-<main class="voucher-container">
-    <h2>Mã giảm giá dành cho bạn</h2>
-    <hr>
 
-    <c:if test="${empty vouchers}">
-        <div style="text-align: center; padding: 40px;">
-            <p>Hiện không có mã giảm giá nào khả dụng cho đơn hàng này.</p>
-            <a href="payment?bookingId=${bookingId}&price=${price}&km=${km}" style="color: #e53935;">Quay lại thanh toán</a>
+<div class="page-header">
+    <h2>Mã Giảm Giá</h2>
+    <div class="breadcrumb">
+        Giỏ hàng → Xác nhận thông tin → Thanh toán → <span>Mã giảm giá</span>
+    </div>
+</div>
+
+<main class="voucher-container">
+    <c:if test="${not empty errorMsg}">
+        <div class="error-msg" style="margin-bottom: 20px;">
+            ⚠ ${errorMsg}
         </div>
     </c:if>
 
-    <c:forEach var="v" items="${vouchers}">
-        <div class="voucher-item">
-            <div class="voucher-info">
-                <h4>${v.nameVoucher}</h4>
-                <p>Mã: <strong>${v.code}</strong></p>
-                <p>Giảm: ${v.discount * 100}% (Tối đa ${v.priceMaxDiscount}đ)</p>
-                <p>Đơn tối thiểu: ${v.minOrder}đ</p>
-            </div>
+    <div class="voucher-header">
+        <h3>Mã giảm giá khả dụng cho bạn</h3>
+        <p>Chọn một mã giảm giá để áp dụng cho đơn hàng của bạn</p>
+    </div>
 
-            <form action="voucher" method="POST">
-                <input type="hidden" name="voucherId" value="${v.voucherId}">
-                <input type="hidden" name="bookingId" value="${bookingId}">
-                <input type="hidden" name="price" value="${price}">
-                <input type="hidden" name="km" value="${km}">
-                <input type="hidden" name="redirect" value="payment">
-                <button type="submit" class="btn-apply">Áp dụng</button>
-            </form>
+    <c:if test="${empty vouchers}">
+        <div class="voucher-empty-state">
+            <p>Hiện không có mã giảm giá nào khả dụng cho bạn.</p>
+            <p class="empty-desc">Vui lòng quay lại trang thanh toán để tiếp tục.</p>
+            <a href="${pageContext.request.contextPath}/payments" class="btn-back-to-payment">
+                ← Quay lại thanh toán
+            </a>
         </div>
-    </c:forEach>
+    </c:if>
+
+    <div class="vouchers-grid">
+        <c:forEach var="v" items="${vouchers}">
+            <div class="voucher-card">
+                <div class="voucher-content">
+                    <h4 class="voucher-name">${v.nameVoucher}</h4>
+                    <div class="voucher-badge">Mã: <strong>${v.code}</strong></div>
+
+                    <div class="voucher-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Giảm giá:</span>
+                            <span class="detail-value">
+                                <c:choose>
+                                    <c:when test="${v.discount * 100 == 100}">
+                                        <fmt:formatNumber value="${v.priceMaxDiscount}" type="number"/>đ
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${v.discount * 100}% (Tối đa <fmt:formatNumber value="${v.priceMaxDiscount}" type="number"/>đ)
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Đơn tối thiểu:</span>
+                            <span class="detail-value"><fmt:formatNumber value="${v.minOrder}" type="number"/>VND</span>
+                        </div>
+                        <c:if test="${v.usesLeft > 0 and v.usesLeft <= 5}">
+                            <div class="detail-row warning">
+                                <span class="detail-label">Lượt còn lại:</span>
+                                <span class="detail-value">${v.usesLeft}</span>
+                            </div>
+                        </c:if>
+                    </div>
+
+                    <form action="${pageContext.request.contextPath}/voucher" method="POST" class="voucher-form">
+                        <input type="hidden" name="voucherId" value="${v.voucherId}">
+                        <input type="hidden" name="action" value="apply">
+                        <button type="submit" class="btn-apply-voucher">Chọn mã này
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+
+    <c:if test="${not empty vouchers}">
+        <div class="voucher-footer">
+            <a href="${pageContext.request.contextPath}/payments" class="btn-skip-voucher">
+                ← Bỏ qua, quay lại thanh toán
+            </a>
+        </div>
+    </c:if>
 </main>
 </body>
 </html>
