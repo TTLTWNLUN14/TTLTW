@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Danh sách xe - Auto Cars</title>
@@ -131,7 +132,14 @@
                              data-fuel="${p.fuel}"
                              data-price="${p.priceKm}">
                             <div class="car-img-box">
-                                <img class="car-img" src="${p.img}" alt="img-cars">
+                                <c:choose>
+                                    <c:when test="${fn:startsWith(p.img, 'http')}">
+                                        <img style="height: 160px" class="car-img" src="${p.img}" alt="img-cars">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img style="height: 160px" class="car-img" src="${pageContext.request.contextPath}/${p.img}" alt="img-cars">
+                                    </c:otherwise>
+                                </c:choose>
                                 <span class="badge-stock">${p.count} xe có sẵn</span>
                             </div>
                             <div class="car-body">

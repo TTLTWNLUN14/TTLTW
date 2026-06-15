@@ -7,11 +7,17 @@ import vn.edu.nlu.fit.datxedulich.model.Brand;
 import vn.edu.nlu.fit.datxedulich.model.CarType;
 import vn.edu.nlu.fit.datxedulich.services.BrandService;
 import vn.edu.nlu.fit.datxedulich.services.CarTypeService;
+import vn.edu.nlu.fit.datxedulich.utils.FileUploadUtil;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "AddCarAdminController", value = "/cars-admin/add")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,      // > 1MB thì ghi tạm ra disk
+        maxFileSize = 1024 * 1024 * 5,        // 5MB: kích thước tối đa 1 file
+        maxRequestSize = 1024 * 1024 * 10     // 10MB: kích thước tối đa cả request
+)
 public class AddCarAdminController extends HttpServlet {
 
     private final BrandService brandService      = new BrandService();
@@ -45,6 +51,10 @@ public class AddCarAdminController extends HttpServlet {
 
         CarType ct = buildCarTypeFromRequest(request);
 
+        // upload ảnh xe -> lưu vào assets/uploads/cars
+        String imgPath = FileUploadUtil.uploadFile(request, "imgFile", "cars");
+        ct.setImg(imgPath);
+
         carTypeService.insertCarType(ct);
 
         String brandIdStr = request.getParameter("brandId");
@@ -65,7 +75,6 @@ public class AddCarAdminController extends HttpServlet {
         ct.setFuel(request.getParameter("fuel"));
         ct.setPriceKm(parseIntSafe(request.getParameter("priceKm"), 0));
         ct.setPriceDay(parseIntSafe(request.getParameter("priceDay"), 0));
-        ct.setImg(request.getParameter("img"));
         ct.setDescriptionType(request.getParameter("descriptionType"));
         ct.setCount(parseIntSafe(request.getParameter("count"), 0));
 

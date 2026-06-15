@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="vi_VN"/>
 <html>
 <head>
@@ -15,7 +16,7 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/includes/header.jsp">
-  <jsp:param name="activePage" value="cars"/>
+    <jsp:param name="activePage" value="cars"/>
 </jsp:include>
 <div class="page-main">
     <div class="page-wrap-lg">
@@ -41,7 +42,14 @@
                         <span class="badge-stock">${product.count} xe có sẵn</span>
                         <c:choose>
                             <c:when test="${not empty product.img}">
-                                <img src="${product.img}" alt="${product.typeName}">
+                                <c:choose>
+                                    <c:when test="${fn:startsWith(product.img, 'http')}">
+                                        <img src="${product.img}" alt="${product.typeName}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="${pageContext.request.contextPath}/${product.img}" alt="${product.typeName}">
+                                    </c:otherwise>
+                                </c:choose>
                             </c:when>
                             <c:otherwise>
                                 <div class="img-placeholder">Chưa có ảnh</div>

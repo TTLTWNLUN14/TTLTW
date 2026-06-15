@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
   <title>Title</title>
@@ -13,7 +15,7 @@
   <a href="#" class="menu-item">Dashboard</a>
 
   <div class="menu-title">VẬN HÀNH</div>
-  <a href="#" class="menu-item">Quản lý đặt xe</a>
+  <a href="booking-admin" class="menu-item">Quản lý đặt xe</a>
   <a href="#" class="menu-item">Quản lý thanh toán</a>
 
   <div class="menu-title">DANH MỤC</div>
@@ -41,17 +43,35 @@
 
     <%--load brand từ db lên tu brandId đẩy set dữ liệu vào request cho cái brand, nhưng cái dó được điền sẵn vào form nếu có sủa thì đỡ mất công viết lại --%>
     <%--khi cap nhat thi seo post truyen lai cho edit -> controller -> thay doi db -> update db thanh nhung cai da duoc nhap vao--%>
-    <form method="post" action="${pageContext.request.contextPath}/edit-brand">
+    <form method="post" action="${pageContext.request.contextPath}/edit-brand" enctype="multipart/form-data">
 
       <input type="hidden" name="brandId" value="${brand.brandId}">
+
+      <input type="hidden" name="oldLogo" value="${brand.logo}">
 
       <div class="form-group">
         <label>Tên hãng xe <span style="color:red">*</span></label>
         <input type="text" name="brandName" value="${brand.brandName}" required>
       </div>
       <div class="form-group">
-        <label>URL Logo</label>
-        <input type="text" name="logo" value="${brand.logo}">
+        <label>Ảnh logo hiện tại</label>
+        <c:choose>
+          <c:when test="${not empty brand.logo}">
+            <c:choose>
+              <c:when test="${fn:startsWith(brand.logo, 'http')}">
+                <img src="${brand.logo}" alt="logo" class="brand-logo-preview">
+              </c:when>
+              <c:otherwise>
+                <img src="${pageContext.request.contextPath}/${brand.logo}" alt="logo" class="brand-logo-preview">
+              </c:otherwise>
+            </c:choose>
+          </c:when>
+          <c:otherwise>
+            <p class="no-logo-text">Chưa có ảnh logo</p>
+          </c:otherwise>
+        </c:choose>
+        <input type="file" name="logoFile" accept="image/*">
+        <small>Chọn ảnh mới nếu muốn thay đổi logo, để trống nếu giữ ảnh hiện tại.</small>
       </div>
       <div class="form-group">
         <label>Quốc gia</label>

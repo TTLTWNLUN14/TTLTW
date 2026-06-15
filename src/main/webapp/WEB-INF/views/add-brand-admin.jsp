@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+  <title>Title</title>
   <title>Thêm hãng xe - Auto Cars Admin</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cars-brand-admin.css">
 </head>
@@ -15,7 +15,7 @@
   <a href="#" class="menu-item">Dashboard</a>
 
   <div class="menu-title">VẬN HÀNH</div>
-  <a href="#" class="menu-item">Quản lý đặt xe</a>
+  <a href="booking-admin" class="menu-item">Quản lý đặt xe</a>
   <a href="#" class="menu-item">Quản lý thanh toán</a>
 
   <div class="menu-title">DANH MỤC</div>
@@ -46,15 +46,16 @@
         form POST về /add-brand.
         AddBrandController.doPost() sẽ nhận và insert vào DB.
     --%>
-    <form method="post" action="${pageContext.request.contextPath}/add-brand">
+    <form method="post" action="${pageContext.request.contextPath}/add-brand" enctype="multipart/form-data">
 
       <div class="form-group">
         <label>Tên hãng xe <span style="color:red">*</span></label>
         <input type="text" name="brandName" placeholder="VD: Toyota" required>
       </div>
       <div class="form-group">
-        <label>URL Logo</label>
-        <input type="text" name="logo" placeholder="https://example.com/logo.png">
+        <label>Ảnh logo</label>
+        <input type="file" name="logoFile" accept="image/*">
+        <small>Chọn ảnh logo (jpg, png, ...) cho hãng xe. Có thể bỏ trống.</small>
       </div>
       <div class="form-group">
         <label>Quốc gia</label>

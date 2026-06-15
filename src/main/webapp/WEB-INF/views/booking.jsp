@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <fmt:setLocale value="vi_VN"/>
 
@@ -13,7 +14,7 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/includes/header.jsp">
-  <jsp:param name="activePage" value="booking"/>
+    <jsp:param name="activePage" value="booking"/>
 </jsp:include>
 <div class="booking-page">
     <div class="booking-container">
@@ -109,7 +110,14 @@
             <c:choose>
                 <c:when test="${not empty selCar}">
                     <div class="car-preview">
-                        <img src="${selCar.img}" alt="${selCar.typeName}">
+                        <c:choose>
+                            <c:when test="${fn:startsWith(selCar.img, 'http')}">
+                                <img src="${selCar.img}" alt="${selCar.typeName}">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="${pageContext.request.contextPath}/${selCar.img}" alt="${selCar.typeName}">
+                            </c:otherwise>
+                        </c:choose>
                         <h3>${selCar.typeName}</h3>
                         <div class="tags">
                             <span class="tag">${selCar.seatingPlan} chỗ</span>
