@@ -7,22 +7,17 @@ public class RegistrationNotificationService {
 
     public void sendRegistrationNotification(int accountId, String fullName) {
         String title = "Đón chào bạn " + fullName;
-        String content = "Tài khoản của bạn đã được tạo thành công. " +
-                "Bây giờ bạn có thể đặt xe và tận hưởng các ưu đãi đặc biệt!";
-        String icon = "fas fa-heart";
-        String actionUrl = "/profile";
+        String content = "Tài khoản của bạn đã được tạo thành công. Bây giờ bạn có thể đặt xe!";
 
         notificationService.sendNotification(accountId, Notification.Type.REGISTRATION,
-                title, content, null, icon, actionUrl);
+                title, content, null);
     }
 
     public void sendWelcomeVoucherNotification(int accountId, int voucherDiscount, String voucherCode) {
         String title = "Nhận ngay voucher chào mừng " + voucherDiscount + "%";
         String content = "Mã voucher: " + voucherCode + " | Hạn sử dụng: 30 ngày";
-        String icon = "fas fa-ticket-alt";
-        String actionUrl = "/booking";
 
         notificationService.sendNotification(accountId, Notification.Type.PROMOTION,
-                title, content, voucherCode, icon, actionUrl);
+                title, content, voucherCode);
     }
 }

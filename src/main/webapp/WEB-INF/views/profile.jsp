@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hồ Sơ Cá Nhân</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #2563eb;
@@ -196,60 +195,27 @@
             text-overflow: ellipsis;
         }
 
-        .dropdown {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .dropdown-toggle:hover .user-name {
-            color: #ffa500;
-        }
-
-        .dropdown-caret {
-            color: #ffa500;
-            font-size: 0.7rem;
-        }
-
         .dropdown-menu {
-            display: none;
+            min-width: 200px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s;
             position: absolute;
-            top: calc(100% + 12px);
             right: 0;
-            background: #fff;
-            border-radius: 10px;
-            min-width: 220px;
-            box-shadow: 0 8px 24px rgba(0,0,0,.15);
-            overflow: hidden;
-            z-index: 200;
+            top: 100%;
+            margin-top: 8px;
+            z-index: 1000;
+            background: white;
         }
 
         .dropdown-menu.open {
-            display: block;
-        }
-
-        .dropdown-header {
-            padding: 14px 16px 10px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .dropdown-header-name {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #0f172a;
-        }
-
-        .dropdown-header-role {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-top: 2px;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
         .dropdown-item {
@@ -329,7 +295,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.1rem;
             color: white;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
@@ -368,11 +334,12 @@
             margin-top: 5px;
         }
 
-        /* Navigation Tabs */
         .nav-tabs {
             border-bottom: 2px solid #e5e7eb;
             margin-bottom: 30px;
             gap: 0;
+            position: relative;
+            z-index: 10;
         }
 
         .nav-tabs .nav-link {
@@ -383,6 +350,11 @@
             font-weight: 500;
             padding: 15px 20px;
             transition: all 0.3s ease;
+            background-color: transparent;
+            cursor: pointer;
+            position: relative;
+            z-index: 11;
+            pointer-events: auto !important;
         }
 
         .nav-tabs .nav-link:hover {
@@ -508,7 +480,6 @@
             gap: 15px;
             align-items: flex-start;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
 
         .notification-item:hover {
@@ -521,11 +492,8 @@
             border-left-color: #3b82f6;
         }
 
-        .notification-icon {
-            font-size: 1.3rem;
-            color: var(--primary-color);
-            min-width: 25px;
-            text-align: center;
+        .notification-content {
+            flex: 1;
         }
 
         .notification-content h5 {
@@ -546,6 +514,7 @@
             color: #9ca3af;
             font-size: 0.8rem;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .notification-empty {
@@ -699,21 +668,11 @@
 
             .user-info {
                 flex-direction: column;
-                justify-content: center;
             }
 
             .member-stats {
+                justify-content: center;
                 width: 100%;
-                justify-content: space-around;
-            }
-
-            .form-section {
-                padding: 20px;
-            }
-
-            .nav-tabs .nav-link {
-                padding: 12px 15px;
-                font-size: 0.9rem;
             }
 
             .nav-inner {
@@ -721,8 +680,13 @@
             }
 
             .nav-links {
-                gap: 20px;
                 margin-left: 20px;
+                gap: 20px;
+            }
+
+            .nav-tabs .nav-link {
+                padding: 12px 15px;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -730,84 +694,40 @@
 <body>
 <nav class="global-nav">
     <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index">AUTO CARS</a>
-
+        <a class="nav-logo" href="${pageContext.request.contextPath}/">AUTO CARS</a>
         <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/index">Trang chủ</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/brand">Hãng xe</a>
-
-            <c:choose>
-                <c:when test="${not empty sessionScope.account_id}">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/booking">Đặt xe</a>
-                    <a class="nav-link" href="${pageContext.request.contextPath}/cart">Member</a>
-                </c:when>
-                <c:otherwise>
-                    <a class="nav-link" href="${pageContext.request.contextPath}/login">Đặt xe</a>
-                </c:otherwise>
-            </c:choose>
-
-            <c:if test="${sessionScope.role_id == 3}">
-                <a class="nav-link admin-link" href="${pageContext.request.contextPath}/admin/dashboard">
-                    Dashboard
-                </a>
-            </c:if>
+            <a class="nav-link active" href="${pageContext.request.contextPath}/">Trang Chủ</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/list-product">Danh Sách Xe</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/brand">Hãng Xe</a>
         </div>
-
         <div class="nav-actions">
             <c:choose>
                 <c:when test="${empty sessionScope.account_id}">
                     <a href="${pageContext.request.contextPath}/login" class="btn-login">Đăng nhập</a>
                     <a href="${pageContext.request.contextPath}/register" class="btn-register">Đăng ký</a>
                 </c:when>
-
                 <c:otherwise>
-                    <a class="notif-wrap" href="${pageContext.request.contextPath}/profile">
-
+                    <div class="notif-wrap">
+                        Thông báo
                         <c:if test="${unreadCount > 0}">
                             <span class="notif-badge">${unreadCount}</span>
                         </c:if>
-                    </a>
-
-                    <div class="dropdown">
-                        <div class="dropdown-toggle" onclick="toggleDropdown(event)">
-                            <div class="user-avatar">
-                                    ${fn:substring(sessionScope.full_name, 0, 1)}
-                            </div>
-                            <span class="user-name">${sessionScope.full_name}</span>
-                            <span class="dropdown-caret">▼</span>
+                    </div>
+                    <div style="position: relative;">
+                        <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;"
+                             onclick="toggleDropdown(event)">
+                            <div class="user-avatar">${fn:substring(sessionScope.fullName, 0, 1)}</div>
+                            <div class="user-name">${sessionScope.fullName}</div>
                         </div>
-
-                        <div class="dropdown-menu" id="dropdownMenu">
-                            <div class="dropdown-header">
-                                <div class="dropdown-header-name">${sessionScope.full_name}</div>
-                                <div class="dropdown-header-role">
-                                    <c:choose>
-                                        <c:when test="${sessionScope.role_id == 3}">Quản trị viên</c:when>
-                                        <c:otherwise>Khách hàng</c:otherwise>
-                                    </c:choose>
-                                </div>
-                            </div>
-
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/profile">
-                                <i class="fas fa-user"></i> Hồ sơ cá nhân
-                            </a>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/my-bookings">
-                                <i class="fas fa-calendar"></i> Đơn đặt xe
-                            </a>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/cart">
-                                <i class="fas fa-crown"></i> Member
-                            </a>
+                        <div id="dropdownMenu" class="dropdown-menu">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/profile">Hồ Sơ Cá Nhân</a>
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/my-bookings">Đơn Đặt Xe</a>
 
                             <c:if test="${sessionScope.role_id == 3}">
-                                <a class="dropdown-item admin" href="${pageContext.request.contextPath}/admin/dashboard">
-                                    <i class="fas fa-shield-alt"></i> Dashboard Admin
-                                </a>
+                                <a class="dropdown-item admin" href="${pageContext.request.contextPath}/admin/dashboard">Dashboard Admin</a>
                             </c:if>
 
-                            <a class="dropdown-item logout" href="${pageContext.request.contextPath}/logout">
-                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                            </a>
+                            <a class="dropdown-item logout" href="${pageContext.request.contextPath}/logout">Đăng xuất</a>
                         </div>
                     </div>
                 </c:otherwise>
@@ -821,25 +741,23 @@
         <!-- Messages -->
         <c:if test="${not empty successMessage}">
             <div class="alert alert-success alert-custom" role="alert">
-                <i class="fas fa-check-circle"></i> ${successMessage}
+                    ${successMessage}
             </div>
         </c:if>
         <c:if test="${not empty errorMessage}">
             <div class="alert alert-danger alert-custom" role="alert">
-                <i class="fas fa-exclamation-circle"></i> ${errorMessage}
+                    ${errorMessage}
             </div>
         </c:if>
 
         <div class="profile-header">
             <div class="header-content">
                 <div class="user-info">
-                    <div class="user-avatar-large">
-                        <i class="fas fa-user"></i>
-                    </div>
+                    <div class="user-avatar-large">Hồ sơ</div>
                     <div class="user-details">
                         <h2>${member.fullName}</h2>
-                        <p><i class="fas fa-envelope"></i> ${member.email}</p>
-                        <p><i class="fas fa-phone"></i> ${member.phone}</p>
+                        <p>Email: ${member.email}</p>
+                        <p>SĐT: ${member.phone}</p>
                     </div>
                 </div>
 
@@ -860,38 +778,37 @@
             </div>
         </div>
 
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info">
-                    <i class=""></i> Thông Tin Cá Nhân
-                </a>
+        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">
+                    Thông Tin Cá Nhân
+                </button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="bookings-tab" data-bs-toggle="tab" href="#bookings">
-                    <i class=""></i> Lịch Sử Đặt Xe
-                </a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="bookings-tab" data-bs-toggle="tab" data-bs-target="#bookings" type="button" role="tab" aria-controls="bookings" aria-selected="false">
+                    Lịch Sử Đặt Xe
+                </button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="notifications-tab" data-bs-toggle="tab" href="#notifications">
-                    <i class=""></i> Thông Báo
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab" aria-controls="notifications" aria-selected="false">
+                    Thông Báo
                     <c:if test="${unreadCount > 0}">
                         <span class="badge bg-danger ms-2">${unreadCount}</span>
                     </c:if>
-                </a>
+                </button>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings">
-                    <i class=""></i> Cài Đặt
-                </a>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                    Cài Đặt
+                </button>
             </li>
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane fade show active" id="info">
+            <!-- TAB 1: THÔNG TIN CÁ NHÂN -->
+            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
                 <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class=""></i> Cập Nhật Thông Tin Cá Nhân
-                    </h3>
+                    <h3 class="form-section-title">Cập Nhật Thông Tin Cá Nhân</h3>
                     <form method="POST" action="${pageContext.request.contextPath}/profile">
                         <input type="hidden" name="action" value="updateProfile">
 
@@ -948,16 +865,12 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary-custom">
-                            <i class=""></i> Lưu Thay Đổi
-                        </button>
+                        <button type="submit" class="btn btn-primary-custom">Lưu Thay Đổi</button>
                     </form>
                 </div>
 
                 <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class=""></i> Đổi Mật Khẩu
-                    </h3>
+                    <h3 class="form-section-title">Đổi Mật Khẩu</h3>
                     <form method="POST" action="${pageContext.request.contextPath}/profile">
                         <input type="hidden" name="action" value="changePassword">
 
@@ -978,18 +891,15 @@
                             <input type="password" class="form-control" name="confirmPassword" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary-custom">
-                            <i class=""></i> Đổi Mật Khẩu
-                        </button>
+                        <button type="submit" class="btn btn-primary-custom">Đổi Mật Khẩu</button>
                     </form>
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="bookings">
+            <!-- TAB 2: LỊCH SỬ ĐẶT XE -->
+            <div class="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
                 <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class=""></i> Lịch Sử Đặt Xe
-                    </h3>
+                    <h3 class="form-section-title">Lịch Sử Đặt Xe</h3>
 
                     <c:choose>
                         <c:when test="${not empty bookingHistory && bookingHistory.size() > 0}">
@@ -999,13 +909,12 @@
                                         <div>
                                             <div class="booking-code">Mã: ${booking.bookingCode}</div>
                                             <p class="mb-0" style="color: #6b7280; font-size: 0.9rem;">
-                                                <fmt:formatDate value="${booking.bookingDate}"
-                                                                pattern="dd/MM/yyyy HH:mm"/>
+                                                    ${booking.bookingDate}
                                             </p>
                                         </div>
                                         <span class="booking-status completed">
-                                                <i class=""></i> ${booking.status}
-                                            </span>
+                                                ${booking.status}
+                                        </span>
                                     </div>
                                     <div style="color: #4b5563; font-size: 0.9rem;">
                                         <p><strong>Xe:</strong> ${booking.carInfo}</p>
@@ -1013,14 +922,13 @@
                                         <p><strong>Điểm trả:</strong> ${booking.dropoffLocation}</p>
                                         <p><strong>Giá tiền:</strong> <span style="color: var(--primary-color); font-weight: 600;">
                                                 <fmt:formatNumber value="${booking.totalPrice}" type="currency"
-                                                                  currencySymbol=""/>VND</span></p>
+                                                                  currencySymbol=""/> VND</span></p>
                                     </div>
                                 </div>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
                             <div class="notification-empty">
-                                <i class="" style="font-size: 2.5rem; color: #d1d5db;"></i>
                                 <p style="margin-top: 15px;">Bạn chưa có chuyến xe nào</p>
                             </div>
                         </c:otherwise>
@@ -1028,18 +936,15 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="notifications">
+            <!-- TAB 3: THÔNG BÁO -->
+            <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
                 <div class="form-section">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3 class="form-section-title mb-0">
-                            <i class=""></i> Thông Báo của Bạn
-                        </h3>
+                        <h3 class="form-section-title mb-0">Thông Báo của Bạn</h3>
                         <c:if test="${unreadCount > 0}">
                             <form method="POST" action="${pageContext.request.contextPath}/profile" style="display: inline;">
                                 <input type="hidden" name="action" value="markAllAsRead">
-                                <button type="submit" class="btn btn-outline-custom">
-                                    <i class=""></i> Đánh dấu tất cả đã đọc
-                                </button>
+                                <button type="submit" class="btn btn-outline-custom">Đánh dấu tất cả đã đọc</button>
                             </form>
                         </c:if>
                     </div>
@@ -1047,24 +952,23 @@
                     <c:choose>
                         <c:when test="${not empty notifications && notifications.size() > 0}">
                             <c:forEach var="notif" items="${notifications}">
-                                <div class="notification-item ${!notif.read ? 'unread' : ''}">
-                                    <div class="notification-icon">
-                                        <i class="${notif.icon}"></i>
+                                <div style="background: #f9fafb; border-left: 4px solid #2563eb; border-radius: 8px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: flex-start;">
+                                    <div style="flex: 1;">
+                                        <h5 style="margin: 0; color: #1f2937; font-weight: 600; font-size: 0.95rem;">
+                                                ${notif.title}
+                                        </h5>
+                                        <p style="margin: 5px 0 0 0; color: #6b7280; font-size: 0.85rem; line-height: 1.4;">
+                                                ${notif.content}
+                                        </p>
                                     </div>
-                                    <div class="notification-content" style="flex: 1;">
-                                        <h5>${notif.title}</h5>
-                                        <p>${notif.content}</p>
-                                    </div>
-                                    <div class="notification-time">
-                                        <fmt:formatDate value="${notif.createdAt}"
-                                                        pattern="dd/MM/yyyy HH:mm"/>
+                                    <div style="color: #9ca3af; font-size: 0.8rem; white-space: nowrap;">
+                                            ${notif.createdAt}
                                     </div>
                                 </div>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <div class="notification-empty">
-                                <i class="" style="font-size: 2.5rem; color: #d1d5db;"></i>
+                            <div style="text-align: center; color: #9ca3af; padding: 40px 20px;">
                                 <p style="margin-top: 15px;">Bạn chưa có thông báo nào</p>
                             </div>
                         </c:otherwise>
@@ -1072,11 +976,10 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="settings">
+            <!-- TAB 4: CÀI ĐẶT -->
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class=""></i> Tùy Chỉnh Thông Báo
-                    </h3>
+                    <h3 class="form-section-title">Tùy Chỉnh Thông Báo</h3>
                     <form method="POST" action="${pageContext.request.contextPath}/profile">
                         <input type="hidden" name="action" value="updateSettings">
 
@@ -1113,9 +1016,7 @@
                                    value="on" ${preference.emailWeekly ? 'checked' : ''}>
                         </div>
 
-                        <button type="submit" class="btn btn-primary-custom mt-3">
-                            <i class="fas fa-save"></i> Lưu Cài Đặt
-                        </button>
+                        <button type="submit" class="btn btn-primary-custom mt-3">Lưu Cài Đặt</button>
                     </form>
                 </div>
             </div>
@@ -1182,6 +1083,24 @@
                 const bsAlert = new bootstrap.Alert(alert);
                 bsAlert.close();
             }, 5000);
+        });
+
+        // Tự động kích hoạt lại tab được chọn trước đó từ Session Storage sau khi reload trang
+        const activeTabId = sessionStorage.getItem('activeTab');
+        if (activeTabId) {
+            const tabBtn = document.getElementById(activeTabId);
+            if (tabBtn) {
+                const tab = new bootstrap.Tab(tabBtn);
+                tab.show();
+            }
+        }
+
+        // Lưu ID tab hiện tại vào Session Storage khi người dùng click đổi tab
+        const tabButtons = document.querySelectorAll('#profileTabs button');
+        tabButtons.forEach(button => {
+            button.addEventListener('shown.bs.tab', function (e) {
+                sessionStorage.setItem('activeTab', e.target.id);
+            });
         });
     });
 </script>
