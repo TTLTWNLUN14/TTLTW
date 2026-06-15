@@ -272,6 +272,16 @@ body {
     height: 190px;
     position: relative;
     padding: 16px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.img{
+    height: 140px;
+}
+.car-img {
+    height: 190px;
+    object-fit: contain;
+    display: block;
 }
 
 .badge-stock {

@@ -17,7 +17,7 @@
     <a href="#" class="menu-item">Dashboard</a>
 
     <div class="menu-title">VẬN HÀNH</div>
-    <a href="#" class="menu-item">Quản lý đặt xe</a>
+    <a href="booking-admin" class="menu-item">Quản lý đặt xe</a>
     <a href="#" class="menu-item">Quản lý thanh toán</a>
 
     <div class="menu-title">DANH MỤC</div>
@@ -43,8 +43,7 @@
 
     <div class="form-card">
         <h2>+ Thêm loại xe mới</h2>
-
-        <form method="post" action="${pageContext.request.contextPath}/cars-admin/add">
+        <form method="post" action="${pageContext.request.contextPath}/cars-admin/add" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label>Hãng xe <span style="color:red">*</span></label>
@@ -106,8 +105,9 @@
 
             <div class="form-row-2">
                 <div class="form-group">
-                    <label>URL Ảnh xe</label>
-                    <input type="text" name="img" placeholder="https://...">
+                    <label>Ảnh xe</label>
+                    <input type="file" name="imgFile" accept="image/*">
+                    <small>Chọn ảnh cho loại xe (jpg, png, ...). Có thể bỏ trống.</small>
                 </div>
                 <div class="form-group">
                     <label>Số xe có sẵn</label>

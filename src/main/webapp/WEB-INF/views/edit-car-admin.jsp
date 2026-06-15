@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -16,7 +17,7 @@
     <a href="#" class="menu-item">Dashboard</a>
 
     <div class="menu-title">VẬN HÀNH</div>
-    <a href="#" class="menu-item">Quản lý đặt xe</a>
+    <a href="booking-admin" class="menu-item">Quản lý đặt xe</a>
     <a href="#" class="menu-item">Quản lý thanh toán</a>
 
     <div class="menu-title">DANH MỤC</div>
@@ -44,8 +45,10 @@
         <h2>&#x270E; Sửa thông tin loại xe</h2>
 
         <%-- EditCarAdminController -> id và set vào request --%>
-        <form method="post" action="${pageContext.request.contextPath}/cars-admin/edit">
+        <form method="post" action="${pageContext.request.contextPath}/cars-admin/edit" enctype="multipart/form-data">
             <input type="hidden" name="typeId" value="${carType.typeId}">
+
+            <input type="hidden" name="oldImg" value="${carType.img}">
 
             <div class="form-group">
                 <label>Hãng xe <span style="color:red">*</span></label>
@@ -95,12 +98,12 @@
 
             <div class="form-row-2">
                 <div class="form-group">
-                    <label>Giá/km (đ) <small style="color:#888;font-weight:normal">— tổng km × giá này</small></label>
+                    <label>Giá/km (đ)</label>
                     <input type="number" name="priceKm"
                            value="${carType.priceKm}" min="0">
                 </div>
                 <div class="form-group">
-                    <label>Giá/ngày (đ) <small style="color:#888;font-weight:normal">— tính từ ngày thứ 3 trở đi</small></label>
+                    <label>Giá/ngày (đ)</label>
                     <input type="number" name="priceDay"
                            value="${carType.priceDay}" min="0">
                 </div>
@@ -108,8 +111,28 @@
 
             <div class="form-row-2">
                 <div class="form-group">
-                    <label>URL Ảnh xe</label>
-                    <input type="text" name="img" value="${carType.img}">
+                    <label>Ảnh xe hiện tại</label>
+                    <%-- hiển thị ảnh hiện tại (nếu có) --%>
+                    <c:choose>
+                        <c:when test="${not empty carType.img}">
+                            <c:choose>
+                                <%-- Ảnh cũ là link URL (http...) thì hiển thị trực tiếp --%>
+                                <c:when test="${fn:startsWith(carType.img, 'http')}">
+                                    <img src="${carType.img}" alt="${carType.typeName}" class="car-img-preview">
+                                </c:when>
+                                <%-- ảnh là file đã upload (đường dẫn tương đối) thì thêm contextpath --%>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/${carType.img}" alt="${carType.typeName}" class="car-img-preview">
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            <p>Chưa có ảnh</p>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <input type="file" name="imgFile" accept="image/*">
+                    <small>Chọn ảnh mới nếu muốn thay đổi, để trống nếu giữ ảnh hiện tại.</small>
                 </div>
                 <div class="form-group">
                     <label>Số xe có sẵn</label>
