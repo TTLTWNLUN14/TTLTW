@@ -139,4 +139,20 @@ public class UserDAO extends BaseDao {
             return false;
         }
     }
+    public boolean updateAvatar(int accountId, String avatarPath) {
+        try {
+            int rows = get().withHandle(h ->
+                    h.createUpdate("UPDATE accounts SET avatar = :avatar, updated_at = NOW() WHERE account_id = :account_id")
+                            .bind("avatar", avatarPath)
+                            .bind("account_id", accountId)
+                            .execute()
+            );
+            System.out.println("✓ Cập nhật avatar thành công: " + accountId);
+            return rows > 0;
+        } catch (Exception e) {
+            System.err.println("Lỗi khi cập nhật avatar: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
