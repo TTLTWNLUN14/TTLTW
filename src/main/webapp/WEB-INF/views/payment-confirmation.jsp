@@ -19,7 +19,6 @@
 </jsp:include>
 <div class="confirm-page">
     <div class="success-banner">
-        <span class="success-icon"></span>
         <div class="success-title">Đặt xe thành công!</div>
         <div class="success-sub">
             Đơn đặt xe của bạn đã được ghi nhận.<br>
