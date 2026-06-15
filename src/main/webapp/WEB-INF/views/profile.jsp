@@ -737,12 +737,18 @@
             </div>
         </c:if>
 
-        <div class="card mb-4 border-0 shadow-sm bg-white rounded-3">
-            <div class="card-body d-flex align-items-center justify-content-between p-4 flex-wrap gap-4">
+        <div class="profile-header">
+            <div class="header-content">
 
-                <div class="d-flex align-items-center flex-wrap gap-4">
+                <div class="user-info">
                     <div class="position-relative" style="width: 110px; height: 110px; flex-shrink: 0;">
                         <c:choose>
+                            <c:when test="${not empty sessionScope.avatar}">
+                                <img src="${pageContext.request.contextPath}/${sessionScope.avatar}"
+                                     alt="Avatar"
+                                     class="rounded-circle img-thumbnail w-100 h-100 object-fit-cover"
+                                     id="avatarPreview">
+                            </c:when>
                             <c:when test="${not empty sessionScope.user.avatar}">
                                 <img src="${pageContext.request.contextPath}/${sessionScope.user.avatar}"
                                      alt="Avatar"
@@ -757,20 +763,22 @@
                             </c:otherwise>
                         </c:choose>
 
-                        <form action="${pageContext.request.contextPath}/profile" method="post" enctype="multipart/form-data" id="avatarForm">
+                        <form action="${pageContext.request.contextPath}/profile" method="post"
+                              enctype="multipart/form-data" class="d-inline">
                             <input type="hidden" name="action" value="updateAvatar">
-
-                            <input type="file" name="avatarFile" id="avatarInput" accept="image/*" class="d-none" onchange="document.getElementById('avatarForm').submit();">
-
-                            <label for="avatarInput" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                                   style="width: 30px; height: 30px; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"
-                                   title="Nhấp để đổi ảnh đại diện">
-                                <span style="font-size: 18px; font-weight: bold; line-height: 1; margin-top: -2px;">+</span>
-                            </label>
+                            <input type="file" name="avatarFile" id="avatarInput" accept="image/*"
+                                   class="d-none" onchange="this.form.submit();">
                         </form>
+
+                        <label for="avatarInput"
+                               class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                               style="width: 30px; height: 30px; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"
+                               title="Nhấp để đổi ảnh đại diện">
+                            <span style="font-size: 18px; font-weight: bold; line-height: 1; margin-top: -2px;">+</span>
+                        </label>
                     </div>
 
-                    <div>
+                    <div class="user-details">
                         <div class="d-flex align-items-center mb-2 flex-wrap gap-2">
                             <span class="badge border border-primary text-primary px-3 py-1.5 bg-transparent fw-bold"
                                   style="border-radius: 6px; font-size: 14px; letter-spacing: 0.5px;">
@@ -786,7 +794,7 @@
                     </div>
                 </div>
 
-                <div class="member-stats my-2">
+                <div class="member-stats">
                     <div class="stat-item">
                         <div class="stat-value">${member.totalTrips}</div>
                         <div class="stat-label">Chuyến Xe</div>
@@ -803,6 +811,7 @@
 
             </div>
         </div>
+
         <ul class="nav nav-tabs" id="profileTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">

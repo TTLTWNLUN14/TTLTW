@@ -40,25 +40,4 @@ public class FileUploadUtil {
         return UPLOAD_DIR + "/" + subFolder + "/" + newFileName;
     }
 
-    public static String saveFile(Part filePart, HttpServletRequest request) throws IOException {
-        if (filePart == null || filePart.getSize() == 0) {
-            return null;
-        }
-
-        String submittedFileName = filePart.getSubmittedFileName();
-        if (submittedFileName == null || submittedFileName.isEmpty()) {
-            return null;
-        }
-        String fileName = Paths.get(submittedFileName).getFileName().toString();
-        String newFileName = System.currentTimeMillis() + "_avatar_" + fileName;
-        String basePath = request.getServletContext().getRealPath("");
-        String subFolder = "avatars";
-        String uploadPath = basePath + File.separator + UPLOAD_DIR + File.separator + subFolder;
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
-        filePart.write(uploadPath + File.separator + newFileName);
-        return UPLOAD_DIR + "/" + subFolder + "/" + newFileName;
-    }
 }
