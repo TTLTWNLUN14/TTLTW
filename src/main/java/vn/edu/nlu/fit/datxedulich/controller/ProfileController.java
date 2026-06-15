@@ -124,32 +124,31 @@ public class ProfileController extends HttpServlet {
             session.setAttribute("errorMessage", "Cập nhật thông tin thất bại!");
         }
     }
+
     private void handleUpdateAvatar(HttpServletRequest request, int accountId, HttpSession session) throws Exception {
-        User user = (User) session.getAttribute("user");
-        if (user == null) return;
+        request.setCharacterEncoding("UTF-8");
 
         try {
-            Part filePart = request.getPart("avatarFile");
-            String relativePath = FileUploadUtil.saveFile(filePart, request);
+            String avatarPath = FileUploadUtil.uploadFile(request, "avatarFile", "avatars");
 
-            if (relativePath != null && !relativePath.isEmpty()) {
-                boolean isUpdated = userService.updateAvatar(accountId, relativePath);
+            if (avatarPath != null && !avatarPath.isEmpty()) {
+                boolean isUpdated = userService.updateAvatar(accountId, avatarPath);
 
                 if (isUpdated) {
-                    user.setAvatar(relativePath);
-                    session.setAttribute("user", user);
-                    session.setAttribute("successMessage", "Cập nhật ảnh đại diện thành công");
+                    session.setAttribute("avatar", avatarPath);
+                    session.setAttribute("successMessage", "Cập nhật ảnh đại diện thành công!");
                 } else {
-                    session.setAttribute("errorMessage", "Cập nhật đường dẫn thất bại");
+                    session.setAttribute("errorMessage", "Cập nhật ảnh đại diện thất bại!");
                 }
             } else {
-                session.setAttribute("errorMessage", "Vui lòng chọn một ảnh hợp lệ");
+                session.setAttribute("errorMessage", "Vui lòng chọn một ảnh hợp lệ!");
             }
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
         }
     }
+
     private void handleUpdateSettings(HttpServletRequest request, int accountId, HttpSession session) throws Exception {
         UserPreference preference = new UserPreference();
         preference.setNotificationBooking("on".equals(request.getParameter("notificationBooking")));
