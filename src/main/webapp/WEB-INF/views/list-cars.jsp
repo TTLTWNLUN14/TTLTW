@@ -1,35 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Danh sách xe - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/list-cars.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
     <script>
         const CONTEXT_PATH = '${pageContext.request.contextPath}';
     </script>
 </head>
 <body>
 
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
-        <div class="nav-links">
-            <a class="nav-link" href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
-            <a class="nav-link active" href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/cars-brand">Hãng xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/booking">Đặt xe</a>
-            <a class="nav-link" href="${pageContext.request.contextPath}/my-shopping-cart">
-                Giỏ hàng (<span class="cart-count"><c:out
-                    value="${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0}"/></span>)
-            </a>
-        </div>
-        <div class="nav-actions" id="navActions">
-            <a href="#" class="btn-login">Đăng nhập</a>
-            <a href="#" class="btn-login ml-20">Đăng ký</a>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+  <jsp:param name="activePage" value="cars"/>
+</jsp:include>
 <div class="page-main">
     <div class="page-wrap-lg">
 
@@ -123,6 +108,12 @@
                         </div>
                     </div>
 
+                    <button type="submit" id="applyFilterBtn"
+                            class="btn-ghost btn-primary"
+                            style="display:block; margin-top:16px; text-align:center; cursor:pointer;">
+                         Lọc
+                    </button>
+
                     <%-- Nút xóa tất cả bộ lọc --%>
                     <a href="${pageContext.request.contextPath}/list-product"
                        class="btn-ghost" style="display:block; margin-top:8px; text-align:center;">
@@ -135,7 +126,7 @@
 
             <div class="cars-main">
                 <div class="cars-header">
-                    <span class="car-count"> loại xe</span>
+                    <span class="car-count">${totalItems} loại xe</span>
                 </div>
 
                 <div class="cars-grid" id="carGrid">
@@ -147,7 +138,14 @@
                              data-fuel="${p.fuel}"
                              data-price="${p.priceKm}">
                             <div class="car-img-box">
-                                <img class="car-img" src="${p.img}" alt="img-cars">
+                                <c:choose>
+                                    <c:when test="${fn:startsWith(p.img, 'http')}">
+                                        <img style="height: 160px" class="car-img" src="${p.img}" alt="img-cars">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img style="height: 160px" class="car-img" src="${pageContext.request.contextPath}/${p.img}" alt="img-cars">
+                                    </c:otherwise>
+                                </c:choose>
                                 <span class="badge-stock">${p.count} xe có sẵn</span>
                             </div>
                             <div class="car-body">

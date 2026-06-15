@@ -5,10 +5,16 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import vn.edu.nlu.fit.datxedulich.model.Brand;
 import vn.edu.nlu.fit.datxedulich.services.BrandService;
+import vn.edu.nlu.fit.datxedulich.utils.FileUploadUtil;
 
 import java.io.IOException;
 
 @WebServlet(name = "AddBrandController", value = "/add-brand")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,      // > 1MB thì ghi tạm ra disk
+        maxFileSize = 1024 * 1024 * 5,        // 5MB: kích thước tối đa 1 file
+        maxRequestSize = 1024 * 1024 * 10     // 10MB: kích thước tối đa cả request
+)
 public class AddBrandAdminController extends HttpServlet {
 
     @Override
@@ -24,9 +30,12 @@ public class AddBrandAdminController extends HttpServlet {
         // Đọc form
         Brand brand = new Brand();
         brand.setBrandName(request.getParameter("brandName"));
-        brand.setLogo(request.getParameter("logo"));
         brand.setCountry(request.getParameter("country"));
         brand.setDescriptionBrand(request.getParameter("descriptionBrand"));
+
+        // Upload ảnh logo -> lưu vào assets/uploads/brands
+        String logoPath = FileUploadUtil.uploadFile(request, "logoFile", "brands");
+        brand.setLogo(logoPath);
 
         BrandService brandService = new BrandService();
         brandService.insertBrand(brand);

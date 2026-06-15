@@ -14,7 +14,7 @@ import java.util.List;
 @WebServlet(name = "ListProductController", value = "/list-product")
 public class ListProductController extends HttpServlet {
 
-    private static final int PAGE_SIZE = 9;
+    private static final int PAGE_SIZE = 6;
     private final CarTypeService ps = new CarTypeService();
     private final BrandService   bs = new BrandService();
 

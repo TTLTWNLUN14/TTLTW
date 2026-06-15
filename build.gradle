@@ -9,9 +9,9 @@ apply plugin: 'org.hidetake.ssh'
 
 remotes {
     host {
-        host = 'huyxd.id.vn'
-        user = 'huy'
-        password = 'huy120905'
+        host = 'trgnhan291.id.vn'
+        user = 'nhan'
+        password = '292004nhan'
     }
 }
 
@@ -38,7 +38,7 @@ task docker_upload_file_to_server {
         ssh.run {
             session(remotes.host) {
                 execute 'rm -f /usr/deploy/lab.war'
-                put from: "${project.projectDir}/build/libs/TTLTW.war", into: "/usr/deploy/lab.war"
+                put from: "${project.projectDir}/build/libs/DatXeDuLich.war", into: "/usr/deploy/lab.war"
             }
         }
     }

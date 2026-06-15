@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -17,7 +18,7 @@
     <a href="#" class="menu-item">Dashboard</a>
 
     <div class="menu-title">VẬN HÀNH</div>
-    <a href="#" class="menu-item">Quản lý đặt xe</a>
+    <a href="booking-admin" class="menu-item">Quản lý đặt xe</a>
     <a href="#" class="menu-item">Quản lý thanh toán</a>
 
     <div class="menu-title">DANH MỤC</div>
@@ -75,7 +76,6 @@
         <table class="custom-table">
             <thead>
             <tr>
-                <th>Logo</th>
                 <th>Hãng xe</th>
                 <th>Quốc gia</th>
                 <th>Thao tác</th>
@@ -84,17 +84,6 @@
             <tbody>
             <c:forEach var="b" items="${listBrand}">
                 <tr>
-                    <td>
-                        <c:choose>
-                            <c:when test="${not empty b.logo}">
-                                <img src="${b.logo}" alt="${b.brandName}" class="brand-logo-img">
-                            </c:when>
-                            <c:otherwise>
-                                <span class="empty-logo-text">—</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-
                     <td><strong>${b.brandName}</strong></td>
                     <td>${b.country}</td>
 

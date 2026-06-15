@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="vi_VN"/>
 <!DOCTYPE html>
 <html lang="vi">
@@ -9,19 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thanh Toán - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/payment.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
 <body>
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
-        <div class="nav-links">
-            <a href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
-            <a href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a href="${pageContext.request.contextPath}/my-shopping-cart">Giỏ hàng</a>
-        </div>
-    </div>
-</nav>
 
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+    <jsp:param name="activePage" value="payment"/>
+</jsp:include>
 <div class="page-header">
     <h2>Thanh toán</h2>
     <div class="breadcrumb">

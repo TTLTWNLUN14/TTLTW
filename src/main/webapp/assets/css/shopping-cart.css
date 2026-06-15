@@ -9,6 +9,77 @@ body {
     background-color: #f4f7fb;
 }
 
+.m-0 {
+    margin: 0;
+}
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.qty-control form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.qty-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    background: #ddd;
+}
+
+.qty-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.qty-display {
+    min-width: 28px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.order-info h4 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.selected-item-desc {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.bottom-actions {
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+.bottom-actions form {
+    display: inline-block;
+    margin: 0;
+}
+
+.bottom-actions .btn-detail {
+    display: inline-block;
+    margin-left: 10px;
+}
+
 .global-nav {
     background-color: #0b1a30;
     height: 70px;
@@ -220,46 +291,44 @@ hr {
 .btn-payment:hover {
     background-color: #153e7f;
 }
-.qty-btn {
-    width: 28px; height: 28px;
-    border: 1px solid #ccc;
-    background: #f5f5f5;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 4px;
-    line-height: 1;
-}
-.qty-btn:hover { background: #ddd; }
-.qty-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.qty-display { min-width: 28px; text-align: center; font-weight: bold; }
-
-.card-actions { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
 
 .btn-delete {
     padding: 5px 14px;
-    background: #e74c3c; color: white;
-    border: none; border-radius: 4px; cursor: pointer; font-size: 13px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
 }
 .btn-delete:hover { background: #c0392b; }
 
 .btn-pay-item {
     padding: 5px 14px;
-    background: #1a4fa0; color: white;
-    border: none; border-radius: 4px; cursor: pointer; font-size: 13px;
+    background: #1a4fa0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
 }
 .btn-pay-item:hover { background: #163d80; }
 
 .btn-detail {
     padding: 5px 14px;
-    background: #fff; color: #1a4fa0;
-    border: 1px solid #1a4fa0; border-radius: 4px;
-    cursor: pointer; font-size: 13px;
+    background: #fff;
+    color: #1a4fa0;
+    border: 1px solid #1a4fa0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
 }
 .btn-detail:hover { background: #eef3fc; }
 
 .detail-panel {
     display: none;
-    margin-top: 14px;
+    width: 95%;
+    margin: 15px auto;
     padding: 16px;
     background: #f8f9fc;
     border: 1px solid #dce3f0;
@@ -301,12 +370,7 @@ hr {
     font-size: 13px;
     box-sizing: border-box;
 }
-.detail-panel {
-    display: none;
-}
-.detail-panel.open {
-    display: block;
-}
+
 .status-badge-order {
     display: inline-block;
     padding: 3px 10px;

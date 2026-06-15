@@ -10,22 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xác nhận đặt xe - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/booking-confirm.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
 <body>
 
-<nav class="global-nav">
-    <div class="nav-inner">
-        <a class="nav-logo" href="${pageContext.request.contextPath}/index.jsp">AUTO CARS</a>
-        <div class="nav-links">
-            <a href="${pageContext.request.contextPath}/index.jsp">Trang chủ</a>
-            <a href="${pageContext.request.contextPath}/list-product">Xe</a>
-            <a href="${pageContext.request.contextPath}/my-shopping-cart">
-                Giỏ hàng (${sessionScope.cart.totalQuantity != null ? sessionScope.cart.totalQuantity : 0})
-            </a>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="/WEB-INF/views/includes/header.jsp">
+  <jsp:param name="activePage" value="booking"/>
+</jsp:include>
 <div class="page-header">
     <h2>Xác nhận đặt xe</h2>
     <div class="breadcrumb">
@@ -38,7 +29,7 @@
     <div>
         <div class="summary-card">
             <div class="card-header">
-                <h3>óm tắt đơn đặt xe (${fn:length(selectedItems)} xe)</h3>
+                <h3>Tóm tắt đơn đặt xe (${fn:length(selectedItems)} xe)</h3>
             </div>
 
             <c:forEach items="${selectedItems}" var="ci" varStatus="st">
@@ -96,8 +87,7 @@
                        name="bookerName"
                        maxlength="100"
                        placeholder="Nguyễn Văn A"
-                       value="${not empty param.bookerName ? param.bookerName
-                                : (member != null ? member.fullName : '')}"
+                       value="${not empty param.bookerName ? param.bookerName : (member != null ? member.fullName : '')}"
                        required>
             </div>
 
@@ -108,8 +98,7 @@
                        maxlength="10"
                        pattern="\d{10}"
                        placeholder="0901234567"
-                       value="${not empty param.bookerPhone ? param.bookerPhone
-                                : (member != null ? member.phone : '')}"
+                       value="${not empty param.bookerPhone ? param.bookerPhone : (member != null ? member.phone : '')}"
                        required>
             </div>
 
@@ -134,6 +123,9 @@
                 <a href="${pageContext.request.contextPath}/my-shopping-cart" class="btn-back">
                     ← Quay lại giỏ hàng
                 </a>
+                <button type="button" class="btn-cancel-order" onclick="openCancelModal()">
+                    x Hủy đơn
+                </button>
                 <button type="submit" class="btn-confirm">
                     Xác nhận đặt xe →
                 </button>
@@ -142,5 +134,26 @@
     </div>
 
 </div>
+
+<div id="cancelModal" class="cancel-modal-overlay">
+    <div class="cancel-modal-box">
+        <h3> Xác nhận hủy đơn</h3>
+        <p>
+            Bạn có chắc muốn hủy tất cả <strong>${fn:length(selectedItems)} xe</strong> trong đơn này không?<br>
+            Đơn sẽ được lưu vào <em>Lịch sử → Đã hủy</em> và không thể hoàn tác.
+        </p>
+        <form action="${pageContext.request.contextPath}/cancel-booking" method="post">
+            <div class="cancel-modal-actions">
+                <button type="button" class="btn-modal-stay" onclick="closeCancelModal()">
+                    Không, ở lại
+                </button>
+                <button type="submit" class="btn-modal-confirm-cancel">
+                    Có, hủy đơn
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="${pageContext.request.contextPath}/assets/js/booking-confirm.js"></script>
 </body>
 </html>

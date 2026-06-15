@@ -5,11 +5,17 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import vn.edu.nlu.fit.datxedulich.model.Brand;
 import vn.edu.nlu.fit.datxedulich.services.BrandService;
+import vn.edu.nlu.fit.datxedulich.utils.FileUploadUtil;
 
 import java.io.IOException;
 
 
 @WebServlet(name = "EditBrandController", value = "/edit-brand")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,      // > 1MB thì ghi tạm ra disk
+        maxFileSize = 1024 * 1024 * 5,        // 5MB: kích thước tối đa 1 file
+        maxRequestSize = 1024 * 1024 * 10     // 10MB: kích thước tối đa cả request
+)
 public class EditBrandAdminController extends HttpServlet {
 
     @Override
@@ -52,9 +58,12 @@ public class EditBrandAdminController extends HttpServlet {
         Brand brand = new Brand();
         brand.setBrandId(Integer.parseInt(request.getParameter("brandId")));
         brand.setBrandName(request.getParameter("brandName"));
-        brand.setLogo(request.getParameter("logo"));
         brand.setCountry(request.getParameter("country"));
         brand.setDescriptionBrand(request.getParameter("descriptionBrand"));
+
+        String oldLogo = request.getParameter("oldLogo");
+        String newLogo = FileUploadUtil.uploadFile(request, "logoFile", "brands");
+        brand.setLogo(newLogo != null ? newLogo : oldLogo);
 
         BrandService brandService = new BrandService();
         brandService.updateBrand(brand);

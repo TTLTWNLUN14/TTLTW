@@ -52,20 +52,6 @@
     resize: vertical;
 }
 
-.form-group input[type="file"] {
-    display: block;
-    width: 100%;
-    padding: 8px 0;
-    font-size: 0.85rem;
-}
-
-.form-group small {
-    display: block;
-    margin-top: 4px;
-    color: #94a3b8;
-    font-size: 0.78rem;
-}
-
 .form-footer {
     display: flex;
     justify-content: flex-end;

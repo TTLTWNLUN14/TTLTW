@@ -31,4 +31,14 @@ public class BookingService {
     public List<Booking> getAllBookings() {
         return bookingDao.getAllBookings();
     }
+
+    public List<Booking> searchBookings(String keyword, String status,
+                                        String dateFrom, String dateTo) {
+        return bookingDao.searchBookings(keyword, status, dateFrom, dateTo);
+    }
+
+    public boolean updateBookingStatus(int bookingId, String status) {
+        return bookingDao.updateBookingStatus(bookingId, status);
+    }
+
 }

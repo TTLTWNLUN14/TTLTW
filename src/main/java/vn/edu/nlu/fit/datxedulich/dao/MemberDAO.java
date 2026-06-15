@@ -42,6 +42,26 @@ public class MemberDAO extends BaseDao {
         }
     }
 
+    public int ensureCustomerExists(int accountId) {
+        int existing = getCustomerIdByAccountId(accountId);
+        if (existing != -1) return existing;
+
+        try {
+            get().useHandle(h ->
+                    h.createUpdate(
+                                    "INSERT INTO customers (account_id, member, points) " +
+                                            "VALUES (:accountId, 'BRONZE', 0)"
+                            )
+                            .bind("accountId", accountId)
+                            .execute()
+            );
+            return getCustomerIdByAccountId(accountId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     public boolean updateMember(Member member) {
         try {
             get().useHandle(h ->
