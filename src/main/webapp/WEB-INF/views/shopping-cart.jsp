@@ -193,23 +193,24 @@
 
         <div class="booking-history-section" id="historySection">
             <div class="status-tabs">
-                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=all"
+                <%-- Khi bấm tab lọc → reset về trang 1 --%>
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=all&historyPage=1"
                    class="status-tab ${(statusFilter == null || statusFilter == 'all') ? 'active' : ''}">
                     Tất cả
                 </a>
-                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Chờ xác nhận"
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Chờ xác nhận&historyPage=1"
                    class="status-tab ${statusFilter == 'Chờ xác nhận' ? 'active' : ''}">
                     Chờ xác nhận
                 </a>
-                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Đang diễn ra"
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Đang diễn ra&historyPage=1"
                    class="status-tab ${statusFilter == 'Đang diễn ra' ? 'active' : ''}">
                     Đang diễn ra
                 </a>
-                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Hoàn thành"
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Hoàn thành&historyPage=1"
                    class="status-tab ${statusFilter == 'Hoàn thành' ? 'active' : ''}">
                     Hoàn thành
                 </a>
-                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Đã hủy"
+                <a href="${pageContext.request.contextPath}/my-shopping-cart?statusFilter=Đã hủy&historyPage=1"
                    class="status-tab ${statusFilter == 'Đã hủy' ? 'active' : ''}">
                     Đã hủy
                 </a>
@@ -269,6 +270,51 @@
                         </c:forEach>
                         </tbody>
                     </table>
+
+                    <%-- ── phân trang lịch sử── --%>
+                    <c:if test="${historyTotalPages > 1}">
+                        <div class="history-pagination" style="
+                            display:flex; justify-content:center; align-items:center;
+                            gap:6px; margin-top:20px; flex-wrap:wrap;">
+
+                            <c:choose>
+                                <c:when test="${historyPage > 1}">
+                                    <a href="${pageContext.request.contextPath}/my-shopping-cart?historyPage=${historyPage - 1}&statusFilter=${statusFilter}"
+                                       class="hist-page-btn">‹ Trước</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="hist-page-btn disabled">‹ Trước</span>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <c:forEach begin="1" end="${historyTotalPages}" var="i">
+                                <c:choose>
+                                    <c:when test="${i == historyPage}">
+                                        <span class="hist-page-btn active">${i}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/my-shopping-cart?historyPage=${i}&statusFilter=${statusFilter}"
+                                           class="hist-page-btn">${i}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+
+                            <c:choose>
+                                <c:when test="${historyPage < historyTotalPages}">
+                                    <a href="${pageContext.request.contextPath}/my-shopping-cart?historyPage=${historyPage + 1}&statusFilter=${statusFilter}"
+                                       class="hist-page-btn">Sau ›</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="hist-page-btn disabled">Sau ›</span>
+                                </c:otherwise>
+                            </c:choose>
+
+                        </div>
+                        <p style="text-align:center; color:#94a3b8; font-size:0.82rem; margin-top:6px;">
+                            Trang ${historyPage}/${historyTotalPages} — ${historyTotalItems} đơn
+                        </p>
+                    </c:if>
+
                 </c:when>
                 <c:otherwise>
                     <div class="history-empty">Không có đơn nào phù hợp.</div>

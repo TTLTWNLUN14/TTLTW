@@ -14,14 +14,16 @@ import java.io.IOException;
         "/edit-brand",
         "/cars-admin",
         "/cars-admin/add",
-        "/cars-admin/edit"
+        "/cars-admin/edit",
+        "/booking-admin",
+        "/admin/settings"
 })
 public class AdminFilterController implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest  httpRequest  = (HttpServletRequest)  request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
 
@@ -31,7 +33,6 @@ public class AdminFilterController implements Filter {
             return;
         }
 
-        // check superadmin = 0 admin =1
         Object roleObj = session.getAttribute("role_id");
         if (roleObj == null) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
@@ -45,7 +46,16 @@ public class AdminFilterController implements Filter {
             return;
         }
 
+        String requestURI = httpRequest.getRequestURI();
+        if (requestURI.endsWith("/admin/settings")) {
+            if (roleId != 0) {
+                // Nếu là Admin thường (role_id == 1), thông báo lỗi và đẩy về dashboard
+                session.setAttribute("flashMsg", "Bạn không có quyền truy cập chức năng này. Chỉ Super Admin mới được phép quản lý tài khoản quản trị.");
+                session.setAttribute("flashType", "error");
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/admin/dashboard");
+                return;
+            }
+        }
         chain.doFilter(request, response);
     }
-
 }
