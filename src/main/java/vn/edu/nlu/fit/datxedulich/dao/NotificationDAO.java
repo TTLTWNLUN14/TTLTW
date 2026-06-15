@@ -9,7 +9,7 @@ public class NotificationDAO extends BaseDao {
     public List<Notification> getNotificationsByAccountId(int accountId) {
         return get().withHandle(h -> h.createQuery(
                 "SELECT notif_id as notificationId, account_id as accountId, type, title, content, " +
-                        "booking_id as bookingCode, created_at as createdAt, is_read as isRead, icon, action_url as actionUrl " +
+                        "booking_id as bookingCode, created_at as createdAt, is_read as isRead " +
                         "FROM notifications WHERE account_id = :accountId ORDER BY created_at DESC LIMIT 50"
         ).bind("accountId", accountId).mapToBean(Notification.class).list());
     }
@@ -40,20 +40,19 @@ public class NotificationDAO extends BaseDao {
             e.printStackTrace();
         }
     }
+
     public void createNotification(int accountId, String type, String title, String content,
-                                   String bookingCode, String icon, String actionUrl) {
+                                   String bookingCode) {
         try {
             get().useHandle(h -> h.createUpdate(
-                            "INSERT INTO notifications (account_id, type, title, content, booking_id, icon, action_url, created_at, is_read) " +
-                                    "VALUES (:accountId, :type, :title, :content, :bookingCode, :icon, :actionUrl, NOW(), 0)"
+                            "INSERT INTO notifications (account_id, type, title, content, booking_id, created_at, is_read) " +
+                                    "VALUES (:accountId, :type, :title, :content, :bookingCode, NOW(), 0)"
                     )
                     .bind("accountId", accountId)
                     .bind("type", type)
                     .bind("title", title)
                     .bind("content", content)
-                    .bind("bookingCode", bookingCode)
-                    .bind("icon", icon)
-                    .bind("actionUrl", actionUrl)
+                    .bind("bookingCode", bookingCode != null ? bookingCode : "")
                     .execute());
         } catch (Exception e) {
             e.printStackTrace();

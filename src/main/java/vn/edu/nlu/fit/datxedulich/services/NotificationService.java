@@ -24,8 +24,8 @@ public class NotificationService {
     }
 
     public void sendNotification(int accountId, String type, String title, String content,
-                                 String bookingCode, String icon, String actionUrl) {
-        notificationDAO.createNotification(accountId, type, title, content, bookingCode, icon, actionUrl);
+                                 String bookingCode) {
+        notificationDAO.createNotification(accountId, type, title, content, bookingCode);
     }
 
     public void cleanupOldNotifications() {
