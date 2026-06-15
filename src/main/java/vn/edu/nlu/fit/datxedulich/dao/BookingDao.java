@@ -24,25 +24,25 @@ public class BookingDao extends BaseDao {
                                         " :bookerName, :bookerPhone, :bookerAddress, :note, " +
                                         " 'Chờ xác nhận', 'PENDING', NOW(), NOW())"
                         )
-                        .bind("customerId",      b.getCustomerId())
-                        .bind("typeId",          b.getTypeId())
-                        .bind("voucherId",       b.getVoucherId())
-                        .bind("pickupProvince",  b.getPickupProvince())
+                        .bind("customerId", b.getCustomerId())
+                        .bind("typeId", b.getTypeId())
+                        .bind("voucherId", b.getVoucherId())
+                        .bind("pickupProvince", b.getPickupProvince())
                         .bind("dropoffProvince", b.getDropoffProvince())
-                        .bind("pickupTime",      b.getPickupTime())
-                        .bind("returnTime",      b.getReturnTime())
-                        .bind("km",              b.getKm())
-                        .bind("days",            b.getDays())
-                        .bind("basePrice",       b.getBasePrice())
-                        .bind("memberDiscount",  b.getMemberDiscount())
+                        .bind("pickupTime", b.getPickupTime())
+                        .bind("returnTime", b.getReturnTime())
+                        .bind("km", b.getKm())
+                        .bind("days", b.getDays())
+                        .bind("basePrice", b.getBasePrice())
+                        .bind("memberDiscount", b.getMemberDiscount())
                         .bind("voucherDiscount", b.getVoucherDiscount())
-                        .bind("isVoucherCode",   b.getIsVoucherCode())
-                        .bind("payType",         b.getPayType())
-                        .bind("totalPrice",      b.getTotalPrice())
-                        .bind("bookerName",      b.getBookerName())
-                        .bind("bookerPhone",     b.getBookerPhone())
-                        .bind("bookerAddress",   b.getBookerAddress())
-                        .bind("note",            b.getNote())
+                        .bind("isVoucherCode", b.getIsVoucherCode())
+                        .bind("payType", b.getPayType())
+                        .bind("totalPrice", b.getTotalPrice())
+                        .bind("bookerName", b.getBookerName())
+                        .bind("bookerPhone", b.getBookerPhone())
+                        .bind("bookerAddress", b.getBookerAddress())
+                        .bind("note", b.getNote())
                         .executeAndReturnGeneratedKeys("booking_id")
                         .mapTo(Integer.class)
                         .one()
@@ -213,26 +213,26 @@ public class BookingDao extends BaseDao {
                                         "payment_status = :paymentStatus, " +
                                         "updated_at = NOW() " +
                                         "WHERE booking_id = :bookingId")
-                        .bind("voucherId",       b.getVoucherId())
-                        .bind("pickupProvince",  b.getPickupProvince())
+                        .bind("voucherId", b.getVoucherId())
+                        .bind("pickupProvince", b.getPickupProvince())
                         .bind("dropoffProvince", b.getDropoffProvince())
-                        .bind("pickupTime",      b.getPickupTime())
-                        .bind("returnTime",      b.getReturnTime())
-                        .bind("km",              b.getKm())
-                        .bind("days",            b.getDays())
-                        .bind("basePrice",       b.getBasePrice())
-                        .bind("memberDiscount",  b.getMemberDiscount())
+                        .bind("pickupTime", b.getPickupTime())
+                        .bind("returnTime", b.getReturnTime())
+                        .bind("km", b.getKm())
+                        .bind("days", b.getDays())
+                        .bind("basePrice", b.getBasePrice())
+                        .bind("memberDiscount", b.getMemberDiscount())
                         .bind("voucherDiscount", b.getVoucherDiscount())
-                        .bind("isVoucherCode",   b.getIsVoucherCode())
-                        .bind("payType",         b.getPayType())
-                        .bind("totalPrice",      b.getTotalPrice())
-                        .bind("bookerName",      b.getBookerName())
-                        .bind("bookerPhone",     b.getBookerPhone())
-                        .bind("bookerAddress",   b.getBookerAddress())
-                        .bind("note",            b.getNote())
-                        .bind("status",          b.getStatus())
-                        .bind("paymentStatus",   b.getPaymentStatus())
-                        .bind("bookingId",       b.getBookingId())
+                        .bind("isVoucherCode", b.getIsVoucherCode())
+                        .bind("payType", b.getPayType())
+                        .bind("totalPrice", b.getTotalPrice())
+                        .bind("bookerName", b.getBookerName())
+                        .bind("bookerPhone", b.getBookerPhone())
+                        .bind("bookerAddress", b.getBookerAddress())
+                        .bind("note", b.getNote())
+                        .bind("status", b.getStatus())
+                        .bind("paymentStatus", b.getPaymentStatus())
+                        .bind("bookingId", b.getBookingId())
                         .execute()
         );
         return rows > 0;
@@ -247,7 +247,7 @@ public class BookingDao extends BaseDao {
         );
         return rows > 0;
     }
-// list search booking
+    // list search booking
     public List<Booking> searchBookings(String keyword, String status,
                                         String dateFrom, String dateTo) {
         StringBuilder sql = new StringBuilder(
@@ -286,27 +286,64 @@ public class BookingDao extends BaseDao {
         sql.append("ORDER BY b.created_at DESC");
 
         String finalSql = sql.toString();
-        String kwParam  = (keyword != null && !keyword.isBlank()) ? "%" + keyword + "%" : null;
+        String kwParam = (keyword != null && !keyword.isBlank()) ? "%" + keyword + "%" : null;
 
         return get().withHandle(h -> {
             var q = h.createQuery(finalSql);
-            if (kwParam   != null) q = q.bind("kw",       kwParam);
-            if (status    != null && !status.isBlank())   q = q.bind("status",   status);
-            if (dateFrom  != null && !dateFrom.isBlank()) q = q.bind("dateFrom", dateFrom);
-            if (dateTo    != null && !dateTo.isBlank())   q = q.bind("dateTo",   dateTo);
+            if (kwParam != null) q = q.bind("kw", kwParam);
+            if (status != null && !status.isBlank()) q = q.bind("status", status);
+            if (dateFrom != null && !dateFrom.isBlank()) q = q.bind("dateFrom", dateFrom);
+            if (dateTo != null && !dateTo.isBlank()) q = q.bind("dateTo", dateTo);
             return q.mapToBean(Booking.class).list();
         });
     }
 
-// update status
+    // update status
     public boolean updateBookingStatus(int bookingId, String status) {
         int rows = get().withHandle(h ->
                 h.createUpdate("UPDATE bookings SET status = :status, updated_at = NOW() " +
                                 "WHERE booking_id = :id")
                         .bind("status", status)
-                        .bind("id",     bookingId)
+                        .bind("id", bookingId)
                         .execute()
         );
         return rows > 0;
+    }
+
+
+    public int countBookings() {
+        return get().withHandle(h ->
+                h.createQuery("SELECT COUNT(*) FROM bookings")
+                        .mapTo(Integer.class)
+                        .one()
+        );
+    }
+
+    public List<Booking> getBookingsPaged(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return get().withHandle(h ->
+                h.createQuery(
+                                "SELECT b.booking_id as bookingId, b.customer_id as customerId, b.type_id as typeId, " +
+                                        "       b.voucher_id as voucherId, " +
+                                        "       ct.type_name as carName, " +
+                                        "       b.pickup_province as pickupProvince, b.dropoff_province as dropoffProvince, " +
+                                        "       b.km, b.days, b.base_price as basePrice, b.member_discount as memberDiscount, " +
+                                        "       b.voucher_discount as voucherDiscount, b.is_voucher_code as isVoucherCode, " +
+                                        "       b.pay_type as payType, b.pickup_date as pickupTime, b.return_date as returnTime, " +
+                                        "       b.total_price as totalPrice, " +
+                                        "       b.booker_name as bookerName, b.booker_phone as bookerPhone, " +
+                                        "       b.booker_address as bookerAddress, b.note, " +
+                                        "       b.status, b.payment_status as paymentStatus, " +
+                                        "       b.created_at as createdAt, b.updated_at as updatedAt " +
+                                        "FROM bookings b " +
+                                        "INNER JOIN car_types ct ON b.type_id = ct.type_id " +
+                                        "ORDER BY b.created_at DESC " +
+                                        "LIMIT :limit OFFSET :offset"
+                        )
+                        .bind("limit", pageSize)
+                        .bind("offset", offset)
+                        .mapToBean(Booking.class)
+                        .list()
+        );
     }
 }

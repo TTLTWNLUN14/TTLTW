@@ -14,6 +14,7 @@ import java.util.List;
 @WebServlet(name = "AdminBookingController", value = "/booking-admin")
 public class AdminBookingController extends HttpServlet {
 
+    private static final int PAGE_SIZE = 10;
     private final BookingDao bookingDao = new BookingDao();
     private final CarTypeDao carTypeDao = new CarTypeDao();
 
@@ -26,13 +27,41 @@ public class AdminBookingController extends HttpServlet {
         String dateFrom = trim(request.getParameter("dateFrom"));
         String dateTo = trim(request.getParameter("dateTo"));
 
-        List<Booking> allBookings = bookingDao.getAllBookings();
-        List<Booking> listBookings = bookingDao.searchBookings(keyword, status, dateFrom, dateTo);
+        int page = 1;
+        String pageStr = request.getParameter("page");
+        if (pageStr != null && !pageStr.isBlank()) {
+            try {
+                page = Math.max(1, Integer.parseInt(pageStr));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        boolean hasFilter = keyword != null || status != null || dateFrom != null || dateTo != null;
+
+        List<Booking> listBookings;
+        int totalItems;
+
+        if (hasFilter) {
+            List<Booking> allFiltered = bookingDao.searchBookings(keyword, status, dateFrom, dateTo);
+            totalItems = allFiltered.size();
+            int from = (page - 1) * PAGE_SIZE;
+            int to = Math.min(from + PAGE_SIZE, totalItems);
+            listBookings = (from < totalItems) ? allFiltered.subList(from, to) : List.of();
+        } else {
+            totalItems = bookingDao.countBookings();
+            listBookings = bookingDao.getBookingsPaged(page, PAGE_SIZE);
+        }
+
+        int totalPages = (int) Math.ceil((double) totalItems / PAGE_SIZE);
+
         List<CarType> listCarTypes = carTypeDao.getListCarType();
 
-        request.setAttribute("allBookings", allBookings);
         request.setAttribute("listBookings", listBookings);
         request.setAttribute("listCarTypes", listCarTypes);
+        request.setAttribute("totalItems", totalItems);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("pageSize", PAGE_SIZE);
         request.setAttribute("filterKeyword", keyword);
         request.setAttribute("filterStatus", status);
         request.setAttribute("filterDateFrom", dateFrom);
@@ -49,23 +78,20 @@ public class AdminBookingController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String action = trim(request.getParameter("action"));
 
+        String pageStr = request.getParameter("page");
+        String keyword = request.getParameter("keyword");
+        String filterSt = request.getParameter("filterStatus");
+        String filterFrom = request.getParameter("filterDateFrom");
+        String filterTo = request.getParameter("filterDateTo");
+
         try {
             switch (action == null ? "" : action) {
-
-                case "updateStatus": {
-                    int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-                    String newStatus = request.getParameter("newStatus");
-                    bookingDao.updateBookingStatus(bookingId, newStatus);
-                    response.sendRedirect(request.getContextPath()
-                            + "/booking-admin?msg=status_ok&bookingId=" + bookingId);
-                    return;
-                }
 
                 case "delete": {
                     int bookingId = Integer.parseInt(request.getParameter("bookingId"));
                     bookingDao.deleteBooking(bookingId);
-                    response.sendRedirect(request.getContextPath()
-                            + "/booking-admin?msg=deleted");
+                    response.sendRedirect(buildRedirect(request, "deleted",
+                            pageStr, keyword, filterSt, filterFrom, filterTo));
                     return;
                 }
 
@@ -92,8 +118,8 @@ public class AdminBookingController extends HttpServlet {
                     }
 
                     bookingDao.updateBooking(b);
-                    response.sendRedirect(request.getContextPath()
-                            + "/booking-admin?msg=edit_ok");
+                    response.sendRedirect(buildRedirect(request, "edit_ok",
+                            pageStr, keyword, filterSt, filterFrom, filterTo));
                     return;
                 }
 
@@ -104,8 +130,7 @@ public class AdminBookingController extends HttpServlet {
 
                     // kiểm tra trạng thái là̀ đã hủy và chưa tạo đơn bù thay thế
                     if (!"Đã hủy".equals(orig.getStatus()) || (orig.getNote() != null && orig.getNote().contains("Đã tạo đơn bù thay thế"))) {
-                        response.sendRedirect(request.getContextPath()
-                                + "/booking-admin?msg=replace_err");
+                        response.sendRedirect(request.getContextPath() + "/booking-admin?msg=replace_err");
                         return;
                     }
 
@@ -124,22 +149,17 @@ public class AdminBookingController extends HttpServlet {
                     rep.setVoucherDiscount(0);
                     rep.setIsVoucherCode(null);
                     rep.setPayType(orig.getPayType());
-                    int discountedPrice = (int) Math.round(orig.getTotalPrice() * 0.8);
-                    rep.setTotalPrice(discountedPrice);
-
+                    rep.setTotalPrice((int) Math.round(orig.getTotalPrice() * 0.8));
                     rep.setBookerName(orig.getBookerName());
                     rep.setBookerPhone(orig.getBookerPhone());
                     rep.setBookerAddress(orig.getBookerAddress());
                     rep.setNote("Đơn bù – thay thế đơn #" + originalId + " (đã hủy). Giảm 20% ưu đãi.");
 
                     boolean isCreated = bookingDao.createBooking(rep);
-
                     if (isCreated) {
-                        // đánh dấu đơn đã tạo đơn bù để tránh tạo thêm đơn
                         String oldNote = orig.getNote() != null ? orig.getNote() : "";
                         orig.setNote(oldNote + " [Hệ thống: Đã tạo đơn bù thay thế]");
                         bookingDao.updateBooking(orig);
-
                         response.sendRedirect(request.getContextPath() + "/booking-admin?msg=replace_ok");
                     } else {
                         response.sendRedirect(request.getContextPath() + "/booking-admin?msg=error");
@@ -159,5 +179,18 @@ public class AdminBookingController extends HttpServlet {
 
     private String trim(String s) {
         return (s == null || s.isBlank()) ? null : s.trim();
+    }
+
+    private String buildRedirect(HttpServletRequest req, String msg,
+                                 String page, String keyword,
+                                 String status, String dateFrom, String dateTo) {
+        StringBuilder url = new StringBuilder(req.getContextPath())
+                .append("/booking-admin?msg=").append(msg);
+        if (page != null && !page.isBlank()) url.append("&page=").append(page);
+        if (keyword != null && !keyword.isBlank()) url.append("&keyword=").append(keyword);
+        if (status != null && !status.isBlank()) url.append("&status=").append(status);
+        if (dateFrom != null && !dateFrom.isBlank()) url.append("&dateFrom=").append(dateFrom);
+        if (dateTo != null && !dateTo.isBlank()) url.append("&dateTo=").append(dateTo);
+        return url.toString();
     }
 }
