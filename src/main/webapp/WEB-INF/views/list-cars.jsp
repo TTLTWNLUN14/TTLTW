@@ -108,6 +108,12 @@
                         </div>
                     </div>
 
+                    <button type="submit" id="applyFilterBtn"
+                            class="btn-ghost btn-primary"
+                            style="display:block; margin-top:16px; text-align:center; cursor:pointer;">
+                         Lọc
+                    </button>
+
                     <%-- Nút xóa tất cả bộ lọc --%>
                     <a href="${pageContext.request.contextPath}/list-product"
                        class="btn-ghost" style="display:block; margin-top:8px; text-align:center;">
@@ -120,7 +126,7 @@
 
             <div class="cars-main">
                 <div class="cars-header">
-                    <span class="car-count"> loại xe</span>
+                    <span class="car-count">${totalItems} loại xe</span>
                 </div>
 
                 <div class="cars-grid" id="carGrid">
