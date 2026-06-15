@@ -53,6 +53,18 @@ public class BrandDao extends BaseDao {
         });
     }
 
+    // lấy danh sách các quốc gia (không trùng) đang có trong DB để hiển thị tab lọc
+    public List<String> getDistinctCountries() {
+        return get().withHandle(h ->
+                h.createQuery(
+                                "SELECT DISTINCT country FROM car_brands " +
+                                        "WHERE country IS NOT NULL AND country <> '' " +
+                                        "ORDER BY country ASC")
+                        .mapTo(String.class)
+                        .list()
+        );
+    }
+
     public boolean hasCarTypes(int brandId) {
         return get().withHandle(h ->
                 h.createQuery("SELECT COUNT(*) FROM car_types WHERE brand_id = :brandId")

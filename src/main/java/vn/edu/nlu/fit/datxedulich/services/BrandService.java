@@ -27,6 +27,8 @@ public class BrandService {
         return brandDao.filterBrands(country);
     }
 
+    public List<String> getDistinctCountries() { return brandDao.getDistinctCountries();}
+
     public void deleteBrand(int id) {
         brandDao.deleteCarTypesByBrandId(id);
         brandDao.deleteBrand(id);
