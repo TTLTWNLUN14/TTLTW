@@ -44,14 +44,13 @@
     <c:if test="${param.msg == 'edit_ok'}">
         <div class="toast toast-success" id="toastMsg">Cập nhật đơn thành công.</div>
     </c:if>
-    <c:if test="${param.msg == 'status_ok'}">
-        <div class="toast toast-success" id="toastMsg">Đã thay đổi trạng thái đơn.</div>
-    </c:if>
     <c:if test="${param.msg == 'replace_ok'}">
         <div class="toast toast-success" id="toastMsg">Đã tạo đơn bù với giá giảm 20% thành công.</div>
     </c:if>
     <c:if test="${param.msg == 'replace_err'}">
-        <div class="toast toast-error" id="toastMsg">Không thể tạo đơn bù. Đơn chưa ở trạng thái Đã hủy hoặc đã được tạo bù trước đó.</div>
+        <div class="toast toast-error" id="toastMsg">Không thể tạo đơn bù. Đơn chưa ở trạng thái Đã hủy hoặc đã tạo
+            trước đó.
+        </div>
     </c:if>
     <c:if test="${param.msg == 'error'}">
         <div class="toast toast-error" id="toastMsg">Có lỗi xảy ra. Vui lòng thử lại.</div>
@@ -59,9 +58,7 @@
 
     <div class="page-header">
         <h1 class="page-title">Quản lý đặt xe</h1>
-        <span class="record-count">
-            Hiển thị <strong>${listBookings.size()}</strong> / ${allBookings.size()} đơn
-        </span>
+        <span class="record-count">Tổng <strong>${totalItems}</strong> đơn đặt xe</span>
     </div>
 
     <div class="filter-bar">
@@ -69,6 +66,7 @@
               style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; flex:1;">
 
             <div class="search-wrap">
+                <span class="search-icon">🔍</span>
                 <input type="text" name="keyword" class="search-input"
                        placeholder="Tên khách, SĐT, mã đơn, loại xe…"
                        value="${filterKeyword}">
@@ -76,13 +74,16 @@
 
             <select name="status" class="filter-select">
                 <option value="">-- Tất cả trạng thái --</option>
-                <option value="Chờ xác nhận" <c:if test="${filterStatus == 'Chờ xác nhận'}">selected</c:if>>Chờ xác nhận</option>
-                <option value="Đã xác nhận" <c:if test="${filterStatus == 'Đã xác nhận'}">selected</c:if>>Đã xác nhận</option>
+                <option value="Chờ xác nhận" <c:if test="${filterStatus == 'Chờ xác nhận'}">selected</c:if>>Chờ xác
+                    nhận
+                </option>
+                <option value="Đã xác nhận" <c:if test="${filterStatus == 'Đã xác nhận'}">selected</c:if>>Đã xác nhận
+                </option>
                 <option value="Đang chạy" <c:if test="${filterStatus == 'Đang chạy'}">selected</c:if>>Đang chạy</option>
-                <option value="Hoàn thành" <c:if test="${filterStatus == 'Hoàn thành'}">selected</c:if>>Hoàn thành</option>
+                <option value="Hoàn thành" <c:if test="${filterStatus == 'Hoàn thành'}">selected</c:if>>Hoàn thành
+                </option>
                 <option value="Đã hủy" <c:if test="${filterStatus == 'Đã hủy'}">selected</c:if>>Đã hủy</option>
             </select>
-
             <button type="submit" class="btn-filter">Tìm kiếm</button>
         </form>
 
@@ -162,67 +163,36 @@
                     </td>
 
                     <td class="action-buttons">
-                        <button class="btn-edit" type="button"
-                                onclick="openEditModal(${b.bookingId}, '${b.bookerName}', '${b.bookerPhone}', '${b.bookerAddress}', '${b.pickupProvince}', '${b.dropoffProvince}', '${b.pickupTime}', '${b.returnTime}', '${b.note}', '${b.status}', ${b.totalPrice})">
-                            &#x270E; Sửa
+                        <button class="btn-edit"
+                                onclick="openEditModal(
+                                    ${b.bookingId},
+                                        '${b.bookerName}',
+                                        '${b.bookerPhone}',
+                                        '${b.bookerAddress}',
+                                        '${b.pickupProvince}',
+                                        '${b.dropoffProvince}',
+                                        '${b.pickupTime}',
+                                        '${b.returnTime}',
+                                        '${b.note}',
+                                        '${b.status}',
+                                    ${b.totalPrice}
+                                        )">&#x270E; Sửa
                         </button>
 
-                        <button class="btn-disable" type="button"
-                                onclick="openDeleteConfirm(${b.bookingId}, '#${b.bookingId} - ${b.bookerName}')">
-                            Xóa
+                        <button class="btn-disable"
+                                onclick="openDeleteConfirm(${b.bookingId}, '#${b.bookingId} - ${b.bookerName}')">Xóa
                         </button>
 
-                        <button class="btn-replace ${b.status == 'Đã hủy' ? '' : 'disabled'}" type="button"
+                        <button class="btn-replace ${b.status == 'Đã hủy' ? '' : 'disabled'}"
                                 title="${b.status == 'Đã hủy' ? 'Tạo đơn bù cho khách (giảm 20%)' : 'Chỉ khả dụng khi đơn đã hủy'}"
                                 <c:if test="${b.status == 'Đã hủy'}">
-                                    onclick="openOverlay('replaceOverlay_${b.bookingId}')"
+                                    onclick="openReplaceConfirm(${b.bookingId}, '${b.bookerName}', ${b.totalPrice})"
                                 </c:if>
                             ${b.status != 'Đã hủy' ? 'disabled' : ''}>
                             Tạo đơn bù
                         </button>
                     </td>
                 </tr>
-
-                <c:if test="${b.status == 'Đã hủy'}">
-                    <c:set var="discount" value="${b.totalPrice * 0.2}" />
-                    <c:set var="newPrice" value="${b.totalPrice - discount}" />
-
-                    <div class="modal-overlay" id="replaceOverlay_${b.bookingId}">
-                        <div class="modal-box">
-                            <h3>Tạo đơn bù cho khách</h3>
-                            <p>Đơn gốc: <strong>#${b.bookingId} - ${b.bookerName}</strong></p>
-
-                            <div class="replace-price-info">
-                                <div class="replace-row">
-                                    <span>Giá đơn gốc</span>
-                                    <span class="price-orig"><fmt:formatNumber value="${b.totalPrice}" pattern="#,###"/> đ</span>
-                                </div>
-                                <div class="replace-row discount-row">
-                                    <span>Giảm 20% ưu đãi</span>
-                                    <span class="price-discount">−<fmt:formatNumber value="${discount}" pattern="#,###"/> đ</span>
-                                </div>
-                                <div class="replace-row total-row">
-                                    <span>Khách thanh toán</span>
-                                    <span class="price-new"><fmt:formatNumber value="${newPrice}" pattern="#,###"/> đ</span>
-                                </div>
-                            </div>
-
-                            <p class="replace-note">
-                                Hệ thống sẽ tạo đơn mới giữ nguyên thông tin hành trình, khách hàng
-                                và áp dụng giá ưu đãi 20% thay thế đơn đã hủy.
-                            </p>
-
-                            <form method="post" action="${pageContext.request.contextPath}/booking-admin">
-                                <input type="hidden" name="action" value="createReplacement">
-                                <input type="hidden" name="originalBookingId" value="${b.bookingId}">
-                                <div class="modal-actions">
-                                    <button type="button" class="btn-modal-cancel" onclick="closeModal('replaceOverlay_${b.bookingId}')">Hủy bỏ</button>
-                                    <button type="submit" class="btn-modal-replace">Xác nhận tạo đơn bù</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </c:if>
             </c:forEach>
 
             <c:if test="${empty listBookings}">
@@ -233,9 +203,7 @@
                                 Không tìm thấy đơn đặt xe phù hợp.
                                 <a href="${pageContext.request.contextPath}/booking-admin">Xem tất cả</a>
                             </c:when>
-                            <c:otherwise>
-                                Chưa có đơn đặt xe nào trong hệ thống.
-                            </c:otherwise>
+                            <c:otherwise>Chưa có đơn đặt xe nào trong hệ thống.</c:otherwise>
                         </c:choose>
                     </td>
                 </tr>
@@ -243,14 +211,66 @@
             </tbody>
         </table>
     </div>
+
+    <%-- phân trang--%>
+    <c:if test="${totalPages > 1}">
+        <div class="pagination" style="
+            display:flex; justify-content:center; align-items:center;
+            gap:6px; margin-top:32px; flex-wrap:wrap;">
+
+            <c:choose>
+                <c:when test="${currentPage > 1}">
+                    <a href="${pageContext.request.contextPath}/booking-admin?page=${currentPage - 1}<c:if test='${not empty filterKeyword}'>&keyword=${filterKeyword}</c:if><c:if test='${not empty filterStatus}'>&status=${filterStatus}</c:if><c:if test='${not empty filterDateFrom}'>&dateFrom=${filterDateFrom}</c:if><c:if test='${not empty filterDateTo}'>&dateTo=${filterDateTo}</c:if>"
+                       class="page-btn">‹ Trước</a>
+                </c:when>
+                <c:otherwise>
+                    <span class="page-btn disabled">‹ Trước</span>
+                </c:otherwise>
+            </c:choose>
+
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${i == currentPage}">
+                        <span class="page-btn active">${i}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/booking-admin?page=${i}<c:if test='${not empty filterKeyword}'>&keyword=${filterKeyword}</c:if><c:if test='${not empty filterStatus}'>&status=${filterStatus}</c:if><c:if test='${not empty filterDateFrom}'>&dateFrom=${filterDateFrom}</c:if><c:if test='${not empty filterDateTo}'>&dateTo=${filterDateTo}</c:if>"
+                           class="page-btn">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+            <c:choose>
+                <c:when test="${currentPage < totalPages}">
+                    <a href="${pageContext.request.contextPath}/booking-admin?page=${currentPage + 1}<c:if test='${not empty filterKeyword}'>&keyword=${filterKeyword}</c:if><c:if test='${not empty filterStatus}'>&status=${filterStatus}</c:if><c:if test='${not empty filterDateFrom}'>&dateFrom=${filterDateFrom}</c:if><c:if test='${not empty filterDateTo}'>&dateTo=${filterDateTo}</c:if>"
+                       class="page-btn">Sau ›</a>
+                </c:when>
+                <c:otherwise>
+                    <span class="page-btn disabled">Sau ›</span>
+                </c:otherwise>
+            </c:choose>
+
+        </div>
+
+        <p style="text-align:center; color:#94a3b8; font-size:0.85rem; margin-top:8px;">
+            Trang ${currentPage}/${totalPages} — ${totalItems} đơn đặt xe
+        </p>
+    </c:if>
+
 </div>
 
 <div class="modal-overlay" id="editOverlay">
     <div class="modal-box modal-wide">
         <h3>Sửa thông tin đơn <span id="editBookingLabel"></span></h3>
-        <form id="editForm" method="post" action="${pageContext.request.contextPath}/booking-admin">
+        <form id="editForm" method="post"
+              action="${pageContext.request.contextPath}/booking-admin">
             <input type="hidden" name="action" value="edit">
             <input type="hidden" name="bookingId" id="editBookingId">
+            <input type="hidden" name="page" value="${currentPage}">
+            <input type="hidden" name="keyword" value="${filterKeyword}">
+            <input type="hidden" name="filterStatus" value="${filterStatus}">
+            <input type="hidden" name="filterDateFrom" value="${filterDateFrom}">
+            <input type="hidden" name="filterDateTo" value="${filterDateTo}">
 
             <div class="form-grid">
                 <div class="form-group">
@@ -313,18 +333,60 @@
     <div class="modal-box">
         <h3>Xác nhận xóa đơn</h3>
         <p>Bạn có chắc muốn xóa đơn<br><strong id="deleteBookingLabel"></strong>?</p>
-        <div class="modal-warning">
-            Hành động này không thể hoàn tác.
-        </div>
+        <div class="modal-warning">⚠️ Hành động này không thể hoàn tác.</div>
         <div class="modal-actions">
-            <button type="button" class="btn-modal-cancel" onclick="closeModal('deleteOverlay')">Hủy bỏ</button>
-            <button type="button" class="btn-modal-delete" onclick="submitDelete()">Xóa đơn</button>
+            <button class="btn-modal-cancel" onclick="closeModal('deleteOverlay')">Hủy bỏ</button>
+            <button class="btn-modal-delete" onclick="submitDelete()">Xóa đơn</button>
         </div>
     </div>
 </div>
-<form id="deleteForm" method="post" action="${pageContext.request.contextPath}/booking-admin" style="display:none;">
+<form id="deleteForm" method="post"
+      action="${pageContext.request.contextPath}/booking-admin" style="display:none;">
     <input type="hidden" name="action" value="delete">
     <input type="hidden" name="bookingId" id="deleteBookingId">
+    <input type="hidden" name="page" value="${currentPage}">
+    <input type="hidden" name="keyword" value="${filterKeyword}">
+    <input type="hidden" name="filterStatus" value="${filterStatus}">
+    <input type="hidden" name="filterDateFrom" value="${filterDateFrom}">
+    <input type="hidden" name="filterDateTo" value="${filterDateTo}">
+</form>
+
+<!-- ══════════════ MODAL: TẠO ĐƠN BÙ ══════════════ -->
+<div class="modal-overlay" id="replaceOverlay">
+    <div class="modal-box">
+        <h3>Tạo đơn bù cho khách</h3>
+        <p>Đơn gốc: <strong id="replaceBookingLabel"></strong></p>
+
+        <div class="replace-price-info">
+            <div class="replace-row">
+                <span>Giá đơn gốc</span>
+                <span id="replaceOrigPrice" class="price-orig"></span>
+            </div>
+            <div class="replace-row discount-row">
+                <span>Giảm 20% ưu đãi</span>
+                <span id="replaceDiscountAmt" class="price-discount">−</span>
+            </div>
+            <div class="replace-row total-row">
+                <span>Khách thanh toán</span>
+                <span id="replaceNewPrice" class="price-new"></span>
+            </div>
+        </div>
+
+        <p class="replace-note">
+            Hệ thống sẽ tạo đơn mới giữ nguyên thông tin hành trình, khách hàng
+            và áp dụng giá ưu đãi 20% thay thế đơn đã hủy.
+        </p>
+
+        <div class="modal-actions">
+            <button class="btn-modal-cancel" onclick="closeModal('replaceOverlay')">Hủy bỏ</button>
+            <button class="btn-modal-replace" onclick="submitReplace()">Xác nhận tạo đơn bù</button>
+        </div>
+    </div>
+</div>
+<form id="replaceForm" method="post"
+      action="${pageContext.request.contextPath}/booking-admin" style="display:none;">
+    <input type="hidden" name="action" value="createReplacement">
+    <input type="hidden" name="originalBookingId" id="replaceOriginalId">
 </form>
 
 <script src="${pageContext.request.contextPath}/assets/js/booking-admin.js"></script>
