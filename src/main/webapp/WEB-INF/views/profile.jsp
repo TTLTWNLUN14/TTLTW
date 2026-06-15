@@ -252,7 +252,6 @@
             background: #fef2f2;
         }
 
-        /* MAIN CONTENT */
         .main-wrapper {
             flex: 1;
             padding: 30px 15px;
@@ -263,7 +262,6 @@
             margin: 0 auto;
         }
 
-        /* Profile Header */
         .profile-header {
             background: white;
             border-radius: 15px;
@@ -469,7 +467,6 @@
             color: white;
         }
 
-        /* Notification Section */
         .notification-item {
             background: #f9fafb;
             border-left: 4px solid var(--primary-color);
@@ -523,7 +520,6 @@
             padding: 40px 20px;
         }
 
-        /* Settings Toggle */
         .form-switch {
             display: flex;
             align-items: center;
@@ -545,7 +541,6 @@
             border-color: var(--primary-color);
         }
 
-        /* Booking History */
         .booking-card {
             background: white;
             border: 1.5px solid #e5e7eb;
@@ -595,7 +590,6 @@
             color: #991b1b;
         }
 
-        /* FOOTER STYLES */
         .footer {
             background: #0d1b2e;
             padding: 60px 0 30px;
@@ -732,7 +726,6 @@
 
 <div class="main-wrapper">
     <div class="profile-container">
-        <!-- Messages -->
         <c:if test="${not empty successMessage}">
             <div class="alert alert-success alert-custom" role="alert">
                     ${successMessage}
@@ -927,7 +920,6 @@
                     </form>
                 </div>
             </div>
-            <!-- TAB 2: LỊCH SỬ ĐẶT XE -->
             <div class="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
                 <div class="form-section">
                     <h3 class="form-section-title">Lịch Sử Đặt Xe</h3>
@@ -993,7 +985,6 @@
                 </div>
             </div>
 
-            <!-- TAB 3: THÔNG BÁO -->
             <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
                 <div class="form-section">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -1033,7 +1024,6 @@
                 </div>
             </div>
 
-            <!-- TAB 4: CÀI ĐẶT -->
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 <div class="form-section">
                     <h3 class="form-section-title">Tùy Chỉnh Thông Báo</h3>
@@ -1142,7 +1132,6 @@
             }, 5000);
         });
 
-        // Tự động kích hoạt lại tab được chọn trước đó từ Session Storage sau khi reload trang
         const activeTabId = sessionStorage.getItem('activeTab');
         if (activeTabId) {
             const tabBtn = document.getElementById(activeTabId);
@@ -1151,8 +1140,6 @@
                 tab.show();
             }
         }
-
-        // Lưu ID tab hiện tại vào Session Storage khi người dùng click đổi tab
         const tabButtons = document.querySelectorAll('#profileTabs button');
         tabButtons.forEach(button => {
             button.addEventListener('shown.bs.tab', function (e) {

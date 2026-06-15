@@ -129,27 +129,21 @@ public class ProfileController extends HttpServlet {
         if (user == null) return;
 
         try {
-            // 1. Lấy file ảnh từ form
             Part filePart = request.getPart("avatarFile");
-
-            // 2. Sử dụng hàm saveFile bạn vừa cấu hình
             String relativePath = FileUploadUtil.saveFile(filePart, request);
 
             if (relativePath != null && !relativePath.isEmpty()) {
-
-                // 3. Cập nhật vào Database
                 boolean isUpdated = userService.updateAvatar(accountId, relativePath);
 
                 if (isUpdated) {
-                    // 4. Đồng bộ ngay lại Session
                     user.setAvatar(relativePath);
                     session.setAttribute("user", user);
-                    session.setAttribute("successMessage", "Cập nhật ảnh đại diện thành công!");
+                    session.setAttribute("successMessage", "Cập nhật ảnh đại diện thành công");
                 } else {
-                    session.setAttribute("errorMessage", "Cập nhật đường dẫn vào cơ sở dữ liệu thất bại!");
+                    session.setAttribute("errorMessage", "Cập nhật đường dẫn thất bại");
                 }
             } else {
-                session.setAttribute("errorMessage", "Vui lòng chọn một file ảnh hợp lệ!");
+                session.setAttribute("errorMessage", "Vui lòng chọn một ảnh hợp lệ");
             }
         } catch (Exception e) {
             e.printStackTrace();
