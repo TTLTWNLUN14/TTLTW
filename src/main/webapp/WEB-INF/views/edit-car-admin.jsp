@@ -93,19 +93,14 @@
                 </select>
             </div>
 
-            <div class="form-row-3">
+            <div class="form-row-2">
                 <div class="form-group">
-                    <label>Giá có tài (đ)</label>
-                    <input type="number" name="priceDirver"
-                           value="${carType.priceDirver}" min="0">
-                </div>
-                <div class="form-group">
-                    <label>Giá/km (đ)</label>
+                    <label>Giá/km (đ) <small style="color:#888;font-weight:normal">— tổng km × giá này</small></label>
                     <input type="number" name="priceKm"
                            value="${carType.priceKm}" min="0">
                 </div>
                 <div class="form-group">
-                    <label>Giá/ngày (đ)</label>
+                    <label>Giá/ngày (đ) <small style="color:#888;font-weight:normal">— tính từ ngày thứ 3 trở đi</small></label>
                     <input type="number" name="priceDay"
                            value="${carType.priceDay}" min="0">
                 </div>

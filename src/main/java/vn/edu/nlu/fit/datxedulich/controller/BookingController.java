@@ -273,6 +273,11 @@ public class BookingController extends HttpServlet {
     private void handleStep2(HttpServletRequest request, HttpServletResponse response,
                              HttpSession session) throws ServletException, IOException {
 
+        if ("cancel".equals(request.getParameter("action"))) {
+            handleCancelFromConfirm(request, response, session);
+            return;
+        }
+
         String bookerName = request.getParameter("bookerName");
         String bookerPhone = request.getParameter("bookerPhone");
         String bookerAddress = request.getParameter("bookerAddress");
@@ -370,6 +375,74 @@ public class BookingController extends HttpServlet {
 
         response.sendRedirect(request.getContextPath()
                 + "/payments?bookingIds=" + bookingIdsParam);
+    }
+
+    private void handleCancelFromConfirm(HttpServletRequest request, HttpServletResponse response,
+                                         HttpSession session) throws IOException {
+        try {
+            int accountId = (Integer) session.getAttribute("account_id");
+            int customerId = getCustomerId(accountId);
+            if (customerId == -1) {
+                response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+                return;
+            }
+
+            Member member = memberDAO.getMemberById(accountId);
+            String bookerName    = (member != null && member.getFullName() != null && !member.getFullName().isBlank())
+                    ? member.getFullName() : "N/A";
+            String bookerPhone   = (member != null && member.getPhone() != null && !member.getPhone().isBlank())
+                    ? member.getPhone() : "0000000000";
+            String bookerAddress = "N/A";
+
+            CartItem singleItem = (CartItem) session.getAttribute("singleBookingItem");
+
+            if (singleItem != null) {
+                Booking booking = buildBooking(singleItem, customerId, bookerName, bookerPhone, bookerAddress, "");
+                int newId = bookingDAO.insertBooking(booking);
+                memberDAO.cancelBooking(newId, accountId);
+                session.removeAttribute("singleBookingItem");
+
+            } else {
+                String[] selectedTypeIds = (String[]) session.getAttribute("selectedTypeIds");
+                Cart cart = (Cart) session.getAttribute("cart");
+
+                if (selectedTypeIds != null && cart != null) {
+                    List<Integer> bookedTypeIds = new ArrayList<>();
+
+                    for (String idStr : selectedTypeIds) {
+                        int typeId;
+                        try { typeId = Integer.parseInt(idStr); }
+                        catch (NumberFormatException ignored) { continue; }
+
+                        CartItem ci = cart.get(typeId);
+                        if (ci == null) continue;
+
+                        try {
+                            Booking booking = buildBooking(ci, customerId, bookerName, bookerPhone, bookerAddress, "");
+                            int newId = bookingDAO.insertBooking(booking);
+                            memberDAO.cancelBooking(newId, accountId);
+                            bookedTypeIds.add(typeId);
+                        } catch (Exception dbEx) {
+                            System.err.println("Lỗi insert/cancel booking typeId=" + typeId + ": " + dbEx.getMessage());
+                        }
+                    }
+
+                    for (int typeId : bookedTypeIds) cart.removeItem(typeId);
+                    session.setAttribute("cart", cart);
+                    if (!bookedTypeIds.isEmpty()) {
+                        cartDAO.removeBookedItems(accountId, bookedTypeIds);
+                    }
+                    session.removeAttribute("selectedTypeIds");
+                }
+            }
+
+            String encodedStatus = java.net.URLEncoder.encode("Đã hủy", "UTF-8");
+            response.sendRedirect(request.getContextPath() + "/my-shopping-cart?statusFilter=" + encodedStatus);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/my-shopping-cart");
+        }
     }
 
     private int getCustomerId(int accountId) {
