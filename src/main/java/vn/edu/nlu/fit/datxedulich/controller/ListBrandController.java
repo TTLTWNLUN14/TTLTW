@@ -14,8 +14,13 @@ public class ListBrandController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BrandService bs = new BrandService();
-        List<Brand> listBrand = bs.getListBrand();
+        String country = request.getParameter("country");
+        List<Brand> listBrand = (country != null && !country.isBlank()) ? bs.filterBrands(country) : bs.getListBrand();
+
         request.setAttribute("listBrand", listBrand);
+        request.setAttribute("countries", bs.getDistinctCountries());
+        request.setAttribute("selectedCountry", country);
+
         request.getRequestDispatcher("/WEB-INF/views/cars-brand.jsp").forward(request, response);
     }
 

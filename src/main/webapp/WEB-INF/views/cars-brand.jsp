@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title>Giỏ hàng - Auto Cars</title>
+    <title>Các hãng xe đối tác - Auto Cars</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/cars-brand.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nav.css">
 </head>
@@ -11,27 +12,28 @@
 <jsp:include page="/WEB-INF/views/includes/header.jsp">
   <jsp:param name="activePage" value="brand"/>
 </jsp:include>
-    <div class="brands-hero">
-        <h1>Các hãng xe đối tác</h1>
-        <p>Khám phá đội xe từ các thương hiệu uy tín hàng đầu thế giới</p>
-        <div class="brand-filter-tabs" id="filterTabs">
-            <button class="bft-btn active" >Tất cả</button>
-            <button class="bft-btn" >Nhật Bản</button>
-            <button class="bft-btn" >Hàn Quốc</button>
-            <button class="bft-btn" >Việt Nam</button>
-            <button class="bft-btn" >Đức</button>
-            <button class="bft-btn" >Mỹ</button>
-        </div>
+<div class="brands-hero">
+    <h1>Các hãng xe đối tác</h1>
+    <p>Khám phá đội xe từ các thương hiệu uy tín hàng đầu thế giới</p>
+    <div class="brand-filter-tabs" id="filterTabs">
+        <a href="${pageContext.request.contextPath}/brand"
+           class="bft-btn ${empty selectedCountry ? 'active' : ''}">Tất cả</a>
+        <c:forEach var="c" items="${countries}">
+            <a href="${pageContext.request.contextPath}/brand?country=${c}"
+               class="bft-btn ${selectedCountry eq c ? 'active' : ''}">${c}</a>
+        </c:forEach>
     </div>
-    <div class="brands-wrapper">
-        <div class="brands-header">
-            <span class="brand-count">9 hãng xe</span>
-        </div>
+</div>
 
-        <div class="brands-grid">
-            <c:forEach var="b" items="${listBrand}">
-                <div class="brand-card">
-                    <a href="list-product?brandId=${b.brandId}" style="text-decoration: none; color: inherit;">
+<div class="brands-wrapper">
+    <div class="brands-header">
+        <span class="brand-count">${fn:length(listBrand)} hãng xe</span>
+    </div>
+
+    <div class="brands-grid">
+        <c:forEach var="b" items="${listBrand}">
+            <div class="brand-card">
+                <a href="${pageContext.request.contextPath}/list-product?brandId=${b.brandId}" style="text-decoration: none; color: inherit;">
                     <div class="card-top">
                         <h3 class="brand-name">${b.brandName}</h3>
                         <span class="brand-country">${b.country}</span>
@@ -49,72 +51,74 @@
                             <span class="stat-label">Từ/km</span>
                         </div>
                     </div>
+                </a>
+            </div>
+        </c:forEach>
+        <c:if test="${empty listBrand}">
+            <div style="text-align:center; padding:40px; color:#94a3b8; width:100%;">
+                Không tìm thấy hãng xe nào thuộc quốc gia này.
+            </div>
+        </c:if>
+    </div>
+</div>
+<div class="modal-overlay" id="brandModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Honda</h2>
+            <button class="close-icon" id="closeIcon">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="brand-info-box">
+                <h3 class="info-title">Honda</h3>
+                <p class="info-meta">
+                    <span style="color: #ef4444;">📍</span> Nhật Bản • 2 loại xe • 6 xe có sẵn
+                </p>
+                <p class="info-desc">Công nghệ tiên tiến, tiết kiệm nhiên liệu</p>
+            </div>
+
+            <div class="car-types-section">
+                <h4 class="section-title">CÁC LOẠI XE</h4>
+
+                <div class="car-types-grid">
+                    <a href="${pageContext.request.contextPath}/list-cars" class="car-type-card">
+                        <div class="car-image-placeholder">Honda CR-V</div>
+                        <div class="car-details">
+                            <h5 class="car-name">Honda CR-V</h5>
+                            <p class="car-price">4.800đ/km • 1.600.000đ/ngày</p>
+                            <div class="car-badges">
+                                <span class="badge badge-green">3 xe</span>
+                                <span class="badge badge-gray">5 chỗ</span>
+                                <span class="badge badge-gray">Xăng</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="${pageContext.request.contextPath}/list-cars" class="car-type-card">
+                        <div class="car-image-placeholder">Honda BR-V</div>
+                        <div class="car-details">
+                            <h5 class="car-name">Honda BR-V</h5>
+                            <p class="car-price">3.900đ/km • 1.400.000đ/ngày</p>
+                            <div class="car-badges">
+                                <span class="badge badge-green">3 xe</span>
+                                <span class="badge badge-gray">7 chỗ</span>
+                                <span class="badge badge-gray">Xăng</span>
+                            </div>
+                        </div>
                     </a>
                 </div>
-            </c:forEach>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="closeBtn">Đóng</button>
+            <button class="btn btn-primary">
+                <a href="${pageContext.request.contextPath}/list-cars" style="color: white; text-decoration: none;">Xem tất cả xe &rarr;</a>
+            </button>
         </div>
     </div>
-    <div class="modal-overlay" id="brandModal">
-        <div class="modal-content">
+</div>
 
-            <div class="modal-header">
-                <h2 class="modal-title">Honda</h2>
-                <button class="close-icon" id="closeIcon">&times;</button>
-            </div>
-
-            <div class="modal-body">
-
-                <div class="brand-info-box">
-                    <h3 class="info-title">Honda</h3>
-                    <p class="info-meta">
-                        <span style="color: #ef4444;">📍</span> Nhật Bản • 2 loại xe • 6 xe có sẵn
-                    </p>
-                    <p class="info-desc">Công nghệ tiên tiến, tiết kiệm nhiên liệu</p>
-                </div>
-
-                <div class="car-types-section">
-                    <h4 class="section-title">CÁC LOẠI XE</h4>
-
-                    <div class="car-types-grid">
-                        <a href="list-cars.html" class="car-type-card">
-                            <div class="car-image-placeholder">Honda CR-V</div>
-                            <div class="car-details">
-                                <h5 class="car-name">Honda CR-V</h5>
-                                <p class="car-price">4.800đ/km • 1.600.000đ/ngày</p>
-                                <div class="car-badges">
-                                    <span class="badge badge-green">3 xe</span>
-                                    <span class="badge badge-gray">5 chỗ</span>
-                                    <span class="badge badge-gray">Xăng</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="list-cars.html" class="car-type-card">
-                            <div class="car-image-placeholder">Honda BR-V</div>
-                            <div class="car-details">
-                                <h5 class="car-name">Honda BR-V</h5>
-                                <p class="car-price">3.900đ/km • 1.400.000đ/ngày</p>
-                                <div class="car-badges">
-                                    <span class="badge badge-green">3 xe</span>
-                                    <span class="badge badge-gray">7 chỗ</span>
-                                    <span class="badge badge-gray">Xăng</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="closeBtn">Đóng</button>
-                <button class="btn btn-primary"><a href="list-cars.html">Xem tất cả xe &rarr;</a>
-                </button>
-            </div>
-
-        </div>
-    </div>
-
+<script src="${pageContext.request.contextPath}/assets/js/cars-brand.js"></script>
 </body>
-<script src="../../assets/js/cars-brand.js"></script>
 </html>
