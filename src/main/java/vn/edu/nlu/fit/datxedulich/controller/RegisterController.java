@@ -1,6 +1,7 @@
 package vn.edu.nlu.fit.datxedulich.controller;
 
 import vn.edu.nlu.fit.datxedulich.services.UserService;
+import vn.edu.nlu.fit.datxedulich.services.RegistrationNotificationService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,6 +14,8 @@ import java.util.Map;
 
 @WebServlet(name = "RegisterController", value = "/register")
 public class RegisterController extends HttpServlet {
+
+    private final RegistrationNotificationService notificationService = new RegistrationNotificationService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +42,6 @@ public class RegisterController extends HttpServlet {
         String validation = validateInput(username, password, confirmPassword, email, phone, fullName);
         if (validation != null) {
             System.out.println(" Validation Error: " + validation);
-            String errorMessage = URLEncoder.encode(validation, "UTF-8");
             request.setAttribute("registerError", validation);
             request.setAttribute("registerFullName", fullName);
             request.setAttribute("registerUsername", username);
@@ -56,7 +58,21 @@ public class RegisterController extends HttpServlet {
             System.out.println("Register Result: " + registerResult);
 
             if ((Boolean) registerResult.get("success")) {
-                System.out.println("✓ Đăng ký thành công: " + username);
+                System.out.println(" Đăng ký thành công: " + username);
+
+                // Get the account ID from register result
+                Object accountIdObj = registerResult.get("accountId");
+                if (accountIdObj != null) {
+                    Integer accountId = (Integer) accountIdObj;
+                    try {
+                        notificationService.sendRegistrationNotification(accountId, fullName);
+                        System.out.println(" Thông báo đăng ký đã gửi cho accountId: " + accountId);
+                    } catch (Exception e) {
+                        System.err.println(" Lỗi khi gửi thông báo: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
                 request.setAttribute("registerSuccess", registerResult.get("message"));
                 request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
             } else {
@@ -94,23 +110,17 @@ public class RegisterController extends HttpServlet {
         if (username.length() < 3 || username.length() > 20) {
             return "Tên đăng nhập phải từ 3 đến 20 ký tự";
         }
-        if (username.contains(" ")) {
-            return "Tên đăng nhập không được chứa khoảng trắng";
-        }
         if (password.length() < 6) {
-            return "Mật khẩu phải ít nhất 6 ký tự";
+            return "Mật khẩu phải có ít nhất 6 ký tự";
         }
         if (!password.equals(confirmPassword)) {
-            return "Mật khẩu xác nhận không khớp";
-        }
-        if (!phone.matches("^\\d{9,11}$")) {
-            return "Số điện thoại không hợp lệ (9-11 chữ số)";
+            return "Mật khẩu không khớp";
         }
         if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             return "Email không hợp lệ";
         }
-        if (fullName.trim().length() < 3) {
-            return "Họ và tên phải có ít nhất 3 ký tự";
+        if (!phone.matches("^[0-9]{10,11}$")) {
+            return "Số điện thoại phải có 10-11 chữ số";
         }
         return null;
     }

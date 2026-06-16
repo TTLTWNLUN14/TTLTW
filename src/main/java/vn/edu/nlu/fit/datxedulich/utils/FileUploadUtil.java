@@ -28,7 +28,6 @@ public class FileUploadUtil {
         String fileName = Paths.get(submittedFileName).getFileName().toString();
         String newFileName = System.currentTimeMillis() + "_" + fileName;
 
-        //lấy đường dẫn thực tế của ứng dụng trên Tomcat
         String basePath = request.getServletContext().getRealPath("");
         String uploadPath = basePath + File.separator + UPLOAD_DIR + File.separator + subFolder;
 
@@ -40,4 +39,5 @@ public class FileUploadUtil {
 
         return UPLOAD_DIR + "/" + subFolder + "/" + newFileName;
     }
+
 }

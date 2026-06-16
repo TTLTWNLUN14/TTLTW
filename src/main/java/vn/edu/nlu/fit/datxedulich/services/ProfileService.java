@@ -36,7 +36,7 @@ public class ProfileService {
             notificationService.sendNotification(accountId, Notification.Type.PROFILE_UPDATE,
                     "Cập nhật thông tin thành công",
                     "Thông tin hồ sơ của bạn đã được cập nhật",
-                    null, "fas fa-user-check", "/profile");
+                    null);
         }
 
         return updated;
@@ -72,7 +72,7 @@ public class ProfileService {
             notificationService.sendNotification(accountId, Notification.Type.PROFILE_UPDATE,
                     "Đổi mật khẩu thành công",
                     "Mật khẩu của bạn đã được thay đổi",
-                    null, "", "/profile");
+                    null);
         }
 
         return success;

@@ -19,6 +19,7 @@ public class User implements Serializable {
     private boolean is_active;
     private LocalDate last_login;
     private LocalDate first_login;
+    private String avatar;
 
 
     public User() {
@@ -149,5 +150,12 @@ public class User implements Serializable {
 
     public void setAccount_id(int account_id) {
         this.account_id = account_id;
+    }
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

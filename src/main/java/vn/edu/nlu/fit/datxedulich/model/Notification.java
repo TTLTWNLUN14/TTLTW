@@ -12,8 +12,6 @@ public class Notification implements Serializable {
     private String bookingCode;
     private LocalDateTime createdAt;
     private boolean isRead;
-    private String icon;
-    private String actionUrl;
 
     public Notification() {}
 
@@ -28,13 +26,6 @@ public class Notification implements Serializable {
         this.isRead = false;
     }
 
-    public Notification(int accountId, String type, String title, String content,
-                        String bookingCode, LocalDateTime createdAt, String icon, String actionUrl) {
-        this(accountId, type, title, content, bookingCode, createdAt);
-        this.icon = icon;
-        this.actionUrl = actionUrl;
-    }
-
     public static class Type {
         public static final String REGISTRATION = "REGISTRATION";
         public static final String PAYMENT = "PAYMENT";
@@ -45,83 +36,27 @@ public class Notification implements Serializable {
         public static final String PROFILE_UPDATE = "PROFILE_UPDATE";
     }
 
-    public int getNotificationId() {
-        return notificationId;
-    }
+    public int getNotificationId() { return notificationId; }
+    public void setNotificationId(int notificationId) { this.notificationId = notificationId; }
 
-    public void setNotificationId(int notificationId) {
-        this.notificationId = notificationId;
-    }
+    public int getAccountId() { return accountId; }
+    public void setAccountId(int accountId) { this.accountId = accountId; }
 
-    public int getAccountId() {
-        return accountId;
-    }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getType() {
-        return type;
-    }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public String getBookingCode() { return bookingCode; }
+    public void setBookingCode(String bookingCode) { this.bookingCode = bookingCode; }
 
-    public String getTitle() {
-        return title;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getBookingCode() {
-        return bookingCode;
-    }
-
-    public void setBookingCode(String bookingCode) {
-        this.bookingCode = bookingCode;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public boolean isRead() {
-        return isRead;
-    }
-
-    public void setRead(boolean read) {
-        isRead = read;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getActionUrl() {
-        return actionUrl;
-    }
-
-    public void setActionUrl(String actionUrl) {
-        this.actionUrl = actionUrl;
-    }
+    public boolean isRead() { return isRead; }
+    public void setRead(boolean read) { isRead = read; }
 }

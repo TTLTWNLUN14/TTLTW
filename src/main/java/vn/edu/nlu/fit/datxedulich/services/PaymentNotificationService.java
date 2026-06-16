@@ -9,15 +9,12 @@ public class PaymentNotificationService {
                                                double amount, String carInfo) {
         String title = "Thanh toán thành công";
         String content = String.format(
-                "Mã đặt xe: %s | Số tiền: %.0f VND | Xe: %s | " +
-                        "Chi tiết được gửi vào email của bạn",
+                "Mã đặt xe: %s | Số tiền: %.0f VND | Xe: %s",
                 bookingCode, amount, carInfo
         );
-        String icon = "fas fa-check-circle";
-        String actionUrl = "/profile?tab=bookings";
 
         notificationService.sendNotification(accountId, Notification.Type.PAYMENT,
-                title, content, bookingCode, icon, actionUrl);
+                title, content, bookingCode);
     }
 
     public void sendPaymentFailedNotification(int accountId, String bookingCode, String reason) {
@@ -26,11 +23,9 @@ public class PaymentNotificationService {
                 "Mã đặt xe: %s | Lý do: %s | Vui lòng thử lại",
                 bookingCode, reason
         );
-        String icon = "fas fa-times-circle";
-        String actionUrl = "/profile?tab=bookings";
 
         notificationService.sendNotification(accountId, Notification.Type.PAYMENT,
-                title, content, bookingCode, icon, actionUrl);
+                title, content, bookingCode);
     }
 
     public void sendBookingConfirmationNotification(int accountId, String bookingCode,
@@ -40,10 +35,8 @@ public class PaymentNotificationService {
                 "Mã đặt xe: %s | Điểm đón: %s | Thời gian: %s",
                 bookingCode, pickupLocation, pickupTime
         );
-        String icon = "fas fa-car";
-        String actionUrl = "/profile?tab=bookings";
 
         notificationService.sendNotification(accountId, Notification.Type.BOOKING,
-                title, content, bookingCode, icon, actionUrl);
+                title, content, bookingCode);
     }
 }

@@ -189,8 +189,15 @@ public class UserService {
 
             boolean created = userDAO.create(newUser);
             if (created) {
-                result.put("success", true);
-                result.put("message", "Đăng ký thành công! Vui lòng đăng nhập.");
+                User createdUser = userDAO.findByUsername(username);
+                if (createdUser != null) {
+                    result.put("success", true);
+                    result.put("message", "Đăng ký thành công! Vui lòng đăng nhập.");
+                    result.put("accountId", createdUser.getAccount_id());
+                } else {
+                    result.put("success", false);
+                    result.put("message", "Đăng ký thất bại, vui lòng thử lại");
+                }
             } else {
                 result.put("success", false);
                 result.put("message", "Đăng ký thất bại, vui lòng thử lại");
@@ -289,5 +296,8 @@ public class UserService {
 
     public User getUserById(int accountId) {
         return userDAO.findById(accountId);
+    }
+    public boolean updateAvatar(int accountId, String avatarPath) {
+        return userDAO.updateAvatar(accountId, avatarPath);
     }
 }
